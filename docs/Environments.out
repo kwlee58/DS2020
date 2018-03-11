@@ -1,0 +1,275 @@
+   label                            name               
+1  <environment: R_GlobalEnv>       ""                 
+2  <environment: package:pryr>      "package:pryr"     
+3  <environment: 0x102b367f8>       "tools:rstudio"    
+4  <environment: package:stats>     "package:stats"    
+5  <environment: package:graphics>  "package:graphics" 
+6  <environment: package:grDevices> "package:grDevices"
+7  <environment: package:utils>     "package:utils"    
+8  <environment: package:datasets>  "package:datasets" 
+9  <environment: 0x1020df190>       "KoreaEnv"         
+10 <environment: package:methods>   "package:methods"  
+11 <environment: 0x10383e7f0>       "Autoloads"        
+12 <environment: base>              ""                 
+13 <environment: R_EmptyEnv>        ""                 
+<environment: package:stats>
+attr(,"name")
+[1] "package:stats"
+attr(,"path")
+[1] "/Library/Frameworks/R.framework/Versions/3.4/Resources/library/stats"
+<environment: R_GlobalEnv>
+<environment: base>
+<environment: R_EmptyEnv>
+<environment: package:pryr>
+attr(,"name")
+[1] "package:pryr"
+attr(,"path")
+[1] "/Library/Frameworks/R.framework/Versions/3.4/Resources/library/pryr"
+character(0)
+ [1] "a"             "ace"           "ace3"          "b"             "c"            
+ [6] "cards"         "deal"          "deck"          "deck2"         "deck3"        
+[11] "deck4"         "deck5"         "facecard"      "h"             "l"            
+[16] "N"             "q"             "queen_spades"  "queenOfSpades" "s"            
+[21] "shuffle"       "value"         "vec"           "w"            
+   face   suit value
+1  king spades    13
+2 queen spades    12
+3  jack spades    11
+ [1] "a"             "ace"           "ace3"          "b"             "c"            
+ [6] "cards"         "deal"          "deck"          "deck2"         "deck3"        
+[11] "deck4"         "deck5"         "facecard"      "h"             "l"            
+[16] "N"             "new"           "q"             "queen_spades"  "queenOfSpades"
+[21] "s"             "shuffle"       "value"         "vec"           "w"            
+[1] "Hello Global"
+<environment: R_GlobalEnv>
+[1] "Hello Global"
+[1] "Hello Active"
+$ran.in
+<environment: 0x10b6efe38>
+
+$parent
+<environment: R_GlobalEnv>
+
+$objects
+
+$ran.in
+<environment: 0x10b6eb068>
+
+$parent
+<environment: R_GlobalEnv>
+
+$objects
+
+<environment: R_GlobalEnv>
+<environment: namespace:pryr>
+$ran.in
+<environment: 0x108aff3b8>
+
+$parent
+<environment: R_GlobalEnv>
+
+$objects
+a :  num 1
+b :  num 2
+c :  num 3
+
+$ran.in
+<environment: 0x109544ee0>
+
+$parent
+<environment: R_GlobalEnv>
+
+$objects
+x :  chr "take me to your runtime"
+
+$ran.in
+<environment: 0x10956a4a0>
+
+$parent
+<environment: R_GlobalEnv>
+
+$objects
+
+  face   suit value
+1 king spades    13
+<environment: R_GlobalEnv>
+  face   suit value
+1 king spades    13
+   face   suit value
+2 queen spades    12
+3  jack spades    11
+4   ten spades    10
+   face   suit value
+2 queen spades    12
+   face   suit value
+2 queen spades    12
+3  jack spades    11
+4   ten spades    10
+5  nine spades     9
+6 eight spades     8
+7 seven spades     7
+   face   suit value
+2 queen spades    12
+   face   suit value
+3  jack spades    11
+4   ten spades    10
+5  nine spades     9
+6 eight spades     8
+7 seven spades     7
+8   six spades     6
+function(cards) {
+  random <- sample(1:52, size = 52)
+  cards[random, ]
+}
+  face   suit value
+3 jack spades    11
+4  ten spades    10
+5 nine spades     9
+  face   suit value
+3 jack spades    11
+4  ten spades    10
+5 nine spades     9
+   face     suit value
+48 five   hearts     5
+10 four   spades     4
+31 nine diamonds     9
+    face     suit value
+29  jack diamonds    11
+47   six   hearts     6
+6  eight   spades     8
+27  king diamonds    13
+12   two   spades     2
+51   two   hearts     2
+10  four   spades     4
+32 eight diamonds     8
+37 three diamonds     3
+49  four   hearts     4
+17   ten    clubs    10
+5   nine   spades     9
+8    six   spades     6
+46 seven   hearts     7
+24 three    clubs     3
+43   ten   hearts    10
+22  five    clubs     5
+23  four    clubs     4
+39   ace diamonds     1
+11 three   spades     3
+41 queen   hearts    12
+21   six    clubs     6
+45 eight   hearts     8
+25   two    clubs     2
+7  seven   spades     7
+9   five   spades     5
+2  queen   spades    12
+44  nine   hearts     9
+34   six diamonds     6
+52   ace   hearts     1
+30   ten diamonds    10
+4    ten   spades    10
+14  king    clubs    13
+35  five diamonds     5
+18  nine    clubs     9
+38   two diamonds     2
+28 queen diamonds    12
+20 seven    clubs     7
+3   jack   spades    11
+31  nine diamonds     9
+48  five   hearts     5
+26   ace    clubs     1
+15 queen    clubs    12
+33 seven diamonds     7
+16  jack    clubs    11
+42  jack   hearts    11
+13   ace   spades     1
+19 eight    clubs     8
+1   king   spades    13
+40  king   hearts    13
+36  four diamonds     4
+50 three   hearts     3
+ [1] "a"             "ace"           "ace3"          "b"             "c"            
+ [6] "cards"         "deal"          "deck"          "DECK"          "deck2"        
+[11] "deck3"         "deck4"         "deck5"         "facecard"      "h"            
+[16] "l"             "N"             "new"           "q"             "queen_spades" 
+[21] "queenOfSpades" "roll"          "s"             "setup"         "show_env"     
+[26] "shuffle"       "value"         "vec"           "w"            
+    face     suit value
+51   two   hearts     2
+26   ace    clubs     1
+17   ten    clubs    10
+37 three diamonds     3
+9   five   spades     5
+32 eight diamonds     8
+30   ten diamonds    10
+10  four   spades     4
+42  jack   hearts    11
+28 queen diamonds    12
+5   nine   spades     9
+24 three    clubs     3
+1   king   spades    13
+40  king   hearts    13
+34   six diamonds     6
+50 three   hearts     3
+33 seven diamonds     7
+12   two   spades     2
+48  five   hearts     5
+2  queen   spades    12
+19 eight    clubs     8
+11 three   spades     3
+7  seven   spades     7
+52   ace   hearts     1
+20 seven    clubs     7
+23  four    clubs     4
+16  jack    clubs    11
+41 queen   hearts    12
+35  five diamonds     5
+31  nine diamonds     9
+21   six    clubs     6
+8    six   spades     6
+43   ten   hearts    10
+6  eight   spades     8
+29  jack diamonds    11
+13   ace   spades     1
+46 seven   hearts     7
+22  five    clubs     5
+47   six   hearts     6
+25   two    clubs     2
+49  four   hearts     4
+18  nine    clubs     9
+14  king    clubs    13
+3   jack   spades    11
+39   ace diamonds     1
+45 eight   hearts     8
+4    ten   spades    10
+27  king diamonds    13
+38   two diamonds     2
+44  nine   hearts     9
+36  four diamonds     4
+15 queen    clubs    12
+List of 2
+ $ deal   :function ()  
+  ..- attr(*, "srcref")=Class 'srcref'  atomic [1:8] 4 11 8 3 11 3 4 8
+  .. .. ..- attr(*, "srcfile")=Classes 'srcfilecopy', 'srcfile' <environment: 0x11091dca0> 
+ $ shuffle:function ()  
+  ..- attr(*, "srcref")=Class 'srcref'  atomic [1:8] 10 14 13 3 14 3 10 13
+  .. .. ..- attr(*, "srcfile")=Classes 'srcfilecopy', 'srcfile' <environment: 0x11091dca0> 
+function(){
+    card <- deck[1, ]
+    assign("deck", deck[-1, ], envir = globalenv())
+    card
+  }
+<environment: 0x1108ff200>
+function(){
+    random <- sample(1:52)
+    assign("deck", DECK[random, ], envir = globalenv())
+  }
+<environment: 0x1108ff200>
+<environment: 0x1108ff200>
+<environment: 0x1108ff200>
+   face   suit value
+51  two hearts     2
+    face     suit value
+33 seven diamonds     7
+  face   suit value
+4  ten spades    10
+<environment: 0x10aec9358>
+<environment: 0x10aec9358>

@@ -1,0 +1,153 @@
+---
+title: "Random Team Allocation : R Programming 01"
+author: "coop711"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+# install.packages("xlsx", repos = "https://cran.rstudio.com")
+# library(xlsx)
+library(knitr)
+```
+
+### Data
+
+```{r, data, echo = TRUE, results = 'markup'}
+# class_roll <- read.xlsx("../data/class_roll.xlsx", 1, startRow = 2, endRow = 23, colIndex = c(3:7, 9), colClasses = rep("character", 6), stringsAsFactors = FALSE)
+load("./class_roll_02_data_masked.RData")
+str(class_roll)
+```
+
+### 랜덤 Team 나누기
+
+```{r, team id, echo = TRUE}
+set.seed(3)
+N <- nrow(class_roll)
+group <- 1 + sample(1:N) %% 6
+class_roll$group <- factor(group, levels = 1:6, labels = paste("Team", 1:6))
+kable(class_roll)
+```
+
+### 학번
+
+```{r, id, echo = TRUE}
+ID.14 <- factor(ifelse(substr(class_roll$id, 1, 4) >= 2014, "younger.14", "older.14"), levels=c("younger.14", "older.14"), labels = c("14학번 이후", "13학번 이전"))
+kable(table("그룹" = class_roll$group, "14학번 기준" = ID.14))
+ID.13 <- factor(ifelse(substr(class_roll$id, 1, 4) >= 2013, "younger.13", "older.13"), levels=c("younger.13", "older.13"), labels = c("13학번 이후", "12학번 이전"))
+kable(table("그룹" = class_roll$group, "13학번 기준" = ID.13))
+ID.12 <- factor(ifelse(substr(class_roll$id, 1, 4) >= 2012, "younger.12", "older.12"), levels=c("younger.12", "older.12"), labels = c("12학번 이후", "11학번 이전"))
+kable(table("그룹" = class_roll$group, "12학번 기준" = ID.12))
+```
+
+### 학번 뒷자리 홀짝
+
+```{r, odd or even, echo = TRUE}
+odd.even <- factor(as.numeric(class_roll$id) %% 2, levels = c(1, 0), labels = c("홀", "짝"))
+kable(table("그룹"= class_roll$group, "홀짝" = odd.even))
+```
+
+### 학년 분포
+
+```{r, School Year, echo = TRUE}
+kable(table("그룹"= class_roll$group, "학년" = class_roll$year))
+```
+
+### e-mail 서비스 업체
+
+```{r, e_mail, echo = TRUE}
+e.mail.list <- strsplit(class_roll$e.mail, "@", fixed = TRUE)
+mail.com <- mapply("[", e.mail.list, 2)
+mail.com.f <- factor(ifelse(mail.com == "naver.com", mail.com, "기타 서비스업체"), levels = c("naver.com", "기타 서비스업체"))
+kable(table("그룹" = class_roll$group, "e-mail" = mail.com.f))
+```
+
+### 성씨 분포
+
+```{r, name, echo = TRUE}
+f.name <- substring(class_roll$name, first = 1, last = 1)
+kable(table("그룹" = class_roll$group, "성씨" = f.name))
+```
+
+#### 많이 나오는 성씨
+
+```{r, frequent family name, echo = TRUE}
+f.name <- substring(class_roll$name, first = 1, last = 1)
+# f.name %in% c("김","이","박")
+f.name.f <- factor(ifelse(f.name %in% c("김", "이", "박", "최"), f.name, "기타"), levels = c("김", "이", "박", "최", "기타"))
+kable(table("Group" = class_roll$group, "Family Name" = f.name.f))
+```
+
+### 학과 분포
+
+```{r, big departments, echo = TRUE, results = 'markup'}
+tbl.dept <- table(class_roll$dept)
+kable(t(as.table(tbl.dept)))
+str(tbl.dept)
+dept.big <- names(tbl.dept)[tbl.dept >= 8]
+dept.major <- ifelse(class_roll$dept %in% dept.big, class_roll$dept, "기타 학과")
+dept.major.f <- factor(dept.major, levels = c(dept.big, "기타 학과"))
+kable((table("그룹" = class_roll$group, "학과" = class_roll$dept)))
+```
+
+```{r, departments, echo = TRUE}
+kable(table("그룹" = class_roll$group, "학과" = dept.major.f))
+```
+
+### Team 별로 모으기
+
+```{r, list, echo = TRUE, results = 'markup'}
+gr.names.o <- order(class_roll$group, class_roll$name)
+# gr.names.o
+names.by.gr <- class_roll[gr.names.o, c("group", "id", "name")]
+kable(names.by.gr)
+```
+
+#### Team 1
+
+```{r, team 1}
+Team_1.names <- names.by.gr[names.by.gr$group == "Team 1", c("id", "name")]
+kable(Team_1.names)
+```
+
+#### Team 2
+
+```{r, team 2}
+Team_2.names <- names.by.gr[names.by.gr$group == "Team 2", c("id", "name")]
+kable(Team_2.names)
+```
+
+#### Team 3
+
+```{r, team 3}
+Team_3.names <- names.by.gr[names.by.gr$group == "Team 3", c("id", "name")]
+kable(Team_3.names)
+```
+
+#### Team 4
+
+```{r, team 4}
+Team_4.names <- names.by.gr[names.by.gr$group == "Team 4", c("id", "name")]
+kable(Team_4.names)
+```
+
+#### Team 5
+
+```{r, team 5}
+Team_5.names <- names.by.gr[names.by.gr$group == "Team 5", c("id", "name")]
+kable(Team_5.names)
+```
+
+#### Team 6
+
+```{r, team 6}
+Team_6.names <- names.by.gr[names.by.gr$group == "Team 6", c("id", "name")]
+kable(Team_6.names)
+```
+
+<!--
+```{r, save}
+save.image("./team_02_out.RData")
+```
+-->
