@@ -1,7 +1,7 @@
 ---
 title: "Weighted Dice Simulation"
-author: "coop711"
-date: '2018 3 13 '
+author: "이기원"
+date: "`r Sys.Date()`"
 output: html_document
 ---
 
