@@ -67,4 +67,14 @@ roll2 <- function(bones = 1:6) {
   sum(dice)
 }
 roll2()
-
+ls()
+dump(list = c("roll", "roll2"), file = "./roll.R")
+ls()
+list.files()
+rm(list = ls())
+ls()
+source("./roll.R")
+ls()
+roll()
+roll2(bones = 1:5)
+roll2()

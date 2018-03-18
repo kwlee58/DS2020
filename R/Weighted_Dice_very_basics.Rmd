@@ -126,3 +126,13 @@ roll2 <- function(bones = 1:6) {
 roll2()
 ```
 
+## Dump and Source
+
+```{r}
+dump(list = c("roll", "roll2"), file = "./roll.R")
+rm(list = ls())
+ls()
+source("./roll.R")
+ls()
+```
+
