@@ -61,10 +61,12 @@ typeof("Hello")
 
 ```{r}
 3 > 2
+1:3 > c(2, 1, 3)
 logic <- c(TRUE, FALSE, TRUE)
 logic
 typeof(logic)
 typeof(F)
+typeof(FALSE)
 ```
 
 ## Complex a]nd Raw
@@ -94,7 +96,7 @@ names(die) <- c("one", "two", "three", "four", "five", "six")
 die
 names(die)
 attributes(die)
-names(die) <- NULL
+# names(die) <- NULL
 ```
 
 ## Dim
@@ -119,7 +121,8 @@ m
 ## Arrays
 
 ```{r}
-ar <- array(c(11:14, 21:24, 31:34), dim = c(2, 2, 3))
+ar <- array(c(11:14, 21:24, 31:34), 
+            dim = c(2, 2, 3))
 ar
 ```
 
@@ -132,6 +135,7 @@ class(die)
 attributes(die)
 class("Hello")
 class(5)
+class(5L)
 ```
 
 ## Dates and Times
@@ -139,12 +143,14 @@ class(5)
 ```{r}
 today <- Sys.Date()
 now <- Sys.time()
+today
 now
 typeof(today)
 typeof(now)
 class(today)
 class(now)
 unclass(now)
+unclass(Sys.time())
 mil <- 1000000
 mil
 class(mil) <- c("POSIXct", "POSIXt")
@@ -160,7 +166,8 @@ attributes(gender)
 unclass(gender)
 gender
 as.character(gender)
-gender2 <- factor(c("male", "female", "female", "male"), levels = c("male", "female"))
+gender2 <- factor(c("male", "female", "female", "male"), 
+                  levels = c("male", "female"))
 str(gender2)
 ```
 
@@ -179,7 +186,9 @@ as.numeric(FALSE)
 ## Lists
 
 ```{r}
-list1 <- list(100:130, "R", list(TRUE, FALSE))
+list1 <- list(100:130, 
+              "R", 
+              list(TRUE, FALSE))
 list1
 attributes(list1)
 list2 <- list(number = 100:130, 
@@ -187,13 +196,16 @@ list2 <- list(number = 100:130,
               logical = list(TRUE, FALSE))
 list2
 attributes(list2)
+list2$char
+list2[[2]]
+list2[[3]]
 ```
 
 ## Data Frames
 
 ```{r}
 df1 <- data.frame(c("ace", "two", "six"),
-                  rep("clubs", 3 ), 
+                  rep("clubs", 3), 
                   c(1, 2, 6))
 df1
 df <- data.frame(face = c("ace", "two", "six"), 
