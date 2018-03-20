@@ -1,6 +1,6 @@
 ---
 title: "R Objects"
-author: "coop711"
+author: "Your Name"
 date : "`r Sys.Date()`"
 output: html_document
 ---
