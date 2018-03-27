@@ -11,7 +11,7 @@
 
 <meta name="author" content="coop711" />
 
-<meta name="date" content="2018-03-26" />
+<meta name="date" content="2018-03-27" />
 
 <title>R Modifyng Values</title>
 
@@ -121,14 +121,15 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">R Modifyng Values</h1>
 <h4 class="author"><em>coop711</em></h4>
-<h4 class="date"><em>2018-03-26</em></h4>
+<h4 class="date"><em>2018-03-27</em></h4>
 
 </div>
 
 
 <div id="deck" class="section level2">
 <h2><code>deck</code></h2>
-<pre class="r"><code>deck &lt;- read.csv(&quot;../data/cards.csv&quot;, stringsAsFactors = FALSE)
+<pre class="r"><code>deck &lt;- read.csv(&quot;../data/cards.csv&quot;, 
+                 stringsAsFactors = FALSE)
 deck2 &lt;- deck</code></pre>
 </div>
 <div id="changing-values-in-place" class="section level2">
@@ -158,8 +159,18 @@ vec</code></pre>
 vec &lt;- vec[-9]
 vec</code></pre>
 <pre><code>## [1]  2  0  2  1  3  1  0 NA</code></pre>
+<pre class="r"><code>head(deck2)</code></pre>
+<pre><code>##    face   suit value
+## 1  king spades    13
+## 2 queen spades    12
+## 3  jack spades    11
+## 4   ten spades    10
+## 5  nine spades     9
+## 6 eight spades     8</code></pre>
 <pre class="r"><code>deck2$new &lt;- 1:52
-N &lt;- nrow(deck2)
+nrow(deck2)</code></pre>
+<pre><code>## [1] 52</code></pre>
+<pre class="r"><code>N &lt;- nrow(deck2)
 deck2$new2 &lt;- 1:N
 head(deck2)</code></pre>
 <pre><code>##    face   suit value new new2
@@ -184,17 +195,25 @@ head(deck2)</code></pre>
 ## 26  ace    clubs     1   26
 ## 39  ace diamonds     1   39
 ## 52  ace   hearts     1   52</code></pre>
+<pre class="r"><code>str(deck2[seq(13, 52, by = 13), ])</code></pre>
+<pre><code>## 'data.frame':    4 obs. of  4 variables:
+##  $ face : chr  &quot;ace&quot; &quot;ace&quot; &quot;ace&quot; &quot;ace&quot;
+##  $ suit : chr  &quot;spades&quot; &quot;clubs&quot; &quot;diamonds&quot; &quot;hearts&quot;
+##  $ value: int  1 1 1 1
+##  $ new2 : int  13 26 39 52</code></pre>
 <pre class="r"><code>deck2[seq(13, 52, by = 13), 1]</code></pre>
 <pre><code>## [1] &quot;ace&quot; &quot;ace&quot; &quot;ace&quot; &quot;ace&quot;</code></pre>
 <pre class="r"><code>str(deck2[seq(13, 52, by = 13), 1])</code></pre>
 <pre><code>##  chr [1:4] &quot;ace&quot; &quot;ace&quot; &quot;ace&quot; &quot;ace&quot;</code></pre>
-<pre class="r"><code>deck2[seq(13, 52, by = 13), 1, drop = FALSE]</code></pre>
+<pre class="r"><code>deck2[seq(13, 52, by = 13), 1, 
+      drop = FALSE]</code></pre>
 <pre><code>##    face
 ## 13  ace
 ## 26  ace
 ## 39  ace
 ## 52  ace</code></pre>
-<pre class="r"><code>str(deck2[seq(13, 52, by = 13), 1, drop = FALSE])</code></pre>
+<pre class="r"><code>str(deck2[seq(13, 52, by = 13), 1, 
+          drop = FALSE])</code></pre>
 <pre><code>## 'data.frame':    4 obs. of  1 variable:
 ##  $ face: chr  &quot;ace&quot; &quot;ace&quot; &quot;ace&quot; &quot;ace&quot;</code></pre>
 <pre class="r"><code>deck2$value[seq(13, 52, by = 13)]</code></pre>
@@ -223,11 +242,11 @@ head(deck2, n = 13)</code></pre>
 ## 13   ace spades    14   13</code></pre>
 <pre class="r"><code>source(&quot;./shuffle.R&quot;, echo = TRUE)</code></pre>
 <pre><code>## 
-## &gt; deal &lt;- function(cards) {
+## R &gt; deal &lt;- function(cards) {
 ## +     cards[1, ]
 ## + }
 ## 
-## &gt; shuffle &lt;- function(cards) {
+## R &gt; shuffle &lt;- function(cards) {
 ## +     random &lt;- sample(1:52, size = 52)
 ## +     cards[random, ]
 ## + }</code></pre>
@@ -235,65 +254,65 @@ head(deck2, n = 13)</code></pre>
 deck3</code></pre>
 <pre><code>##     face     suit value
 ## 51   two   hearts     2
-## 12   two   spades     2
-## 35  five diamonds     5
-## 34   six diamonds     6
-## 33 seven diamonds     7
-## 1   king   spades    13
-## 36  four diamonds     4
-## 50 three   hearts     3
-## 29  jack diamonds    11
-## 52   ace   hearts     1
-## 47   six   hearts     6
-## 43   ten   hearts    10
-## 39   ace diamonds     1
-## 4    ten   spades    10
-## 18  nine    clubs     9
-## 30   ten diamonds    10
-## 25   two    clubs     2
-## 17   ten    clubs    10
-## 3   jack   spades    11
-## 37 three diamonds     3
-## 46 seven   hearts     7
-## 40  king   hearts    13
-## 24 three    clubs     3
-## 41 queen   hearts    12
-## 22  five    clubs     5
-## 5   nine   spades     9
-## 42  jack   hearts    11
-## 9   five   spades     5
-## 10  four   spades     4
-## 2  queen   spades    12
-## 8    six   spades     6
-## 28 queen diamonds    12
-## 14  king    clubs    13
-## 27  king diamonds    13
-## 21   six    clubs     6
-## 7  seven   spades     7
-## 20 seven    clubs     7
 ## 16  jack    clubs    11
-## 15 queen    clubs    12
-## 13   ace   spades     1
-## 11 three   spades     3
-## 23  four    clubs     4
-## 32 eight diamonds     8
-## 38   two diamonds     2
+## 7  seven   spades     7
+## 47   six   hearts     6
+## 50 three   hearts     3
 ## 6  eight   spades     8
-## 44  nine   hearts     9
-## 45 eight   hearts     8
-## 49  four   hearts     4
-## 26   ace    clubs     1
-## 31  nine diamonds     9
-## 48  five   hearts     5
-## 19 eight    clubs     8</code></pre>
-<pre class="r"><code>head(deck3)</code></pre>
-<pre><code>##     face     suit value
-## 51   two   hearts     2
+## 32 eight diamonds     8
 ## 12   two   spades     2
-## 35  five diamonds     5
+## 29  jack diamonds    11
+## 20 seven    clubs     7
+## 22  five    clubs     5
+## 4    ten   spades    10
+## 44  nine   hearts     9
+## 37 three diamonds     3
+## 40  king   hearts    13
+## 39   ace diamonds     1
 ## 34   six diamonds     6
+## 42  jack   hearts    11
+## 18  nine    clubs     9
+## 23  four    clubs     4
+## 30   ten diamonds    10
+## 48  five   hearts     5
+## 14  king    clubs    13
+## 3   jack   spades    11
+## 19 eight    clubs     8
+## 21   six    clubs     6
+## 10  four   spades     4
 ## 33 seven diamonds     7
-## 1   king   spades    13</code></pre>
+## 8    six   spades     6
+## 1   king   spades    13
+## 46 seven   hearts     7
+## 52   ace   hearts     1
+## 26   ace    clubs     1
+## 41 queen   hearts    12
+## 25   two    clubs     2
+## 11 three   spades     3
+## 35  five diamonds     5
+## 43   ten   hearts    10
+## 49  four   hearts     4
+## 13   ace   spades     1
+## 36  four diamonds     4
+## 24 three    clubs     3
+## 28 queen diamonds    12
+## 17   ten    clubs    10
+## 2  queen   spades    12
+## 27  king diamonds    13
+## 5   nine   spades     9
+## 45 eight   hearts     8
+## 38   two diamonds     2
+## 15 queen    clubs    12
+## 9   five   spades     5
+## 31  nine diamonds     9</code></pre>
+<pre class="r"><code>head(deck3)</code></pre>
+<pre><code>##     face   suit value
+## 51   two hearts     2
+## 16  jack  clubs    11
+## 7  seven spades     7
+## 47   six hearts     6
+## 50 three hearts     3
+## 6  eight spades     8</code></pre>
 </div>
 <div id="logical-subsetting" class="section level2">
 <h2>Logical Subsetting</h2>
@@ -351,57 +370,57 @@ deck3$value[deck3$face == &quot;ace&quot;] &lt;- 14
 deck3</code></pre>
 <pre><code>##     face     suit value
 ## 51   two   hearts     2
-## 12   two   spades     2
-## 35  five diamonds     5
-## 34   six diamonds     6
-## 33 seven diamonds     7
-## 1   king   spades    13
-## 36  four diamonds     4
-## 50 three   hearts     3
-## 29  jack diamonds    11
-## 52   ace   hearts    14
-## 47   six   hearts     6
-## 43   ten   hearts    10
-## 39   ace diamonds    14
-## 4    ten   spades    10
-## 18  nine    clubs     9
-## 30   ten diamonds    10
-## 25   two    clubs     2
-## 17   ten    clubs    10
-## 3   jack   spades    11
-## 37 three diamonds     3
-## 46 seven   hearts     7
-## 40  king   hearts    13
-## 24 three    clubs     3
-## 41 queen   hearts    12
-## 22  five    clubs     5
-## 5   nine   spades     9
-## 42  jack   hearts    11
-## 9   five   spades     5
-## 10  four   spades     4
-## 2  queen   spades    12
-## 8    six   spades     6
-## 28 queen diamonds    12
-## 14  king    clubs    13
-## 27  king diamonds    13
-## 21   six    clubs     6
-## 7  seven   spades     7
-## 20 seven    clubs     7
 ## 16  jack    clubs    11
-## 15 queen    clubs    12
-## 13   ace   spades    14
-## 11 three   spades     3
-## 23  four    clubs     4
-## 32 eight diamonds     8
-## 38   two diamonds     2
+## 7  seven   spades     7
+## 47   six   hearts     6
+## 50 three   hearts     3
 ## 6  eight   spades     8
+## 32 eight diamonds     8
+## 12   two   spades     2
+## 29  jack diamonds    11
+## 20 seven    clubs     7
+## 22  five    clubs     5
+## 4    ten   spades    10
 ## 44  nine   hearts     9
-## 45 eight   hearts     8
-## 49  four   hearts     4
-## 26   ace    clubs    14
-## 31  nine diamonds     9
+## 37 three diamonds     3
+## 40  king   hearts    13
+## 39   ace diamonds    14
+## 34   six diamonds     6
+## 42  jack   hearts    11
+## 18  nine    clubs     9
+## 23  four    clubs     4
+## 30   ten diamonds    10
 ## 48  five   hearts     5
-## 19 eight    clubs     8</code></pre>
+## 14  king    clubs    13
+## 3   jack   spades    11
+## 19 eight    clubs     8
+## 21   six    clubs     6
+## 10  four   spades     4
+## 33 seven diamonds     7
+## 8    six   spades     6
+## 1   king   spades    13
+## 46 seven   hearts     7
+## 52   ace   hearts    14
+## 26   ace    clubs    14
+## 41 queen   hearts    12
+## 25   two    clubs     2
+## 11 three   spades     3
+## 35  five diamonds     5
+## 43   ten   hearts    10
+## 49  four   hearts     4
+## 13   ace   spades    14
+## 36  four diamonds     4
+## 24 three    clubs     3
+## 28 queen diamonds    12
+## 17   ten    clubs    10
+## 2  queen   spades    12
+## 27  king diamonds    13
+## 5   nine   spades     9
+## 45 eight   hearts     8
+## 38   two diamonds     2
+## 15 queen    clubs    12
+## 9   five   spades     5
+## 31  nine diamonds     9</code></pre>
 <pre class="r"><code>deck4 &lt;- deck
 deck4$value &lt;- 0
 deck4</code></pre>
@@ -799,65 +818,65 @@ deck3 &lt;- deck
 deck3 &lt;- shuffle(deck)
 deck3</code></pre>
 <pre><code>##     face     suit value
-## 25   two    clubs     2
-## 19 eight    clubs     8
-## 42  jack   hearts    11
-## 2  queen   spades    12
-## 18  nine    clubs     9
-## 21   six    clubs     6
-## 6  eight   spades     8
-## 34   six diamonds     6
-## 26   ace    clubs    14
-## 28 queen diamonds    12
-## 44  nine   hearts     9
-## 3   jack   spades    11
-## 29  jack diamonds    11
-## 52   ace   hearts    14
-## 16  jack    clubs    11
-## 48  five   hearts     5
-## 36  four diamonds     4
-## 24 three    clubs     3
-## 20 seven    clubs     7
-## 41 queen   hearts    12
-## 5   nine   spades     9
-## 23  four    clubs     4
-## 7  seven   spades     7
-## 11 three   spades     3
-## 9   five   spades     5
-## 47   six   hearts     6
-## 49  four   hearts     4
-## 33 seven diamonds     7
-## 14  king    clubs    13
-## 37 three diamonds     3
-## 46 seven   hearts     7
-## 30   ten diamonds    10
-## 35  five diamonds     5
-## 10  four   spades     4
-## 22  five    clubs     5
-## 27  king diamonds    13
-## 1   king   spades    13
 ## 13   ace   spades    14
 ## 32 eight diamonds     8
-## 45 eight   hearts     8
-## 15 queen    clubs    12
-## 38   two diamonds     2
-## 31  nine diamonds     9
 ## 8    six   spades     6
-## 51   two   hearts     2
-## 40  king   hearts    13
 ## 17   ten    clubs    10
-## 43   ten   hearts    10
-## 39   ace diamonds    14
+## 2  queen   spades    12
+## 29  jack diamonds    11
+## 37 three diamonds     3
+## 28 queen diamonds    12
+## 23  four    clubs     4
+## 51   two   hearts     2
+## 45 eight   hearts     8
+## 25   two    clubs     2
+## 15 queen    clubs    12
+## 34   six diamonds     6
+## 49  four   hearts     4
+## 7  seven   spades     7
+## 40  king   hearts    13
+## 27  king diamonds    13
+## 31  nine diamonds     9
+## 26   ace    clubs    14
+## 10  four   spades     4
+## 50 three   hearts     3
+## 24 three    clubs     3
+## 42  jack   hearts    11
+## 30   ten diamonds    10
+## 18  nine    clubs     9
+## 20 seven    clubs     7
 ## 12   two   spades     2
+## 52   ace   hearts    14
+## 21   six    clubs     6
+## 48  five   hearts     5
+## 3   jack   spades    11
+## 44  nine   hearts     9
+## 47   six   hearts     6
+## 14  king    clubs    13
+## 22  five    clubs     5
+## 36  four diamonds     4
+## 43   ten   hearts    10
 ## 4    ten   spades    10
-## 50 three   hearts     3</code></pre>
+## 38   two diamonds     2
+## 6  eight   spades     8
+## 35  five diamonds     5
+## 5   nine   spades     9
+## 9   five   spades     5
+## 33 seven diamonds     7
+## 19 eight    clubs     8
+## 1   king   spades    13
+## 39   ace diamonds    14
+## 11 three   spades     3
+## 41 queen   hearts    12
+## 16  jack    clubs    11
+## 46 seven   hearts     7</code></pre>
 <pre class="r"><code>ace3 &lt;- deck3$face == &quot;ace&quot;
 ace3</code></pre>
-<pre><code>##  [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE
-## [12] FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-## [23] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-## [34] FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE
-## [45] FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE</code></pre>
+<pre><code>##  [1]  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [12] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE
+## [23] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE
+## [34] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [45] FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE</code></pre>
 <pre class="r"><code>deck3[ace3, &quot;face&quot;]</code></pre>
 <pre><code>## [1] &quot;ace&quot; &quot;ace&quot; &quot;ace&quot; &quot;ace&quot;</code></pre>
 <pre class="r"><code>deck3$value[deck3$face == &quot;ace&quot;]</code></pre>
@@ -865,58 +884,58 @@ ace3</code></pre>
 <pre class="r"><code>deck3$value[ace3] &lt;- NA
 deck3</code></pre>
 <pre><code>##     face     suit value
-## 25   two    clubs     2
-## 19 eight    clubs     8
-## 42  jack   hearts    11
-## 2  queen   spades    12
-## 18  nine    clubs     9
-## 21   six    clubs     6
-## 6  eight   spades     8
-## 34   six diamonds     6
-## 26   ace    clubs    NA
-## 28 queen diamonds    12
-## 44  nine   hearts     9
-## 3   jack   spades    11
-## 29  jack diamonds    11
-## 52   ace   hearts    NA
-## 16  jack    clubs    11
-## 48  five   hearts     5
-## 36  four diamonds     4
-## 24 three    clubs     3
-## 20 seven    clubs     7
-## 41 queen   hearts    12
-## 5   nine   spades     9
-## 23  four    clubs     4
-## 7  seven   spades     7
-## 11 three   spades     3
-## 9   five   spades     5
-## 47   six   hearts     6
-## 49  four   hearts     4
-## 33 seven diamonds     7
-## 14  king    clubs    13
-## 37 three diamonds     3
-## 46 seven   hearts     7
-## 30   ten diamonds    10
-## 35  five diamonds     5
-## 10  four   spades     4
-## 22  five    clubs     5
-## 27  king diamonds    13
-## 1   king   spades    13
 ## 13   ace   spades    NA
 ## 32 eight diamonds     8
-## 45 eight   hearts     8
-## 15 queen    clubs    12
-## 38   two diamonds     2
-## 31  nine diamonds     9
 ## 8    six   spades     6
-## 51   two   hearts     2
-## 40  king   hearts    13
 ## 17   ten    clubs    10
-## 43   ten   hearts    10
-## 39   ace diamonds    NA
+## 2  queen   spades    12
+## 29  jack diamonds    11
+## 37 three diamonds     3
+## 28 queen diamonds    12
+## 23  four    clubs     4
+## 51   two   hearts     2
+## 45 eight   hearts     8
+## 25   two    clubs     2
+## 15 queen    clubs    12
+## 34   six diamonds     6
+## 49  four   hearts     4
+## 7  seven   spades     7
+## 40  king   hearts    13
+## 27  king diamonds    13
+## 31  nine diamonds     9
+## 26   ace    clubs    NA
+## 10  four   spades     4
+## 50 three   hearts     3
+## 24 three    clubs     3
+## 42  jack   hearts    11
+## 30   ten diamonds    10
+## 18  nine    clubs     9
+## 20 seven    clubs     7
 ## 12   two   spades     2
+## 52   ace   hearts    NA
+## 21   six    clubs     6
+## 48  five   hearts     5
+## 3   jack   spades    11
+## 44  nine   hearts     9
+## 47   six   hearts     6
+## 14  king    clubs    13
+## 22  five    clubs     5
+## 36  four diamonds     4
+## 43   ten   hearts    10
 ## 4    ten   spades    10
-## 50 three   hearts     3</code></pre>
+## 38   two diamonds     2
+## 6  eight   spades     8
+## 35  five diamonds     5
+## 5   nine   spades     9
+## 9   five   spades     5
+## 33 seven diamonds     7
+## 19 eight    clubs     8
+## 1   king   spades    13
+## 39   ace diamonds    NA
+## 11 three   spades     3
+## 41 queen   hearts    12
+## 16  jack    clubs    11
+## 46 seven   hearts     7</code></pre>
 </div>
 <div id="save" class="section level3">
 <h3>Save</h3>
