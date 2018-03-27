@@ -46,6 +46,7 @@ typeof(die3)
 ```{r}
 pi
 sqrt(2)^2 - 2
+die2
 ```
 
 ## Characters
