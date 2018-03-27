@@ -12,7 +12,8 @@ knitr::opts_chunk$set(echo = TRUE)
 ## `deck`
 
 ```{r}
-deck <- read.csv("../data/cards.csv", stringsAsFactors = FALSE)
+deck <- read.csv("../data/cards.csv", 
+                 stringsAsFactors = FALSE)
 deck2 <- deck
 ```
 
@@ -36,17 +37,22 @@ vec
 # vec[9] <- NULL
 vec <- vec[-9]
 vec
+head(deck2)
 deck2$new <- 1:52
+nrow(deck2)
 N <- nrow(deck2)
 deck2$new2 <- 1:N
 head(deck2)
 deck2$new <- NULL
 head(deck2)
 deck2[seq(13, 52, by = 13), ]
+str(deck2[seq(13, 52, by = 13), ])
 deck2[seq(13, 52, by = 13), 1]
 str(deck2[seq(13, 52, by = 13), 1])
-deck2[seq(13, 52, by = 13), 1, drop = FALSE]
-str(deck2[seq(13, 52, by = 13), 1, drop = FALSE])
+deck2[seq(13, 52, by = 13), 1, 
+      drop = FALSE]
+str(deck2[seq(13, 52, by = 13), 1, 
+          drop = FALSE])
 deck2$value[seq(13, 52, by = 13)]
 deck2[seq(13, 52, by = 13), "value"]
 deck2[seq(13, 52, by = 13), 3]

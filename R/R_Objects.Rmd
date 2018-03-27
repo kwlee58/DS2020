@@ -1,5 +1,7 @@
 ---
 title: "R Objects"
+author: "Your Name"
+date : "Today's Date"
 output: html_document
 ---
 
