@@ -61,8 +61,8 @@ deck2$value[seq(13, 52, by = 13)] <- 14
 head(deck2, n = 13)
 source("./shuffle.R", echo = TRUE)
 deck3 <- shuffle(deck)
-deck3
 head(deck3)
+tail(deck3)
 ```
 
 ## Logical Subsetting
@@ -99,10 +99,10 @@ deck3$value[ace3]
 deck3[ace3, "value"]
 deck3$value[ace3] <- 14
 deck3$value[deck3$face == "ace"] <- 14
-deck3
+head(deck3, n = 20)
 deck4 <- deck
 deck4$value <- 0
-deck4
+head(deck4, n = 20)
 deck4[, "value"] <- 10
 head(deck4, 13)
 deck4[, 3] <- 0
@@ -150,7 +150,7 @@ deck4$value[queenOfSpades]
 deck4[queen_spades, ]
 deck4[queen_spades, "value"]
 deck5 <- deck
-deck5
+head(deck5, n = 20)
 facecard <- deck5$face %in% c("king", "queen", "jack")
 facecard
 which(facecard)
@@ -186,18 +186,20 @@ is.na(vec)
 which(is.na(vec))
 ace <- deck$face == "ace"
 deck$value[ace] <- NA
-deck
+head(deck, n = 20)
 deck[ace, "value"] <- 14
 deck3 <- deck
 deck3 <- shuffle(deck)
-deck3
+head(deck3)
+tail(deck3)
 ace3 <- deck3$face == "ace"
 ace3
 deck3[ace3, "face"]
 deck3$value[deck3$face == "ace"]
 deck3$value[ace3] <- NA
-deck3
+head(deck3, n = 20)
 ```
+
 ### Save
 
 ```{r}
