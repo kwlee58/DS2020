@@ -12,6 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ## `deck`
 
 ```{r}
+# getwd()
 deck <- read.csv("../data/cards.csv", 
                  stringsAsFactors = FALSE)
 deck2 <- deck
@@ -37,7 +38,14 @@ vec
 # vec[9] <- NULL
 vec <- vec[-9]
 vec
+head(deck2, 
+     n = 10)
 head(deck2)
+head(deck2, 
+     n = -1)
+tail(deck2, 
+     n = -2)
+str(deck2)
 deck2$new <- 1:52
 nrow(deck2)
 N <- nrow(deck2)
@@ -45,6 +53,19 @@ deck2$new2 <- 1:N
 head(deck2)
 deck2$new <- NULL
 head(deck2)
+deck2[1, ]
+str(deck2[1, ])
+deck2[, 1]
+deck2[, 1, drop = FALSE]
+str(deck2[, 1])
+str(deck2[, 1, drop = FALSE])
+deck2[1]
+str(deck2[1])
+deck2[1]$face
+deck2[[1]]
+deck2$face
+seq(from = 13, to = 52, by = 13)
+c(13, 26, 39, 52)
 deck2[seq(13, 52, by = 13), ]
 str(deck2[seq(13, 52, by = 13), ])
 deck2[seq(13, 52, by = 13), 1]
@@ -53,10 +74,14 @@ deck2[seq(13, 52, by = 13), 1,
       drop = FALSE]
 str(deck2[seq(13, 52, by = 13), 1, 
           drop = FALSE])
+deck2[seq(13, 52, by = 13), "face"]
+deck2[seq(13, 52, by = 13), c(TRUE, FALSE, FALSE, FALSE)]
+deck2$face[c(13, 26, 39, 52)]
+deck2$value
 deck2$value[seq(13, 52, by = 13)]
 deck2[seq(13, 52, by = 13), "value"]
 deck2[seq(13, 52, by = 13), 3]
-deck2[seq(13, 52, by = 13), c(FALSE, FALSE, TRUE)]
+deck2[seq(13, 52, by = 13), c(FALSE, FALSE, TRUE, FALSE)]
 deck2$value[seq(13, 52, by = 13)] <- 14
 head(deck2, n = 13)
 source("./shuffle.R", echo = TRUE)
@@ -72,9 +97,16 @@ vec <- vec[1:7]
 vec
 vec[c(FALSE, FALSE, FALSE, FALSE, TRUE, FALSE, FALSE)]
 l <- c(FALSE, FALSE, FALSE, FALSE, TRUE, FALSE, FALSE)
+l
+which(l)
 w <- which(l)
 vec[which(l)]
 vec[w]
+vec[9] <- 1
+vec
+is.na(vec)
+which(is.na(vec))
+which(!is.na(vec))
 ```
 
 ### Logical Tests
@@ -86,15 +118,18 @@ c(1, 2, 3) == c(3, 2, 1)
 1 %in% c(3, 4, 5)
 c(1, 2) %in% c(3, 4, 5)
 c(1, 2, 3) %in% c(3, 4, 5)
-c(1, 2, 3, 4) %in% c(3, 4, 5)
+which(c(1, 2, 3, 4) %in% c(3, 4, 5))
 deck2$face == "ace"
 which(deck2$face == "ace")
 sum(deck2$face == "ace")
 ace <- deck2$face == "ace"
+ace
 deck2$value[ace]
 deck2[ace, "value"]
 deck2$value[deck2$face == "ace"]
+deck3[1:15, ]
 ace3 <- deck3$face == "ace"
+which(ace3)
 deck3$value[ace3]
 deck3[ace3, "value"]
 deck3$value[ace3] <- 14
@@ -104,10 +139,11 @@ deck4 <- deck
 deck4$value <- 0
 head(deck4, n = 20)
 deck4[, "value"] <- 10
-head(deck4, 13)
+head(deck4, n = 13)
 deck4[, 3] <- 0
 deck4$suit == "hearts"
 h <-deck4$suit == "hearts"
+h
 which(h)
 which(deck4$suit == "hearts")
 deck4$value[deck4$suit == "hearts"]
@@ -115,11 +151,13 @@ deck4$value[h]
 deck4$value[deck4$suit == "hearts"] <- 1
 deck4$value
 deck4$value[h] <- 10
+deck4$value
 deck4[h, "value"] <- 1
 deck4$value
 deck4$value[deck4$suit == "hearts"]
 q <- deck4$face == "queen"
 q
+which(q)
 deck4[q, ]
 deck4[deck4$face == "queen", ]
 (s <- deck4$suit == "spades")
@@ -188,12 +226,14 @@ ace <- deck$face == "ace"
 deck$value[ace] <- NA
 head(deck, n = 20)
 deck[ace, "value"] <- 14
+head(deck, n = 20)
 deck3 <- deck
 deck3 <- shuffle(deck)
 head(deck3)
 tail(deck3)
 ace3 <- deck3$face == "ace"
 ace3
+which(ace3)
 deck3[ace3, "face"]
 deck3$value[deck3$face == "ace"]
 deck3$value[ace3] <- NA
