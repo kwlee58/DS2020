@@ -1,12 +1,19 @@
 # Environments
+
 ## Environments
-##### install.packages("pryr", repos = "https://cran.rstudio.com")
+
+```{r}
+# install.packages("pryr", repos = "https://cran.rstudio.com")
 library(pryr)
 load("./r_modifying_values.RData")
 parenvs()
 parenvs(all = TRUE)
 search()
+```
+
 ## Working with Environments
+
+```{r}
 as.environment("package:stats")
 globalenv()
 baseenv()
@@ -19,11 +26,23 @@ head(globalenv()$deck, 3)
 assign("new", "Hello Global", envir = globalenv())
 ls()
 globalenv()$new
+```
+
 ## The Active Environment
+
+Read pp. 97
+
+```{r}
 environment()
+```
+
 ## Scoping Rules 
-##### Read pp.98
+
+Read pp.98
+
 ## Assignment
+
+```{r}
 new
 new <- "Hello Active"
 new
@@ -32,7 +51,11 @@ roll <- function(){
   dice <- sample(die, size = 2, replace = TRUE)
   sum(dice)
 }
+```
+
 ## Evaluation
+
+```{r}
 show_env <- function(){
   list(ran.in = environment(),
        parent = parent.env(environment()),
@@ -40,7 +63,7 @@ show_env <- function(){
 }
 show_env()
 show_env()
-##### origin environment
+#> origin environment (pp. 101)
 environment(show_env)
 environment(parenvs)
 show_env <- function(){
@@ -52,6 +75,7 @@ show_env <- function(){
        objects = ls.str(environment()))
 }
 show_env()
+#> R will copy over each argument to the runtime environment
 foo <- "take me to your runtime"
 show_env <- function(x = foo) {
   list(ran.in = environment(),
@@ -59,7 +83,7 @@ show_env <- function(x = foo) {
        objects = ls.str(environment()))  
 }
 show_env()
-##### calling environment
+#> Calling environment : R calls the function from
 rm("foo")
 # fix(show_env)
 show_env <- function() {
@@ -68,6 +92,11 @@ show_env <- function() {
        objects = ls.str(environment()))  
 }
 show_env()
+```
+
+## Fix `deal()` and `shuffle()`
+
+```{r}
 deal <- function(){
   deck[1, ]
 }
@@ -85,6 +114,7 @@ deal <- function(){
   card
 }
 deal()
+#> `deal` will just create a slighthly eltered copy of `deck` in the runtime environment
 head(deck, n = 6)
 deal <- function(){
   card <- deck[1, ]
@@ -95,8 +125,11 @@ deal()
 head(deck, 6)
 deal()
 head(deck, 6)
-# source("./shuffle.R")
-shuffle
+#> Fix `shuffle()`
+shuffle <- function(cards) {
+  random <- sample(1:52)
+  cards[random, ]
+}
 deck <- DECK
 head(deck, 3)
 a <- shuffle(deck)
@@ -108,8 +141,13 @@ shuffle <- function(){
 }
 shuffle()
 head(deck, 6)
+```
+
 ## Closures
+
+```{r}
 shuffle()
+deal()
 deal()
 setup <- function(deck) {
   DECK <- deck
@@ -152,7 +190,6 @@ setup <- function(deck) {
   
   list(deal = DEAL, shuffle = SHUFFLE)
 }
-
 cards <- setup(deck)
 deal <- cards$deal
 shuffle <- cards$shuffle
@@ -164,4 +201,4 @@ deal()
 deal()
 environment(deal)
 environment(shuffle)
-# save.image(file = "./Environments.RData")
+```
