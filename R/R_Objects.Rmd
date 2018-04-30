@@ -193,11 +193,15 @@ list1 <- list(100:130,
               "R", 
               list(TRUE, FALSE))
 list1
+list1[[3]][[2]]
+list1[[3]]
 attributes(list1)
 list2 <- list(number = 100:130, 
               char = "R", 
               logical = list(TRUE, FALSE))
 list2
+list2$logical[[1]]
+list2$logical
 attributes(list2)
 list2$char
 list2[[2]]
@@ -210,7 +214,7 @@ list2[[3]]
 df1 <- data.frame(c("ace", "two", "six"),
                   rep("clubs", 3), 
                   c(1, 2, 6))
-df1
+str(df1)
 df <- data.frame(face = c("ace", "two", "six"), 
                  suit = rep("clubs", 3), 
                  value = c(1, 2, 6))
