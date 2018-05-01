@@ -123,11 +123,56 @@ $(document).ready(function () {
 
 <div id="environments" class="section level1">
 <h1>Environments</h1>
+<pre class="r"><code>load(&quot;./r_modifying_values.RData&quot;)
+ls()</code></pre>
+<pre><code>##  [1] &quot;a&quot;             &quot;ace&quot;           &quot;ace3&quot;          &quot;b&quot;            
+##  [5] &quot;c&quot;             &quot;deal&quot;          &quot;deck&quot;          &quot;deck2&quot;        
+##  [9] &quot;deck3&quot;         &quot;deck4&quot;         &quot;deck5&quot;         &quot;facecard&quot;     
+## [13] &quot;h&quot;             &quot;l&quot;             &quot;N&quot;             &quot;q&quot;            
+## [17] &quot;queen_spades&quot;  &quot;queenOfSpades&quot; &quot;s&quot;             &quot;shuffle&quot;      
+## [21] &quot;vec&quot;           &quot;w&quot;</code></pre>
+<pre class="r"><code>head(deck)</code></pre>
+<pre><code>##    face   suit value
+## 1  king spades    13
+## 2 queen spades    12
+## 3  jack spades    11
+## 4   ten spades    10
+## 5  nine spades     9
+## 6 eight spades     8</code></pre>
+<pre class="r"><code>deal</code></pre>
+<pre><code>## function (cards) 
+## {
+##     cards[1, ]
+## }</code></pre>
+<pre class="r"><code>deal(deck)</code></pre>
+<pre><code>##   face   suit value
+## 1 king spades    13</code></pre>
+<pre class="r"><code>deal(deck)</code></pre>
+<pre><code>##   face   suit value
+## 1 king spades    13</code></pre>
+<pre class="r"><code>deal(deck)</code></pre>
+<pre><code>##   face   suit value
+## 1 king spades    13</code></pre>
+<pre class="r"><code>head(shuffle(deck))</code></pre>
+<pre><code>##     face   suit value
+## 42  jack hearts    11
+## 45 eight hearts     8
+## 14  king  clubs    13
+## 12   two spades     2
+## 52   ace hearts    14
+## 44  nine hearts     9</code></pre>
+<pre class="r"><code>head(deck)</code></pre>
+<pre><code>##    face   suit value
+## 1  king spades    13
+## 2 queen spades    12
+## 3  jack spades    11
+## 4   ten spades    10
+## 5  nine spades     9
+## 6 eight spades     8</code></pre>
 <div id="environments-1" class="section level2">
 <h2>Environments</h2>
 <pre class="r"><code># install.packages(&quot;pryr&quot;, repos = &quot;https://cran.rstudio.com&quot;)
 library(pryr)
-load(&quot;./r_modifying_values.RData&quot;)
 parenvs()</code></pre>
 <pre><code>##   label                      name
 ## 1 &lt;environment: R_GlobalEnv&gt; &quot;&quot;</code></pre>
@@ -141,7 +186,7 @@ parenvs()</code></pre>
 ## 6  &lt;environment: package:utils&gt;     &quot;package:utils&quot;    
 ## 7  &lt;environment: package:datasets&gt;  &quot;package:datasets&quot; 
 ## 8  &lt;environment: package:methods&gt;   &quot;package:methods&quot;  
-## 9  &lt;environment: 0x7fba1c96b9f0&gt;    &quot;Autoloads&quot;        
+## 9  &lt;environment: 0x7fa6ad9735f0&gt;    &quot;Autoloads&quot;        
 ## 10 &lt;environment: base&gt;              &quot;&quot;                 
 ## 11 &lt;environment: R_EmptyEnv&gt;        &quot;&quot;</code></pre>
 <pre class="r"><code>search()</code></pre>
@@ -228,7 +273,7 @@ new</code></pre>
 }
 show_env()</code></pre>
 <pre><code>## $ran.in
-## &lt;environment: 0x7fba1ebfec30&gt;
+## &lt;environment: 0x7fa6ae6ccfb8&gt;
 ## 
 ## $parent
 ## &lt;environment: R_GlobalEnv&gt;
@@ -236,7 +281,7 @@ show_env()</code></pre>
 ## $objects</code></pre>
 <pre class="r"><code>show_env()</code></pre>
 <pre><code>## $ran.in
-## &lt;environment: 0x7fba1eb6ded0&gt;
+## &lt;environment: 0x7fa6ae743828&gt;
 ## 
 ## $parent
 ## &lt;environment: R_GlobalEnv&gt;
@@ -257,7 +302,7 @@ environment(show_env)</code></pre>
 }
 show_env()</code></pre>
 <pre><code>## $ran.in
-## &lt;environment: 0x7fba1f19e260&gt;
+## &lt;environment: 0x7fa6b0a2a778&gt;
 ## 
 ## $parent
 ## &lt;environment: R_GlobalEnv&gt;
@@ -275,7 +320,7 @@ show_env &lt;- function(x = foo) {
 }
 show_env()</code></pre>
 <pre><code>## $ran.in
-## &lt;environment: 0x7fba1d6ea8d0&gt;
+## &lt;environment: 0x7fa6b0c04e08&gt;
 ## 
 ## $parent
 ## &lt;environment: R_GlobalEnv&gt;
@@ -292,7 +337,7 @@ show_env &lt;- function() {
 }
 show_env()</code></pre>
 <pre><code>## $ran.in
-## &lt;environment: 0x7fba1de276e8&gt;
+## &lt;environment: 0x7fa6b0d5cca0&gt;
 ## 
 ## $parent
 ## &lt;environment: R_GlobalEnv&gt;
@@ -385,9 +430,9 @@ head(deck, 3)</code></pre>
 ## 3  jack spades    11</code></pre>
 <pre class="r"><code>head(a, 3)</code></pre>
 <pre><code>##     face     suit value
-## 15 queen    clubs    12
-## 32 eight diamonds     8
-## 51   two   hearts     2</code></pre>
+## 38   two diamonds     2
+## 20 seven    clubs     7
+## 29  jack diamonds    11</code></pre>
 <pre class="r"><code>shuffle &lt;- function(){
   random &lt;- sample(1:52)
   assign(&quot;deck&quot;, DECK[random, ], envir = globalenv())
@@ -395,22 +440,22 @@ head(deck, 3)</code></pre>
 shuffle()
 head(deck, 6)</code></pre>
 <pre><code>##     face     suit value
-## 27  king diamonds    13
-## 30   ten diamonds    10
-## 49  four   hearts     4
-## 33 seven diamonds     7
-## 34   six diamonds     6
-## 38   two diamonds     2</code></pre>
+## 20 seven    clubs     7
+## 24 three    clubs     3
+## 32 eight diamonds     8
+## 19 eight    clubs     8
+## 29  jack diamonds    11
+## 30   ten diamonds    10</code></pre>
 </div>
 <div id="closures" class="section level2">
 <h2>Closures</h2>
 <pre class="r"><code>shuffle()
 deal()</code></pre>
-<pre><code>##     face   suit value
-## 41 queen hearts    12</code></pre>
-<pre class="r"><code>deal()</code></pre>
 <pre><code>##    face   suit value
-## 42 jack hearts    11</code></pre>
+## 10 four spades     4</code></pre>
+<pre class="r"><code>deal()</code></pre>
+<pre><code>##   face   suit value
+## 8  six spades     6</code></pre>
 <pre class="r"><code>setup &lt;- function(deck) {
   DECK &lt;- deck
   
@@ -435,66 +480,22 @@ ls()</code></pre>
 ## [17] &quot;N&quot;             &quot;new&quot;           &quot;q&quot;             &quot;queen_spades&quot; 
 ## [21] &quot;queenOfSpades&quot; &quot;roll&quot;          &quot;s&quot;             &quot;setup&quot;        
 ## [25] &quot;show_env&quot;      &quot;shuffle&quot;       &quot;vec&quot;           &quot;w&quot;</code></pre>
-<pre class="r"><code>deck</code></pre>
+<pre class="r"><code>head(deck)</code></pre>
 <pre><code>##     face     suit value
-## 31  nine diamonds     9
-## 50 three   hearts     3
-## 6  eight   spades     8
-## 40  king   hearts    13
-## 20 seven    clubs     7
-## 7  seven   spades     7
-## 8    six   spades     6
-## 12   two   spades     2
-## 43   ten   hearts    10
-## 35  five diamonds     5
-## 49  four   hearts     4
-## 22  five    clubs     5
-## 48  five   hearts     5
-## 18  nine    clubs     9
-## 9   five   spades     5
-## 2  queen   spades    12
-## 36  four diamonds     4
-## 51   two   hearts     2
-## 37 three diamonds     3
-## 21   six    clubs     6
-## 45 eight   hearts     8
-## 33 seven diamonds     7
-## 25   two    clubs     2
-## 17   ten    clubs    10
-## 27  king diamonds    13
-## 14  king    clubs    13
-## 11 three   spades     3
-## 10  four   spades     4
 ## 24 three    clubs     3
-## 5   nine   spades     9
-## 52   ace   hearts    14
+## 42  jack   hearts    11
 ## 46 seven   hearts     7
-## 13   ace   spades    14
-## 19 eight    clubs     8
-## 34   six diamonds     6
-## 26   ace    clubs    14
-## 30   ten diamonds    10
-## 39   ace diamonds    14
-## 4    ten   spades    10
-## 15 queen    clubs    12
-## 38   two diamonds     2
-## 29  jack diamonds    11
-## 28 queen diamonds    12
-## 23  four    clubs     4
-## 47   six   hearts     6
-## 16  jack    clubs    11
-## 32 eight diamonds     8
+## 35  five diamonds     5
 ## 3   jack   spades    11
-## 1   king   spades    13
-## 44  nine   hearts     9</code></pre>
+## 5   nine   spades     9</code></pre>
 <pre class="r"><code>str(cards)</code></pre>
 <pre><code>## List of 2
 ##  $ deal   :function ()  
 ##   ..- attr(*, &quot;srcref&quot;)=Class 'srcref'  atomic [1:8] 7 11 11 3 11 3 7 11
-##   .. .. ..- attr(*, &quot;srcfile&quot;)=Classes 'srcfilecopy', 'srcfile' &lt;environment: 0x7fba1f2acb78&gt; 
+##   .. .. ..- attr(*, &quot;srcfile&quot;)=Classes 'srcfilecopy', 'srcfile' &lt;environment: 0x7fa6b09e4548&gt; 
 ##  $ shuffle:function ()  
 ##   ..- attr(*, &quot;srcref&quot;)=Class 'srcref'  atomic [1:8] 13 14 16 3 14 3 13 16
-##   .. .. ..- attr(*, &quot;srcfile&quot;)=Classes 'srcfilecopy', 'srcfile' &lt;environment: 0x7fba1f2acb78&gt;</code></pre>
+##   .. .. ..- attr(*, &quot;srcfile&quot;)=Classes 'srcfilecopy', 'srcfile' &lt;environment: 0x7fa6b09e4548&gt;</code></pre>
 <pre class="r"><code>deal &lt;- cards$deal
 shuffle &lt;- cards$shuffle
 deal</code></pre>
@@ -503,17 +504,17 @@ deal</code></pre>
 ##     assign(&quot;deck&quot;, deck[-1, ], envir = globalenv())
 ##     card
 ##   }
-## &lt;environment: 0x7fba1edcfbc0&gt;</code></pre>
+## &lt;environment: 0x7fa6acf50630&gt;</code></pre>
 <pre class="r"><code>shuffle</code></pre>
 <pre><code>## function(){
 ##     random &lt;- sample(1:52)
 ##     assign(&quot;deck&quot;, DECK[random, ], envir = globalenv())
 ##   }
-## &lt;environment: 0x7fba1edcfbc0&gt;</code></pre>
+## &lt;environment: 0x7fa6acf50630&gt;</code></pre>
 <pre class="r"><code>environment(deal)</code></pre>
-<pre><code>## &lt;environment: 0x7fba1edcfbc0&gt;</code></pre>
+<pre><code>## &lt;environment: 0x7fa6acf50630&gt;</code></pre>
 <pre class="r"><code>environment(shuffle)</code></pre>
-<pre><code>## &lt;environment: 0x7fba1edcfbc0&gt;</code></pre>
+<pre><code>## &lt;environment: 0x7fa6acf50630&gt;</code></pre>
 <pre class="r"><code>setup &lt;- function(deck) {
   DECK &lt;- deck
   
@@ -534,21 +535,21 @@ cards &lt;- setup(deck)
 deal &lt;- cards$deal
 shuffle &lt;- cards$shuffle
 deal()</code></pre>
-<pre><code>##    face     suit value
-## 31 nine diamonds     9</code></pre>
+<pre><code>##     face  suit value
+## 24 three clubs     3</code></pre>
 <pre class="r"><code>shuffle()
 rm(deck)
 shuffle()
 deal()</code></pre>
-<pre><code>##    face     suit value
-## 29 jack diamonds    11</code></pre>
+<pre><code>##    face   suit value
+## 42 jack hearts    11</code></pre>
 <pre class="r"><code>deal()</code></pre>
-<pre><code>##    face suit value
-## NA &lt;NA&gt; &lt;NA&gt;    NA</code></pre>
+<pre><code>##   face   suit value
+## 5 nine spades     9</code></pre>
 <pre class="r"><code>environment(deal)</code></pre>
-<pre><code>## &lt;environment: 0x7fba1f15a408&gt;</code></pre>
+<pre><code>## &lt;environment: 0x7fa6b0b0d2d8&gt;</code></pre>
 <pre class="r"><code>environment(shuffle)</code></pre>
-<pre><code>## &lt;environment: 0x7fba1f15a408&gt;</code></pre>
+<pre><code>## &lt;environment: 0x7fa6b0b0d2d8&gt;</code></pre>
 </div>
 </div>
 
