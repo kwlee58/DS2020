@@ -125,7 +125,7 @@ deal <- function(){
   card
 }
 deal()
-#> `deal` will just create a slighthly eltered copy of `deck` in the runtime environment
+#> `deal` will just create a slighthly altered copy of `deck` in the runtime environment
 head(deck, n = 6)
 deal <- function(){
   card <- deck[1, ]

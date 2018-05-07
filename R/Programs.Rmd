@@ -1,0 +1,467 @@
+---
+title: "Programs"
+author: "coop711"
+date: '2018 5 7 '
+output: html_document
+---
+
+```{r setup, include=FALSE}
+# library(printr)
+library(magrittr)
+knitr::opts_chunk$set(echo = TRUE)
+options(width = 132)
+```
+
+## Intro
+
+### Payouts
+
+```{r}
+wheel <- c("DD", "7", "BBB", "BB", "B", "C", "0")
+Combination <- wheel %>%
+  head(-1) %>%
+  sapply(., rep, each = 3) %>%
+  apply(., MARGIN = 2, paste, collapse = " ") %>%
+  unname %>%
+  c(., "Any combination of bars", "Double Cherries", "Single Cherry")
+Prizes <- c(100, 80, 40, 25, 10, 10, 5, 5, 2)
+data.frame(Combination, Prizes, stringsAsFactors = FALSE)
+```
+
+```
+score(c("DD", "DD", "DD"))
+## 800
+```
+
+```{r}
+get_symbols <- function() {
+  wheel <- c("DD", "7", "BBB", "BB", "B", "C", "0")
+  sample(wheel, size = 3, replace = TRUE, 
+         prob = c(0.03, 0.03, 0.06, 0.1, 0.25, 0.01, 0.52))
+}
+get_symbols()
+table(replicate(1000, get_symbols()))
+table(replicate(1000, get_symbols()))/3000
+```
+
+표준오차는 1%
+
+```{r}
+round(table(replicate(1000, get_symbols()))/3000, digits = 2)
+round(table(replicate(10000, get_symbols()))/30000, digits = 2)
+```
+
+## Strategy
+
+1. Break complex taks into simple subtasks
+
+1. Use concrete examples
+
+1. Describe your solutions in English(Korean), then convert them to `R`.
+
+### Sequential Steps
+
+```
+play <- function() {
+
+#> Step 1 : generate symbols
+symbols <- get_symbols()
+
+#> Step 2 : display the symbols
+print(symbols)
+
+#> step 3 : score the symbols
+score(symbols)
+}
+```
+
+<P style = "page-break-before:always">
+
+### Parallel Cases
+
+#### Score function structure
+
+`r knitr::include_graphics("../pics/Fig_7_2.png", dpi = NA)`
+
+#### The complete slot machine simulation
+
+`r knitr::include_graphics("../pics/Fig_7_3.png", dpi = NA)`
+
+### `if` Statements
+
+```
+if (this) {
+that
+}
+```
+
+```{r}
+# num <- -2
+num <- 4
+if (num < 0) {
+  num <- num * -1
+}
+num
+all(c(TRUE, FALSE))
+any(c(TRUE, FALSE))
+num <- -1
+if (num < 0) {
+  print("num is negative.")
+  print("Don't worry, I'll fix it.")
+  num <- num * -1
+  print("Now num is positive.")
+}
+num
+```
+
+#### Quiz A
+
+```{r}
+x <- -1
+if (3 == 3){
+  x <- 2
+}
+x
+```
+
+#### Quiz B
+
+```{r}
+x <- 1
+if (TRUE) {
+  x <- 2
+}
+x
+```
+
+#### Quiz C
+
+```{r}
+x <- 1
+if (x == 1) {
+  x <- 2
+  if (x == 1) {
+    x <- 3
+  } 
+}
+x
+```
+
+### `else` Statements
+
+```
+if (this) {
+  Plan A
+} else {
+  Pla B
+}
+```
+
+
+```{r}
+pi
+a <- pi
+dec <- a - trunc(pi)
+dec
+if(dec >= 0.5) {
+  a <- trunc(a) + 1
+} else {
+  a <- trunc(a)
+}
+a
+a <- 2
+b <- 2
+if (a > b) {
+  print("A wins!")
+} else if (a < b) {
+  print("B wins!")
+} else {
+  print("Tie.")
+}
+```
+
+<P style = "page-break-before:always">
+
+### Test whether the symbols are three of a kind
+
+Code skeleton
+
+```
+if ( #> Case 1: all the same) {
+  prize <- #> look up the prize
+} else if ( #> Case 2: all bars) {
+  prize <- #> assign $5
+} else {
+  #> Count cherries
+  prize <- calculate a prize
+}
+#> count diamonds
+#> double the prize is necessary
+```
+
+### Score with `if`, `else`
+
+`r knitr::include_graphics("../pics/Fig_7_4.png", dpi = NA)`
+
+```
+score <- function(symbols){
+
+#> calculate a prize
+
+  prize
+}
+```
+
+#### Three of the same symbols
+
+```{r}
+symbols <- c("7", "7", "7")
+symbols[1] == symbols[2] & symbols[2] == symbols[3]
+symbols == symbols[1]
+all(symbols == symbols[1])
+unique(symbols)
+length(unique(symbols))
+length(unique(symbols)) == 1
+```
+
+Code update
+
+```
+same <- symbols[1] == symbols[2] && symbols[2] == symbols[3]
+
+if (same) {
+  prize <- #> look up the prize
+} else if ( #> Case 2: all bars) {
+  prize <- #> assign $5
+} else {
+  #> count cherries
+  prize <- #> calculate a prize
+}
+
+#> count diamonds
+#> double the prize if necessary
+```
+
+#### All the symbols are a type of bars
+
+```{r}
+symbols <- c("B", "BBB", "BB")
+symbols %in% c("B", "BB", "BBB")
+symbols <- c("B", "BBB", "B")
+symbols %in% c("B", "BB", "BBB")
+match(symbols, c("B", "BB", "BBB"))
+all(symbols %in% c("B", "BB", "BBB"))
+same <- length(unique(symbols)) == 1
+bars <- symbols %in% c("B", "BB", "BBB")
+same
+all(bars)
+symbols <- rep("B", 3)
+same <- length(unique(symbols)) == 1
+same
+bars <- symbols %in% c("B", "BB", "BBB")
+all(bars)
+```
+
+Code update
+
+```
+same <- symbols[1] == symbols[2] && symbols[2] == symbols[3]
+bars <- symbols %in% c("B", "BB", "BBB")
+
+if (same) {
+  prize <- #> look up the prize
+} else if (all(bars)) {
+  prize <- #> assign $5
+} else {
+  #> count cherries
+  prize <- #> calculate a prize
+}
+
+#> count diamonds
+#> double the prize if necessary
+```
+
+<P style = "page-break-before:always">
+
+### Lookup Tables
+
+Read pp. 131 for complicated `if` statements for comparison.
+
+```{r}
+payouts <- c("DD" = 100, "7" = 80, "BBB" = 40, "BB" = 25, "B" = 10, "C" = 10, "0" = 0)
+payouts
+payouts["DD"]
+payouts["B"]
+unname(payouts["DD"])
+symbols <- c("7", "7", "7")
+symbols[1]
+payouts[symbols[1]]
+prize <- unname(payouts[symbols[1]])
+prize
+symbols <- c("C", "C", "C")
+payouts[symbols[1]]
+prize <- unname(payouts[symbols[1]])
+prize
+```
+
+Code update (Case 2 included)
+
+```
+same <- length(unique(symbols)) == 1
+bars <- symbols %in% c("B", "BB", "BBB")
+
+if(same) {
+  payouts <- c("DD" = 100, "7" = 80, "BBB" = 40, "BB" = 25, "B" = 10, "C" = 10, "0" = 0)
+  prize <- unname(payouts[symbols[1]])
+} else if (all(bars)) {
+  prize <- 5
+} else {
+  # count cherries
+  prize <- #> calculate a prize
+}
+#> count diamonds
+#> double the prize if necessary
+```
+
+### Count Cherries and Diamonds
+
+```{r}
+symbols <- c("C", "DD", "C")
+symbols == "C"
+sum(symbols == "C")
+cherries <- sum(symbols == "C")
+cherries
+cherries + 1
+sum(symbols == "DD")
+diamonds <- sum(symbols == "DD")
+2 ^ diamonds
+```
+
+```
+if (cherries == 2) {
+  prize <- 5
+} else if (cherries == 1) {
+  prize <- 2
+} else {}
+  prize <- 0
+}
+```
+
+#### Application of Lookup table 
+
+```{r}
+symbols <- c("C", "DD", "C")
+symbols == "C"
+sum(symbols == "C")
+cherries <- sum(symbols == "C")
+cherries
+cherries + 1
+c(0, 2, 5)[cherries + 1]
+symbols <- c("C", "DD", "B")
+symbols == "C"
+sum(symbols == "C")
+cherries <- sum(symbols == "C")
+cherries
+cherries + 1
+c(0, 2, 5)[cherries + 1]
+symbols <- c("DD", "DD", "B")
+symbols == "C"
+sum(symbols == "C")
+cherries <- sum(symbols == "C")
+cherries
+cherries + 1
+c(0, 2, 5)[cherries + 1]
+sum(symbols == "DD")
+diamonds <- sum(symbols == "DD")
+2 ^ diamonds
+```
+
+Code update 
+
+```
+same <- length(unique(symbols)) == 1
+bars <- symbols %in% c("B", "BB", "BBB")
+if(same) {
+  payouts <- c("DD" = 100, "7" = 80, "BBB" = 40, "BB" = 25, "B" = 10, "C" = 10, "0" = 0)
+  prize <- unname(payouts[symbols[1]])
+} else if (all(bars)) {
+  prize <- 5
+} else {
+  cherries <- sum(symbols == "C")
+  prize <- c(0, 2, 5)[cherries + 1]
+}
+diamonds <- sum(symbols == "DD")
+prize <- prize * 2 ^ diamonds
+prize
+```
+
+Final Version
+
+```
+score <- function(symbols) {
+  same <- length(unique(symbols)) == 1
+  bars <- symbols %in% c("B", "BB", "BBB")
+  if(same) {
+    payouts <- c("DD" = 100, "7" = 80, "BBB" = 40, "BB" = 25, "B" = 10, "C" = 10, "0" = 0)
+    prize <- unname(payouts[symbols[1]])
+  } else if (all(bars)) {
+    prize <- 5
+  } else {
+    cherries <- sum(symbols == "C")
+    prize <- c(0, 2, 5)[cherries + 1]
+  }
+  diamonds <- sum(symbols == "DD")
+  prize * 2 ^ diamonds
+}
+```
+
+<P style = "page-break-before:always">
+
+## Code Comments 
+
+```{r}
+score <- function(symbols) {
+  #> identify cases
+  same <- length(unique(symbols)) == 1
+  bars <- symbols %in% c("B", "BB", "BBB")
+  
+  #> get prize
+  if(same) {
+    payouts <- c("DD" = 100, "7" = 80, "BBB" = 40, "BB" = 25, "B" = 10, "C" = 10, "0" = 0)
+    prize <- unname(payouts[symbols[1]])
+  } else if (all(bars)) {
+    prize <- 5
+  } else {
+    cherries <- sum(symbols == "C")
+    prize <- c(0, 2, 5)[cherries + 1]
+  }
+  
+  #> adjust for diamonds
+  diamonds <- sum(symbols == "DD")
+  prize * 2 ^ diamonds
+}
+```
+
+### How to play
+
+```{r}
+play <- function() {
+  symbols <- get_symbols()
+  print(symbols)
+  score(symbols)
+}
+play()
+play()
+play()
+play()
+replicate(10, play())
+play()
+one_play <- play()
+one_play
+```
+
+## Save
+
+```{r}
+save.image(file = "./Programs.RData")
+```
