@@ -1,0 +1,47 @@
+---
+title: "BFI_MI_1901_data : Data Science Intro"
+author: "coop711"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+library(pander)
+panderOptions("table.split.table", Inf)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Data
+
+```{r, xlsx}
+library(xlsx)
+options(width = 180)
+BFI <- read.xlsx("../data/BFI_DS.xlsx", 
+                 sheetIndex = 1, 
+                 startRow = 3, endRow = 41, 
+                 colIndex = c(4:5, 10:21), 
+                 encoding = "UTF-8", 
+                 header = FALSE, 
+                 stringsAsFactors = FALSE)
+names(BFI) <- c("ID", "Name", "E1", "A1", "O1", "C1", "N1", "E2", "A2", "O2", "C2", "N2", "O3", "A3")
+kable(BFI[-2])
+MI <- read.xlsx("../data/MI_DS.xlsx", 
+                sheetIndex = 1, 
+                startRow = 2, endRow = 41, 
+                colIndex = c(4, 10:65), 
+                encoding = "UTF-8", 
+                header = TRUE, 
+                stringsAsFactors = FALSE)
+names(MI)[1] <- "ID"
+kable(MI[, 1:29])
+kable(MI[, c(1, 30:57)])
+class.roll <- BFI[, 1:2]
+```
+
+### Save Data
+
+```{r, save.image}
+save.image("./BFI_MI_1901.RData")
+```
+

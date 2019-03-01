@@ -1,0 +1,73 @@
+---
+title: "BFI MI data"
+author: "coop711"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+library(pander)
+library(magrittr)
+panderOptions("table.split.table", Inf)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Data
+
+```{r, xlsx}
+library(xlsx)
+options(width = 180)
+class_roll <- readRDS("class_id_group.RDS")
+class_roll %<>%
+  `names<-`(c("ID", "Group"))
+BFI <- "../data/BFI.xlsx" %>% 
+  read.xlsx(sheetIndex = 1, 
+            startRow = 2, endRow = 182, 
+            colIndex = 1:13, 
+            header = TRUE, 
+            encoding = "UTF-8",
+            stringsAsFactors = FALSE)
+names(BFI) %<>%
+  `[<-`(1, "ID")
+# names(BFI)[1] <- "ID"
+## 엑셀 파일의 E!을 E1으로 수정하였기 때문에 다음 코드는 큰 의미는 없습니다.
+BFI %<>%
+  `names<-`(c("ID", "E1", "A1", "O1", "C1", "N1", "E2", "A2", "O2", "C2", "N2", "O3", "A3"))
+BFI$ID %<>%
+  as.character
+BFI %>% 
+  head %>%
+  kable
+# pander(head(BFI))
+MI <- "../data/MI.xlsx" %>%
+  read.xlsx(sheetIndex = 1, 
+            startRow = 2, endRow = 182, 
+            colIndex = 1:57, 
+            header = TRUE, 
+            encoding = "UTF-8",
+            stringsAsFactors = FALSE)
+MI %<>%
+  `names<-`(c("ID", paste0("Q", 1:56)))
+# names(MI) <- c("ID", paste0("Q", 1:56))
+MI$ID %<>% 
+  as.character
+kable(head(MI[1:15]))
+kable(head(MI[c(1, 16:29)]))
+kable(head(MI[c(1, 30:43)]))
+kable(head(MI[c(1, 44:57)]))
+## piping을 이용한 다음 대안들을 개선해 보세요.
+# lapply(list(1:15, c(1, 16:29), c(1, 30:43), c(1, 44:57)), 
+#        function(x) MI %>% `[`(x) %>% head %>% kable)
+# list(1:15, c(1, 16:29), c(1, 30:43), c(1, 44:57)) %>%
+#   lapply(function(x) MI %>% `[`(x) %>% head %>% kable)
+# list(1:15, c(1, 16:29), c(1, 30:43), c(1, 44:57)) %>%
+#   lapply(. %>% {kable(head(MI[.]))})
+```
+
+### Save Data
+
+```{r, save.image}
+save.image("./BFI_MI_1702.RData")
+```
+

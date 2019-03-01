@@ -70,6 +70,7 @@ head(combos, 3)
 sum(combos$prob)
 symbols <- c(combos[1, 1], combos[1, 2], combos[1, 3])
 score(symbols)
+
 ```
 
 ## for Loops
@@ -106,6 +107,7 @@ chars
 ```{r}
 combos$prize <- NA
 head(combos, 3)
+score
 for (i in 1:nrow(combos)) {
   symbols <- c(combos[i, 1], combos[i, 2], combos[i, 3])
   combos$prize[i] <- score(symbols)
