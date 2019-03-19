@@ -91,6 +91,9 @@ img {
 .tabbed-pane {
   padding-top: 12px;
 }
+.html-widget {
+  margin-bottom: 20px;
+}
 button.code-folding-btn:focus {
   outline: none;
 }
@@ -204,7 +207,7 @@ logic</code></pre>
 <pre><code>## [1] &quot;logical&quot;</code></pre>
 </div>
 <div id="complex-and-raw" class="section level2">
-<h2>Complex a]nd Raw</h2>
+<h2>Complex and Raw</h2>
 <pre class="r"><code>comp &lt;- c(1 + 1i, 1 + 2i, 1 + 3i)
 comp</code></pre>
 <pre><code>## [1] 1+1i 1+2i 1+3i</code></pre>
@@ -324,9 +327,9 @@ typeof(die)</code></pre>
 <pre class="r"><code>today &lt;- Sys.Date()
 now &lt;- Sys.time()
 today</code></pre>
-<pre><code>## [1] &quot;2018-04-04&quot;</code></pre>
+<pre><code>## [1] &quot;2019-03-19&quot;</code></pre>
 <pre class="r"><code>now</code></pre>
-<pre><code>## [1] &quot;2018-04-04 00:27:37 KST&quot;</code></pre>
+<pre><code>## [1] &quot;2019-03-19 12:49:12 KST&quot;</code></pre>
 <pre class="r"><code>typeof(today)</code></pre>
 <pre><code>## [1] &quot;double&quot;</code></pre>
 <pre class="r"><code>typeof(now)</code></pre>
@@ -336,9 +339,9 @@ today</code></pre>
 <pre class="r"><code>class(now)</code></pre>
 <pre><code>## [1] &quot;POSIXct&quot; &quot;POSIXt&quot;</code></pre>
 <pre class="r"><code>unclass(now)</code></pre>
-<pre><code>## [1] 1522769258</code></pre>
+<pre><code>## [1] 1552967353</code></pre>
 <pre class="r"><code>unclass(Sys.time())</code></pre>
-<pre><code>## [1] 1522769258</code></pre>
+<pre><code>## [1] 1552967353</code></pre>
 <pre class="r"><code>mil &lt;- 1000000
 mil</code></pre>
 <pre><code>## [1] 1e+06</code></pre>
@@ -511,11 +514,11 @@ df3</code></pre>
 <pre><code>## $names
 ## [1] &quot;face&quot;  &quot;suit&quot;  &quot;value&quot;
 ## 
-## $row.names
-## [1] 1 2 3
-## 
 ## $class
-## [1] &quot;data.frame&quot;</code></pre>
+## [1] &quot;data.frame&quot;
+## 
+## $row.names
+## [1] 1 2 3</code></pre>
 <pre class="r"><code>str(df)</code></pre>
 <pre><code>## 'data.frame':    3 obs. of  3 variables:
 ##  $ face : chr  &quot;ace&quot; &quot;two&quot; &quot;six&quot;

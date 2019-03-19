@@ -72,7 +72,7 @@ typeof(F)
 typeof(FALSE)
 ```
 
-## Complex a]nd Raw
+## Complex and Raw
 
 ```{r}
 comp <- c(1 + 1i, 1 + 2i, 1 + 3i)
