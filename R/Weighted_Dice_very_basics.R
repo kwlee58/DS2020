@@ -53,10 +53,6 @@ roll <- function() {
 roll()
 roll
 ## Arguments
-roll2 <- function(bones) {
-  dice <- sample(bones, size = 2, replace = TRUE)
-  sum(dice)
-}
 roll2(bones = 1:4)
 roll2(bones = 1:5)
 roll2(1:20)

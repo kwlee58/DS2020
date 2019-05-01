@@ -11,7 +11,7 @@
 
 <meta name="author" content="coop711" />
 
-<meta name="date" content="2018-04-10" />
+<meta name="date" content="2019-03-19" />
 
 <title>R Modifyng Values</title>
 
@@ -92,6 +92,9 @@ img {
 .tabbed-pane {
   padding-top: 12px;
 }
+.html-widget {
+  margin-bottom: 20px;
+}
 button.code-folding-btn:focus {
   outline: none;
 }
@@ -121,7 +124,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">R Modifyng Values</h1>
 <h4 class="author"><em>coop711</em></h4>
-<h4 class="date"><em>2018-04-10</em></h4>
+<h4 class="date"><em>2019-03-19</em></h4>
 
 </div>
 
@@ -539,31 +542,31 @@ head(deck2, n = 13)</code></pre>
 ## 13   ace spades    14   13</code></pre>
 <pre class="r"><code>source(&quot;./shuffle.R&quot;, echo = TRUE)</code></pre>
 <pre><code>## 
-## &gt; deal &lt;- function(cards) {
+## R &gt; deal &lt;- function(cards) {
 ## +     cards[1, ]
 ## + }
 ## 
-## &gt; shuffle &lt;- function(cards) {
+## R &gt; shuffle &lt;- function(cards) {
 ## +     random &lt;- sample(1:52, size = 52)
 ## +     cards[random, ]
 ## + }</code></pre>
 <pre class="r"><code>deck3 &lt;- shuffle(deck)
 head(deck3)</code></pre>
 <pre><code>##     face     suit value
-## 7  seven   spades     7
-## 36  four diamonds     4
-## 10  four   spades     4
+## 25   two    clubs     2
 ## 51   two   hearts     2
-## 33 seven diamonds     7
-## 1   king   spades    13</code></pre>
+## 49  four   hearts     4
+## 1   king   spades    13
+## 7  seven   spades     7
+## 33 seven diamonds     7</code></pre>
 <pre class="r"><code>tail(deck3)</code></pre>
 <pre><code>##     face     suit value
-## 15 queen    clubs    12
-## 31  nine diamonds     9
-## 5   nine   spades     9
-## 22  five    clubs     5
-## 3   jack   spades    11
-## 49  four   hearts     4</code></pre>
+## 23  four    clubs     4
+## 35  five diamonds     5
+## 18  nine    clubs     9
+## 36  four diamonds     4
+## 11 three   spades     3
+## 14  king    clubs    13</code></pre>
 </div>
 <div id="logical-subsetting" class="section level2">
 <h2>Logical Subsetting</h2>
@@ -632,24 +635,24 @@ ace</code></pre>
 <pre><code>## [1] 14 14 14 14</code></pre>
 <pre class="r"><code>deck3[1:15, ]</code></pre>
 <pre><code>##     face     suit value
-## 7  seven   spades     7
-## 36  four diamonds     4
-## 10  four   spades     4
-## 51   two   hearts     2
-## 33 seven diamonds     7
-## 1   king   spades    13
-## 14  king    clubs    13
-## 19 eight    clubs     8
-## 29  jack diamonds    11
-## 16  jack    clubs    11
-## 18  nine    clubs     9
-## 40  king   hearts    13
-## 17   ten    clubs    10
 ## 25   two    clubs     2
-## 38   two diamonds     2</code></pre>
+## 51   two   hearts     2
+## 49  four   hearts     4
+## 1   king   spades    13
+## 7  seven   spades     7
+## 33 seven diamonds     7
+## 50 three   hearts     3
+## 29  jack diamonds    11
+## 31  nine diamonds     9
+## 24 three    clubs     3
+## 30   ten diamonds    10
+## 43   ten   hearts    10
+## 48  five   hearts     5
+## 13   ace   spades     1
+## 8    six   spades     6</code></pre>
 <pre class="r"><code>ace3 &lt;- deck3$face == &quot;ace&quot;
 which(ace3)</code></pre>
-<pre><code>## [1] 35 37 38 39</code></pre>
+<pre><code>## [1] 14 19 28 37</code></pre>
 <pre class="r"><code>deck3$value[ace3]</code></pre>
 <pre><code>## [1] 1 1 1 1</code></pre>
 <pre class="r"><code>deck3[ace3, &quot;value&quot;]</code></pre>
@@ -658,26 +661,26 @@ which(ace3)</code></pre>
 deck3$value[deck3$face == &quot;ace&quot;] &lt;- 14
 head(deck3, n = 20)</code></pre>
 <pre><code>##     face     suit value
-## 7  seven   spades     7
-## 36  four diamonds     4
-## 10  four   spades     4
-## 51   two   hearts     2
-## 33 seven diamonds     7
-## 1   king   spades    13
-## 14  king    clubs    13
-## 19 eight    clubs     8
-## 29  jack diamonds    11
-## 16  jack    clubs    11
-## 18  nine    clubs     9
-## 40  king   hearts    13
-## 17   ten    clubs    10
 ## 25   two    clubs     2
-## 38   two diamonds     2
-## 35  five diamonds     5
-## 42  jack   hearts    11
+## 51   two   hearts     2
+## 49  four   hearts     4
+## 1   king   spades    13
+## 7  seven   spades     7
+## 33 seven diamonds     7
+## 50 three   hearts     3
+## 29  jack diamonds    11
+## 31  nine diamonds     9
+## 24 three    clubs     3
 ## 30   ten diamonds    10
-## 9   five   spades     5
-## 47   six   hearts     6</code></pre>
+## 43   ten   hearts    10
+## 48  five   hearts     5
+## 13   ace   spades    14
+## 8    six   spades     6
+## 16  jack    clubs    11
+## 27  king diamonds    13
+## 28 queen diamonds    12
+## 26   ace    clubs    14
+## 34   six diamonds     6</code></pre>
 <pre class="r"><code>deck4 &lt;- deck
 deck4$value &lt;- 0
 head(deck4, n = 20)</code></pre>
@@ -1013,29 +1016,29 @@ head(deck, n = 20)</code></pre>
 deck3 &lt;- shuffle(deck)
 head(deck3)</code></pre>
 <pre><code>##     face     suit value
-## 28 queen diamonds    12
-## 46 seven   hearts     7
-## 32 eight diamonds     8
-## 10  four   spades     4
-## 49  four   hearts     4
-## 34   six diamonds     6</code></pre>
+## 2  queen   spades    12
+## 29  jack diamonds    11
+## 21   six    clubs     6
+## 48  five   hearts     5
+## 3   jack   spades    11
+## 11 three   spades     3</code></pre>
 <pre class="r"><code>tail(deck3)</code></pre>
-<pre><code>##     face   suit value
-## 14  king  clubs    13
-## 20 seven  clubs     7
-## 18  nine  clubs     9
-## 7  seven spades     7
-## 26   ace  clubs    14
-## 48  five hearts     5</code></pre>
+<pre><code>##     face     suit value
+## 19 eight    clubs     8
+## 17   ten    clubs    10
+## 38   two diamonds     2
+## 27  king diamonds    13
+## 4    ten   spades    10
+## 43   ten   hearts    10</code></pre>
 <pre class="r"><code>ace3 &lt;- deck3$face == &quot;ace&quot;
 ace3</code></pre>
-<pre><code>##  [1] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE
-## [12]  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-## [23] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-## [34] FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-## [45] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE</code></pre>
+<pre><code>##  [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [12] FALSE FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE
+## [23] FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [34] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [45]  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE</code></pre>
 <pre class="r"><code>which(ace3)</code></pre>
-<pre><code>## [1]  7 12 36 51</code></pre>
+<pre><code>## [1] 15 17 24 45</code></pre>
 <pre class="r"><code>deck3[ace3, &quot;face&quot;]</code></pre>
 <pre><code>## [1] &quot;ace&quot; &quot;ace&quot; &quot;ace&quot; &quot;ace&quot;</code></pre>
 <pre class="r"><code>deck3$value[deck3$face == &quot;ace&quot;]</code></pre>
@@ -1043,26 +1046,26 @@ ace3</code></pre>
 <pre class="r"><code>deck3$value[ace3] &lt;- NA
 head(deck3, n = 20)</code></pre>
 <pre><code>##     face     suit value
-## 28 queen diamonds    12
-## 46 seven   hearts     7
-## 32 eight diamonds     8
-## 10  four   spades     4
-## 49  four   hearts     4
-## 34   six diamonds     6
-## 13   ace   spades    NA
-## 16  jack    clubs    11
-## 41 queen   hearts    12
-## 43   ten   hearts    10
-## 11 three   spades     3
-## 39   ace diamonds    NA
-## 31  nine diamonds     9
-## 37 three diamonds     3
-## 9   five   spades     5
+## 2  queen   spades    12
+## 29  jack diamonds    11
 ## 21   six    clubs     6
-## 50 three   hearts     3
-## 25   two    clubs     2
-## 1   king   spades    13
-## 30   ten diamonds    10</code></pre>
+## 48  five   hearts     5
+## 3   jack   spades    11
+## 11 three   spades     3
+## 20 seven    clubs     7
+## 16  jack    clubs    11
+## 35  five diamonds     5
+## 28 queen diamonds    12
+## 49  four   hearts     4
+## 15 queen    clubs    12
+## 47   six   hearts     6
+## 30   ten diamonds    10
+## 13   ace   spades    NA
+## 14  king    clubs    13
+## 39   ace diamonds    NA
+## 33 seven diamonds     7
+## 18  nine    clubs     9
+## 9   five   spades     5</code></pre>
 </div>
 <div id="save" class="section level3">
 <h3>Save</h3>

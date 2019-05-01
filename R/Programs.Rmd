@@ -245,6 +245,7 @@ if (same) {
 #### All the symbols are a type of bars
 
 ```{r}
+#> Three of the same symbols는 아닌 경우
 symbols <- c("B", "BBB", "BB")
 symbols %in% c("B", "BB", "BBB")
 symbols <- c("B", "BBB", "B")
@@ -255,6 +256,7 @@ same <- length(unique(symbols)) == 1
 bars <- symbols %in% c("B", "BB", "BBB")
 same
 all(bars)
+#> 셋 다 같은 bar 인 경우
 symbols <- rep("B", 3)
 same <- length(unique(symbols)) == 1
 same
@@ -350,6 +352,7 @@ if (cherries == 2) {
 #### Application of Lookup table 
 
 ```{r}
+#> Cherry가 두개인 경우
 symbols <- c("C", "DD", "C")
 symbols == "C"
 sum(symbols == "C")
@@ -357,6 +360,7 @@ cherries <- sum(symbols == "C")
 cherries
 cherries + 1
 c(0, 2, 5)[cherries + 1]
+#> Cherry가 하나인 경우
 symbols <- c("C", "DD", "B")
 symbols == "C"
 sum(symbols == "C")
@@ -364,6 +368,7 @@ cherries <- sum(symbols == "C")
 cherries
 cherries + 1
 c(0, 2, 5)[cherries + 1]
+#> Cherry가 없는 경우
 symbols <- c("DD", "DD", "B")
 symbols == "C"
 sum(symbols == "C")
@@ -371,6 +376,7 @@ cherries <- sum(symbols == "C")
 cherries
 cherries + 1
 c(0, 2, 5)[cherries + 1]
+#> DD 갯수 세어보기
 sum(symbols == "DD")
 diamonds <- sum(symbols == "DD")
 2 ^ diamonds
