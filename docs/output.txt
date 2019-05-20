@@ -1,0 +1,332 @@
+    face     suit value
+1   king   spades    13
+2  queen   spades    12
+3   jack   spades    11
+4    ten   spades    10
+5   nine   spades     9
+6  eight   spades     8
+7  seven   spades     7
+8    six   spades     6
+9   five   spades     5
+10  four   spades     4
+11 three   spades     3
+12   two   spades     2
+13   ace   spades     1
+14  king    clubs    13
+15 queen    clubs    12
+16  jack    clubs    11
+17   ten    clubs    10
+18  nine    clubs     9
+19 eight    clubs     8
+20 seven    clubs     7
+21   six    clubs     6
+22  five    clubs     5
+23  four    clubs     4
+24 three    clubs     3
+25   two    clubs     2
+26   ace    clubs     1
+27  king diamonds    13
+28 queen diamonds    12
+29  jack diamonds    11
+30   ten diamonds    10
+31  nine diamonds     9
+32 eight diamonds     8
+33 seven diamonds     7
+34   six diamonds     6
+35  five diamonds     5
+36  four diamonds     4
+37 three diamonds     3
+38   two diamonds     2
+39   ace diamonds     1
+40  king   hearts    13
+41 queen   hearts    12
+42  jack   hearts    11
+43   ten   hearts    10
+44  nine   hearts     9
+45 eight   hearts     8
+46 seven   hearts     7
+47   six   hearts     6
+48  five   hearts     5
+49  four   hearts     4
+50 three   hearts     3
+51   two   hearts     2
+52   ace   hearts     1
+'data.frame':	52 obs. of  3 variables:
+ $ face : chr  "king" "queen" "jack" "ten" ...
+ $ suit : chr  "spades" "spades" "spades" "spades" ...
+ $ value: int  13 12 11 10 9 8 7 6 5 4 ...
+'data.frame':	52 obs. of  3 variables:
+ $ face : chr  "king" "queen" "jack" "ten" ...
+ $ suit : chr  "spades" "spades" "spades" "spades" ...
+ $ value: int  13 12 11 10 9 8 7 6 5 4 ...
+   face   suit value
+1  king spades    13
+2 queen spades    12
+3  jack spades    11
+4   ten spades    10
+5  nine spades     9
+6 eight spades     8
+[1] 6 1 3
+[1] "king"
+  face   suit value
+1 king spades    13
+  face   suit value
+1 king spades    13
+'data.frame':	1 obs. of  3 variables:
+ $ face : chr "king"
+ $ suit : chr "spades"
+ $ value: int 13
+ chr "king"
+  face
+1 king
+'data.frame':	1 obs. of  1 variable:
+ $ face: chr "king"
+'data.frame':	1 obs. of  3 variables:
+ $ face : chr "king"
+ $ suit : chr "spades"
+ $ value: int 13
+[1] "king"  "queen" "jack" 
+ chr [1:3] "king" "queen" "jack"
+   face
+1  king
+2 queen
+3  jack
+'data.frame':	3 obs. of  1 variable:
+ $ face: chr  "king" "queen" "jack"
+    face     suit value
+2  queen   spades    12
+3   jack   spades    11
+4    ten   spades    10
+5   nine   spades     9
+6  eight   spades     8
+7  seven   spades     7
+8    six   spades     6
+9   five   spades     5
+10  four   spades     4
+11 three   spades     3
+12   two   spades     2
+13   ace   spades     1
+14  king    clubs    13
+15 queen    clubs    12
+16  jack    clubs    11
+17   ten    clubs    10
+18  nine    clubs     9
+19 eight    clubs     8
+20 seven    clubs     7
+21   six    clubs     6
+22  five    clubs     5
+23  four    clubs     4
+24 three    clubs     3
+25   two    clubs     2
+26   ace    clubs     1
+27  king diamonds    13
+28 queen diamonds    12
+29  jack diamonds    11
+30   ten diamonds    10
+31  nine diamonds     9
+32 eight diamonds     8
+33 seven diamonds     7
+34   six diamonds     6
+35  five diamonds     5
+36  four diamonds     4
+37 three diamonds     3
+38   two diamonds     2
+39   ace diamonds     1
+40  king   hearts    13
+41 queen   hearts    12
+42  jack   hearts    11
+43   ten   hearts    10
+44  nine   hearts     9
+45 eight   hearts     8
+46 seven   hearts     7
+47   six   hearts     6
+48  five   hearts     5
+49  four   hearts     4
+50 three   hearts     3
+51   two   hearts     2
+52   ace   hearts     1
+  face   suit value
+1 king spades    13
+  face   suit value
+1 king spades    13
+ [1] "king"  "queen" "jack"  "ten"   "nine"  "eight" "seven" "six"   "five"  "four" 
+[11] "three" "two"   "ace"   "king"  "queen" "jack"  "ten"   "nine"  "eight" "seven"
+[21] "six"   "five"  "four"  "three" "two"   "ace"   "king"  "queen" "jack"  "ten"  
+[31] "nine"  "eight" "seven" "six"   "five"  "four"  "three" "two"   "ace"   "king" 
+[41] "queen" "jack"  "ten"   "nine"  "eight" "seven" "six"   "five"  "four"  "three"
+[51] "two"   "ace"  
+    face
+1   king
+2  queen
+3   jack
+4    ten
+5   nine
+6  eight
+7  seven
+8    six
+9   five
+10  four
+11 three
+12   two
+13   ace
+14  king
+15 queen
+16  jack
+17   ten
+18  nine
+19 eight
+20 seven
+21   six
+22  five
+23  four
+24 three
+25   two
+26   ace
+27  king
+28 queen
+29  jack
+30   ten
+31  nine
+32 eight
+33 seven
+34   six
+35  five
+36  four
+37 three
+38   two
+39   ace
+40  king
+41 queen
+42  jack
+43   ten
+44  nine
+45 eight
+46 seven
+47   six
+48  five
+49  four
+50 three
+51   two
+52   ace
+  face   suit
+1 king spades
+  face   suit value
+1 king spades    13
+  face   suit value
+1 king spades    13
+ [1] 13 12 11 10  9  8  7  6  5  4  3  2  1 13 12 11 10  9  8  7  6  5  4  3  2  1 13 12
+[29] 11 10  9  8  7  6  5  4  3  2  1 13 12 11 10  9  8  7  6  5  4  3  2  1
+ [1] 13 12 11 10  9  8  7  6  5  4  3  2  1 13 12 11 10  9  8  7  6  5  4  3  2  1 13 12
+[29] 11 10  9  8  7  6  5  4  3  2  1 13 12 11 10  9  8  7  6  5  4  3  2  1
+ [1] 13 12 11 10  9  8  7  6  5  4  3  2  1 13 12 11 10  9  8  7  6  5  4  3  2  1 13 12
+[29] 11 10  9  8  7  6  5  4  3  2  1 13 12 11 10  9  8  7  6  5  4  3  2  1
+ [1] 13 12 11 10  9  8  7  6  5  4  3  2  1 13 12 11 10  9  8  7  6  5  4  3  2  1 13 12
+[29] 11 10  9  8  7  6  5  4  3  2  1 13 12 11 10  9  8  7  6  5  4  3  2  1
+   value
+1     13
+2     12
+3     11
+4     10
+5      9
+6      8
+7      7
+8      6
+9      5
+10     4
+11     3
+12     2
+13     1
+14    13
+15    12
+16    11
+17    10
+18     9
+19     8
+20     7
+21     6
+22     5
+23     4
+24     3
+25     2
+26     1
+27    13
+28    12
+29    11
+30    10
+31     9
+32     8
+33     7
+34     6
+35     5
+36     4
+37     3
+38     2
+39     1
+40    13
+41    12
+42    11
+43    10
+44     9
+45     8
+46     7
+47     6
+48     5
+49     4
+50     3
+51     2
+52     1
+  face   suit value
+1 king spades    13
+   face   suit value
+1  king spades    13
+2 queen spades    12
+3  jack spades    11
+4   ten spades    10
+5  nine spades     9
+6 eight spades     8
+    face   suit value
+52   ace hearts     1
+51   two hearts     2
+50 three hearts     3
+49  four hearts     4
+48  five hearts     5
+47   six hearts     6
+   face   suit value
+2 queen spades    12
+1  king spades    13
+3  jack spades    11
+4   ten spades    10
+5  nine spades     9
+6 eight spades     8
+   face   suit value
+2 queen spades    12
+ [1]  7 19 40 11 52 34 31 18 26 29 10 45 38 27 23 48  4 12  8 21  5 35 30  2  9 39  1 15
+[29] 13 28 20 42 25 17  6 32 47 41 43 51 14 44 46 22 50 24  3 16 37 33 49 36
+    face     suit value
+7  seven   spades     7
+19 eight    clubs     8
+40  king   hearts    13
+11 three   spades     3
+52   ace   hearts     1
+34   six diamonds     6
+  face   suit value
+1 king spades    13
+   face  suit value
+25  two clubs     2
+'data.frame':	52 obs. of  3 variables:
+ $ face : chr  "king" "queen" "jack" "ten" ...
+ $ suit : chr  "spades" "spades" "spades" "spades" ...
+ $ value: int  13 12 11 10 9 8 7 6 5 4 ...
+ [1] 13 12 11 10  9  8  7  6  5  4  3  2  1 13 12 11 10  9  8  7  6  5  4  3  2  1 13 12
+[29] 11 10  9  8  7  6  5  4  3  2  1 13 12 11 10  9  8  7  6  5  4  3  2  1
+[1] 7
+[1] 7
+$numbers
+[1] 1 2
+
+[1] 1 2
+[1] 1 2
+$numbers
+[1] 1 2
+
+[1] 1 2
