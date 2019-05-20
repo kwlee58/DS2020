@@ -1,0 +1,488 @@
+---
+title: "R Programming I : Thinking, Fast and Slow"
+author: "coop711"
+date: "2019-03-19"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+# install.packages("pander", repos = "https://cran.rstudio.com")
+# install.packages("xlsx", repos = "https://cran.rstudio.com")
+library(xlsx)
+library(pander)
+library(knitr)
+library(magrittr)
+panderOptions('table.split.table', Inf)
+panderOptions('table.alignment.rownames', 'left')
+panderOptions('table.alignment.default', 'right')
+options(width = 180)
+```
+
+```{r, data, echo = FALSE, results = 'hide'}
+# load("./red_and_black_intro_190301_data.RData")
+data0319 <- "../data/rprogramming0319.xlsx" %>%
+  read.xlsx(sheetIndex = 1, 
+            startRow = 2, 
+            endRow = 80, 
+            colIndex = c(3:7, 9:18), 
+            colClasses = c(rep("character", 15)), 
+            stringsAsFactors = FALSE)
+data0319 %>% str
+names(data0319) <- c("dept", "id", "name", "year", "email", "cell_no", paste0("Q", 1:8), "group")
+# data0319$group <- class_roll$group[match(data0319$id, class_roll$id)]
+data0319$dept %<>% 
+  factor
+data0319$year %<>% 
+  factor
+data0319$group %<>% 
+  factor(levels = c("Red", "Black"))
+data0319$Q1 %<>% 
+  factor(levels = c("가", "나"))
+levels(data0319$Q1[data0319$group == "Red"]) <- c("나", "가")
+data0319$Q1 %<>%
+  `levels<-` (c("고수한다", "바꾼다"))
+data0319$Q2 %<>% 
+  factor(levels = c("가", "나"))
+levels(data0319$Q2[data0319$group == "Black"]) <- c("나", "가")
+data0319$Q2 %<>%
+  `levels<-` (c("내가 남보다", "남이 나보다"))
+#> group에 따라 추상적 질문이 먼저(Red) 나오거나 구체적 질문이 먼저(Black) 나오는 것 확인.
+data0319 %>%
+  `[`(., c("Q3", "Q4", "group"))
+#> 응답 결과를 정답과 오답으로 나누어 변환활 변수 설정
+data0319$Q3_2 <- data0319$Q3
+#> Red, Black 논리 벡터 설정
+Red <- data0319$group %>%
+  `==` ("Red")
+Black <- data0319$group %>%
+  `==` ("Black")
+# Red <- data0319$group == "Red"
+# Black <- data0319$group == "Black"
+#> 무응답을 포함하여 정답 이외의 응답은 오답으로 간주
+data0319$Q3_2[Red] <- data0319$Q3 %>%
+  `[`(Red) %>%
+  `==`("A,3") %>%
+  ifelse("Right", "Wrong")
+data0319$Q3_2[Black] <- data0319$Q3 %>%
+  `[`(Black) %>%
+  `==`("Beer,17") %>%
+  ifelse("Right", "Wrong")
+data0319[c("Q3", "Q3_2", "group")]
+data0319$Q4_2 <- data0319$Q4
+data0319$Q4_2[Red] <- data0319$Q4 %>%
+  `[`(Red) %>%
+  `==`("Beer,17") %>%
+  ifelse("Right", "Wrong")
+data0319$Q4_2[Black] <- data0319$Q4 %>%
+  `[`(Black) %>%
+  `==`("A,3") %>%
+  ifelse("Right", "Wrong")
+data0319[c("Q3", "Q3_2", "Q4", "Q4_2", "group")]
+data0319$Q5 %>% table
+which(data0319$Q5 == "10센트 ")
+which(data0319$Q5 == "5센트 ")
+data0319$Q5[which(data0319$Q5 == "10센트 ")] <- "10센트"
+data0319$Q5[which(data0319$Q5 == "5센트 ")] <- "5센트"
+data0319$Q5 %<>%
+  factor(levels = c("5센트", "10센트"), labels = c("5센트", "10센트"))
+data0319$Q6 %<>% 
+  factor(levels = c("가", "나"))
+data0319$Q7 %<>% 
+  factor(levels = c("가", "나"),
+         labels = c("확실히", "확률적으로"))
+data0319$Q8 %<>% factor(level = c("O", "X", "무응답"), 
+                          labels = c("있음", "없음", "불참"))
+data0319 %>% 
+  str
+```
+
+```{r, randomization, echo = FALSE, results = 'hide'}
+data0319 %>% summary %>% pander
+```
+
+## Monty Hall 문제
+
+### 문항 배열 효과?
+
+#### Red
+
+`r knitr::include_graphics("../pics/Quiz171106_04_red.png", dpi = NA)`
+
+#### Black
+
+`r knitr::include_graphics("../pics/Quiz171106_04_black.png", dpi = NA)`
+
+염소가 들어있는 문을 보여줌으로써 다른 문에 자동차가 들어 있을 확률은 2/3로 늘어나므로 바꾸는 것이 적절한 판단임. Red와 Black의 차이는 "바꾼다"와 "고수한다"의 순서를 바꾼 것으로 "바꾼다"를 앞에 놓은 Black 집단에서 바꾼다는 응답이 다소 높게 나왔으나 통계적으로 유의한 수준은 아님.
+
+#### 집계
+
+```{r, Monty Hall, echo = FALSE}
+tbl_q1_a <- data0319$Q1 %>%
+  table(data0319$group, ., useNA = "ifany") %>%
+  cbind("계" = rowSums(.)) %>%
+  rbind("계" = colSums(.))
+colnames(tbl_q1_a)[3] <- "결석"
+tbl_q1_a %>% 
+  pander
+tbl_q1_a %>%
+  `[`(-3, -4) %>%
+  chisq.test(simulate.p.value = TRUE) %>%
+  pander
+```
+
+#### % 비교.  
+
+```{r, Monty Hall in percentage, echo = FALSE}
+tbl_q1_a %>% 
+  `[`(-3, -(3:4)) %>%
+  prop.table(margin = 1) %>%
+  `*`(100) %>%
+  cbind("계" = rowSums(.)) %>%
+  format(digits = 2, nsmall = 1) %>%
+  pander
+```
+
+#### 합산(%)
+
+```{r, percentage in sum, echo = FALSE}
+tbl_q1_a %>% 
+  `[`(3, -(3:5), drop = FALSE) %>%
+  prop.table(margin = 1) %>%
+  `*`(100) %>%
+  cbind("계" = rowSums(.)) %>%
+  format(digits = 2, nsmall = 1) %>%
+  pander
+```
+
+## 내가 살고 싶은 세상
+
+### 내가 남보다, 혹은 남이 나보다
+
+#### Red 
+
+`r knitr::include_graphics("../pics/Quiz171023_04_red.png", dpi = NA)`
+
+#### Black
+
+`r knitr::include_graphics("../pics/Quiz171023_04_black.png", dpi = NA)`
+
+소득의 절대값이 아니라 상대 비교가 중요하다는 Solnick and Hemenway(1998)의 연구결과와 일치. 랜덤화하였지만 응답에는 차이가 없음.
+
+#### 집계
+
+```{r, social comparison, echo = FALSE}
+tbl_q2_a <- data0319$Q2 %>%
+  table(data0319$group, ., useNA = "ifany") %>%
+  cbind("계" = rowSums(.)) %>%
+  rbind("계" = colSums(.))
+colnames(tbl_q2_a)[3] <- "결석"
+rownames(tbl_q2_a)[1:2] <- c("Red('내가 남보다' 먼저)", "Black('남이 나보다' 먼저)")
+tbl_q2_a %>% 
+  pander
+```
+
+#### % 비교.  
+
+```{r, social comparison in percentage, echo = FALSE}
+tbl_q2_a %>% 
+  `[`(-3, -(3:4)) %>%
+  prop.table(margin = 1) %>%
+  `*`(100) %>%
+  cbind("계" = rowSums(.)) %>%
+  format(digits = 2, nsmall = 1) %>%
+  pander
+```
+
+#### 합산(%)
+
+```{r, echo = FALSE}
+data0319$Q2 %>%
+  table(useNA = "no") %>%
+  prop.table %>%
+  `*`(100) %>%
+  c("계" = sum(.)) %>%
+  format(digits = 2, nsmall = 1) %>%
+  pander
+```
+
+## Wason Selection
+
+### 추상적 표현과 구체적 표현?
+
+같은 내용의 문제를 추상적으로 물어볼 때와 구체적으로 사례를 들어서 물어볼 때의 정답률에 큰 차이가 있음에 유의. Red 집단에게는 추상적 질문을 먼저 던지고, 구체적 사례를 든 질문을 나중에 던졌으며 Black 집단에게는 구체적 사례를 든 질문을 먼저 던지고, 추상적 질문을 나중에 던졌다. 동일한 질문에 대해서 순서에 따른 차이는 거의 없지만 추상적이냐 구체적이냐에 따른 차이는 매우 높게 관찰된다. 추상적인 질문에 쩔쩔매는 게 정상이다.
+
+### Q3. Red에 추상적 문제 먼저 질문
+
+`r knitr::include_graphics("../pics/Wason_Selection_1.png", dpi = NA)`
+
+`r knitr::include_graphics("../pics/Wason_Selection_2.png", dpi = NA)`
+
+#### 집계
+
+```{r, Wason Selection 1 in Red, echo = FALSE}
+tbl_q3_a <- data0319$Q3_2 %>%
+  table(data0319$group, ., useNA = "ifany") %>%
+  cbind("계" = rowSums(.)) %>%
+  rbind("계" = colSums(.))
+colnames(tbl_q3_a) <- c("정답", "오답", "결석", "계")
+rownames(tbl_q3_a) <- c("Red(추상적 질문 먼저)", "Black(구체적 질문 먼저)", "계") 
+pander(tbl_q3_a, caption = "Wason Selection 1 in Red")
+```
+
+#### % 비교  
+
+```{r, Wason Selection 1 in Red in percentage, echo = FALSE}
+tbl_q3_a %>% 
+  `[`(-3, -(3:4)) %>%
+  prop.table(margin = 1) %>% 
+  cbind("계" = rowSums(.)) %>%
+  `*`(100) %>%
+  format(digits = 2, nsmall = 1) %>%
+  pander
+```
+
+### Q4. Red에 구체적 문제 나중 질문 
+
+`r knitr::include_graphics("../pics/Wason_Selection_2.png", dpi = NA)`
+
+`r knitr::include_graphics("../pics/Wason_Selection_1.png", dpi = NA)`
+
+#### 집계
+
+```{r, Wason Selection 1 in Black, echo = FALSE}
+tbl_q4_a <- data0319$Q4_2 %>%
+  table(data0319$group, ., useNA = "ifany") %>%
+  cbind("계" = rowSums(.)) %>%
+  rbind("계" = colSums(.))
+colnames(tbl_q4_a) <- c("정답", "오답", "결석", "계")
+rownames(tbl_q4_a) <- c("Red(구체적 질문 나중)", "Black(추상적 질문 나중)", "계") 
+pander(tbl_q4_a, caption = "Wason Selection 1 in Black")
+```
+
+#### % 비교.  
+
+```{r, Wason Selection 1 in Black in percentage, echo = FALSE}
+tbl_q4_a %>% 
+  `[`(-3, -(3:4)) %>%
+  prop.table(margin = 1) %>% 
+  cbind("계" = rowSums(.)) %>%
+  `*`(100) %>%
+  format(digits = 2, nsmall = 1) %>%
+  pander
+```
+
+### 합산
+
+#### 집계표
+
+```{r, Wason Selection, echo = FALSE}
+#> 추상적 질문 집계
+wason_1 <- tbl_q3_a[1, ] + tbl_q4_a[2, ]
+#> 구체적 질문 집계
+wason_2 <- tbl_q3_a[2, ] + tbl_q4_a[1, ]
+#> 한 개의 테이블로
+wason_tbl <- rbind(wason_1, wason_2) %>%
+  as.table
+#> 행이름 설정
+# wason_tbl %>%
+#   `rownames<-` (c("Wason 1(추상적 질문)", "Wason 2(구체적 질문)"))
+rownames(wason_tbl) <- c("Wason 1(추상적 질문)", "Wason 2(구체적 질문)")
+wason_tbl %>%
+  pander(caption = "Wason Selection")
+```
+
+#### % 비교
+
+```{r, Wason Selection in percentage, echo = FALSE}
+wason_tbl %>% 
+  `[`(, -(3:4)) %>%
+  prop.table(margin = 1) %>% 
+  cbind("계" = rowSums(.)) %>%
+  `*`(100) %>%
+  format(digits = 2, nsmall = 1) %>%
+  pander(caption = "Wason Selection")
+```
+
+## Cognitive Response Test
+
+### 시스템1과 시스템2
+
+`r knitr::include_graphics("../pics/CRT_1.png", dpi = NA)`
+
+Cognitive Response Test 의 원형으로 얼핏 10센트라고 하기 쉬우나 (시스템1의 작용) 신중하게 생각하면(시스템2의 작용) 5센트인 것을 알게 됨. 하버드, MIT, 프린스턴 대학 학생의 50% 이상이 직관적 오답을 말했던데 비하여 여러분은 매우 심사숙고함.  
+
+#### 집계
+
+```{r, CRT, echo = FALSE}
+tbl_q5_a <- data0319$Q5 %>%
+  table(data0319$group, ., useNA = "ifany") %>%
+  cbind("계" = rowSums(.)) %>%
+  rbind("계" = colSums(.))
+colnames(tbl_q5_a)[3] <- "결석"
+tbl_q5_a %>% 
+  pander
+```
+
+#### % 비교.  
+
+```{r, CRT  in percentage, echo = FALSE}
+tbl_q5_a %>% 
+  `[`(-3, -(3:4)) %>%
+  prop.table(margin = 1) %>%
+  `*`(100) %>%
+  cbind("계" = rowSums(.)) %>%
+  format(digits = 2, nsmall = 1) %>%
+  pander
+```
+
+## Prospect Theory
+
+### 이득과 손실
+
+#### Red 
+
+`r knitr::include_graphics("../pics/Quiz171030_04_red.png", dpi = NA)`
+
+#### Black
+
+`r knitr::include_graphics("../pics/Quiz171030_04_black.png", dpi = NA)`
+
+이득은 완전히 하고, 손실은 피하고자 하는 경향 확인. Red는 이득을 완전히 확보하려는 게임(A)에, Black은 손실을 확률적으로 피하려는 게임(B)을 많이 선택.
+
+#### 집계
+
+```{r, prospect theory, echo = FALSE}
+tbl_q6_a <- data0319$Q6 %>%
+  table(data0319$group, ., useNA = "ifany") %>%
+  cbind("계" = rowSums(.)) %>%
+  rbind("계" = colSums(.))
+colnames(tbl_q6_a) <- c("확률 100%", "확률 90%", "결석", "계")
+rownames(tbl_q6_a) <- c("이득 게임", "손실 게임", "계")
+tbl_q6_a %>% 
+  pander
+```
+
+#### % 비교.  
+
+```{r, prospect theory  in percentage, echo = FALSE}
+tbl_q6_a %>% 
+  `[`(-3, -(3:4)) %>%
+  prop.table(margin = 1) %>%
+  `*`(100) %>%
+  cbind("계" = rowSums(.)) %>%
+  format(digits = 2, nsmall = 1) %>%
+  pander
+```
+
+## Framing Effect
+
+### 삶과 죽음
+
+#### Red
+
+`r knitr::include_graphics("../pics/Quiz171113_Q4_Red.png", dpi = NA)`
+
+#### Black
+
+`r knitr::include_graphics("../pics/Quiz171113_Q4_Black.png", dpi = NA)`
+
+600명 중 200명이 사는 거나 400명이 죽는 것, 모두 살리는 거나 모두 죽지 않는 것이나 같은 내용임에도 반응이 다르게 나타남에 유의. 손실회피 경향과 같은 현상을 관찰할 수 있음.
+
+#### 집계
+
+```{r, Framing Effect, echo = FALSE}
+tbl_q7_a <- data0319$Q7 %>%
+  table(data0319$group, ., useNA = "ifany") %>%
+  cbind("계" = rowSums(.)) %>%
+  rbind("계" = colSums(.))
+colnames(tbl_q7_a)[3] <- "결석"
+rownames(tbl_q7_a) <- c("생존 프레임", "사망 프레임", "계")
+tbl_q7_a %>% 
+  pander
+tbl_q7_a %>%
+  `[`(-3, -(3:4)) %>%
+  chisq.test(simulate.p.value = FALSE) %>%
+  pander
+```
+
+#### % 비교.  
+
+```{r, Framing effects in percentage, echo = FALSE}
+tbl_q7_a %>% 
+  `[`(-3, -(3:5)) %>%
+  prop.table(margin = 1) %>%
+  `*`(100) %>%
+  cbind("계" = rowSums(.)) %>%
+  format(digits = 2, nsmall = 1) %>%
+  pander
+```
+
+## 디폴트 효과
+
+### 표시하지 않으면 ... 으로 간주합니다의 효과
+
+#### Red 
+
+`r knitr::include_graphics("../pics/Quiz171011_04_red.png", dpi = NA)`
+
+#### Black
+
+`r knitr::include_graphics("../pics/Quiz171011_04_black.png", dpi = NA)`
+
+표시하지 않으면 장기 기증의사가 있는 것으로 간주하는 경우(Red)와 표시하면 장기 기증의사가 있는 것으로 간주하는 경우(Black), 표시하지 않으면 기증 의사가 있다고 보는 질문지에 기증 의사 비율이 더 높게 나오는 것으로 알려져 있는데 숫자 상으로는 차이가 나지만 통계적으로 유의한 수준은 아닙니다.
+
+#### 집계
+
+```{r, vote attitude, echo = FALSE}
+tbl_q8_a <- data0319$Q8 %>%
+  table(data0319$group, ., useNA = "ifany") %>%
+  cbind("계" = rowSums(.)) %>%
+  rbind("계" = colSums(.))
+colnames(tbl_q8_a)[4] <- "결석"
+#> 카이제곱 테스트
+tbl_q8_a %>% 
+  pander
+tbl_q8_a %>%
+  `[`(-3, -(3:4)) %>%
+  chisq.test(simulate.p.value = FALSE) %>%
+  pander
+```
+
+#### % 비교.  
+
+```{r, echo = FALSE}
+tbl_q8_a %>% 
+  `[`(-3, -(3:5)) %>%
+  prop.table(margin = 1) %>%
+  `*`(100) %>%
+  cbind("계" = rowSums(.)) %>%
+  format(digits = 2, nsmall = 1) %>%
+  pander
+```
+
+#### 합산(%)
+
+```{r, echo = FALSE}
+tbl_q8_a %>% 
+  `[`(3, -(3:5), drop = FALSE) %>%
+  prop.table %>%
+  `*`(100) %>%
+  cbind("계" = rowSums(.)) %>%
+  format(digits = 2, nsmall = 1) %>%
+  pander
+```
+
+### Thinking, Fast and Slow
+
+#### Article
+
+`r knitr::include_graphics("../pics/organ_donation_01.png", dpi = NA)`
+
+#### Facts Found
+
+`r knitr::include_graphics("../pics/organ_donation_02.png", dpi = NA)`
+
+```{r, save, echo = FALSE}
+#save.image("../R/data0319.RData")
+```
