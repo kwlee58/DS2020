@@ -66,9 +66,14 @@ three_play <- play()
 three_play
 attr(three_play, "symbols")
 slot_display <- function(prize) {
+  # extract symbols
   symbols <- attr(prize, "symbols")
+  # collapse symbols into single string
   symbols <- paste(symbols, collapse = " ")
+  # combine symbol with prize as a regular expression
+  # \n is regular expression for new line (i.e. return or enter)
   string <- paste(symbols, prize, sep = "\n$")
+  # diplay regular expression in console without quotes
   cat(string)
 }
 one_play
@@ -130,19 +135,23 @@ str(num.f)
 ## Method Dispatch
 
 ```{r}
+methods(print)
 print.function
 summary.matrix
 class(one_play) <- "slots"
 one_play
 args(print)
+#> Simple example
 print.slots <- function(x, ...) {
   cat("I'm using the print.slots method")
 }
 print(one_play)
 one_play
 rm("print.slots")
+#> Scoping Rule
 now <- Sys.time()
 attributes(now)
+#> UseMethod
 print.slots <- function(x, ...) {
   slot_display(x)
 }
