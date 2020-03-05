@@ -1,5 +1,6 @@
 ---
 title: "Weighted Dice Very Basics"
+author: "Kee-Won Lee"
 output: html_document
 ---
 
