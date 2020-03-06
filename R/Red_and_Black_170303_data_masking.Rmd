@@ -1,0 +1,60 @@
+---
+# title: "Red and Black 170303 : Names Masked"
+# author: "coop711"
+# date: "`r Sys.Date()`"
+output: html_document
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+# install.packages("xlsx", repos = "https://cran.rstudio.com")
+library(xlsx)
+library(knitr)
+```
+
+### Data
+
+```{r, data}
+class_roll <- read.xlsx("../data/class_roll0303.xlsx", 1, startRow = 2, endRow = 162, colIndex = c(3:7, 9), colClasses = rep("character", 6), encoding = "UTF-8", stringsAsFactors = FALSE)
+names(class_roll) <- c("dept", "id", "name", "year", "e.mail", "cell.no")
+```
+
+### Names Masking
+
+```{r, name}
+class_roll$name[class_roll$name == "정결"] <- "정결군"
+names.split <- sapply(class_roll$name, function(x) unlist(strsplit(x, split = "")))
+names.split[2:3, ] <- rep("ㅇ", 2)
+class_roll$name <- apply(names.split, 2, paste, collapse = "")
+# write.table(class_roll, file ="../data/class_roll_masked.txt")
+```
+
+### Cell NUmbers
+
+```{r, cell.no}
+cell.split <- sapply(class_roll$cell.no, function(x) unlist(strsplit(x, split = "-")))
+# cell.split
+cell.split[3, ] <- "xxxx"
+class_roll$cell.no <- apply(cell.split, 2, paste, collapse = "-")
+head(class_roll)
+```
+
+### e-mail
+
+
+```{r, e_mail}
+e.mail.na <- which(is.na(class_roll$e.mail))
+class_roll$e.mail[e.mail.na] <- "NA@NA"
+email.split <- sapply(class_roll$e.mail, function(x) unlist(strsplit(x, split = "@")))
+# email.split
+email.split[1, ] <- "user_name"
+class_roll$e.mail <- apply(email.split, 2, paste, collapse = "@")
+head(class_roll)
+```
+
+<!--
+```{r, save}
+save.image("../R/red_and_black_170303_data_masked.RData")
+```
+-->

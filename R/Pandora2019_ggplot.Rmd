@@ -1,0 +1,107 @@
+---
+title: "Pandora 190325"
+author: "coop711"
+date: '2019-04-22'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(knitr)
+```
+
+## Problem
+
+MBN은 2019.3.25 시사프로 판도라에서 고위공직자 범죄 수사처 설립 필요 여부에 대하여 공방을 벌이면서 찬반여론을 보여주는 그래프를 왜곡하여 비난을 사게 되었다.
+
+`r include_graphics("../pics/pandora1903.jpg", dpi = 240)`
+
+이 도표를 제대로 그리면 어떻게 나오는지 알아보자. Base R의 `pie()`함수를 활용한다. 
+도표 안의 레이블 좌표는 극좌표 변환식 $x = r \cos(\theta), y = r \sin(\theta)$를 이용한다.
+
+각 텍스트 라벨의 좌표는 다음과 같이 계산한다. 시계 방향으로 쌓아가므로 시계 반대방향으로 설정하는 극좌표의 각도에 마이너스 부호를 붙이고, 시작 점이 90도 각도인 12시 방향이므로 $pi/2$를 더해주면 된다. 백분률로 주어지는 텍스트 라벨의 위치가 백분율의 누적값에서 마지막 백분율의 반을 뺀 것임을 알면 좌표 계산이 쉬워진다.  
+
+## Data
+
+```{r}
+poll <- c(82.9, 12.6, 4.5)
+names(poll) <- c("찬성", "반대", "모름/무응답")
+#> 도표 안 레이블의 좌표 계산 방법에 유의할 것. 
+#> 시작은 백분율의 누적값에서 마지막 백분율의 반을 빼 줌으로서 막대의 가운데 위치를 찾는 `pos` 벡터의 설정에 출발한다.
+#> 시계방향은 $-\theta$로 계산하고, 90도에서 출발하는 것은 $\pi/2$만큼 더한 것으로 계산한다. 
+pos <- cumsum(poll) - poll / 2
+x_text <- 0.65 * cos(pi / 2 - pos * (2 * pi) / 100)
+y_text <- 0.65 * sin(pi / 2 - pos * (2 * pi) / 100)
+#> 원시적인 방법
+# x_text <- 0.65 * cos(c(((25 + 4.5 + 12.6) + (25 + 4.5 + 12.6 + 82.9)) * pi / 100, 
+#                        ((25 + 4.5) + (25 + 4.5 + 12.6)) * pi / 100, 
+#                        (25 + (25 + 4.5)) * pi / 100))
+# y_text <- 0.65 * sin(c(((25 + 4.5 + 12.6) + (25 + 4.5 + 12.6 + 82.9)) * pi / 100, 
+#                        ((25 + 4.5) + (25 + 4.5 + 12.6)) * pi / 100, 
+#                        (25 + (25 + 4.5)) * pi / 100))
+kable(t(as.matrix(poll)), caption = "김영란법 국회 통과")
+```
+
+<P style ="page-break-before: always">
+
+## `pie()`
+
+```{r, fig.width = 6, fig.height = 6}
+par(family = "KoPubWorldDotum Medium")
+pie(poll, 
+    labels = "", 
+    radius = 1,
+    clockwise = TRUE, 
+    border = NA,
+    init.angle = 90,
+    col = c("deepskyblue3", "firebrick", "gray"))
+par(new = TRUE)
+pie(1,
+    labels = "",
+    radius = 0.3,
+    border = NA,
+    col = "darkgray")
+text(x = 0, y = 0, 
+     labels = "", 
+     cex = 1.5)
+text(x = x_text, y = y_text, 
+     labels = names(poll), 
+     col = "white", 
+     pos = 3,
+     cex = 1.5)
+text(x = x_text, y = y_text, 
+     labels = paste0(poll, "%"), 
+     col = "black", 
+     pos = 1,
+     cex = 1.5)
+title(main = "고위공직자 범죄수사처 설립 찬반", cex.main = 2)
+box(which = "figure", lwd = 3)
+dev.copy(png, "../pics/pandora.png", width = 480, height = 480)
+dev.off()
+```
+
+## ggplot
+
+```{r}
+library(ggplot2)
+# pos <- cumsum(poll) - poll / 2
+poll_tbl <- data.frame(key = names(poll), value = poll, row.names = NULL)
+ggplot(data = poll_tbl, mapping = aes(x = 2, y = value, fill = key)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(y = pos, label = paste0(poll, "%")), size = 5, vjust = 1) +
+  geom_text(aes(y = pos, label = key), 
+            size = 5, vjust = -1, colour = "white", family = "KoPubWorldDotum Medium") +
+  xlim(1.2, 2.5) +
+  labs(title = "고위공직자 범죄수사처 설립 찬반", x = NULL, y = NULL) +
+  scale_y_continuous(breaks = NULL) +
+  scale_fill_manual(values = c("gray", "firebrick", "deepskyblue3")) +
+  guides(fill = "none") +
+  theme_void() +
+  theme(text = element_text(family = "KoPubWorldDotum Medium"),
+        plot.title = element_text(family = "KoPubWorldDotum Bold", hjust = 0.5, size = 20, 
+                                        margin = margin(t = 0, r = 0, b = -24, l = 0)),
+        panel.background = element_rect(fill = "white", colour = "black"),
+        legend.text = element_text(family = "KoPubWorldDotum Light")) +
+  coord_polar(theta = "y")
+ggsave(file = "../pics/pandora_ggplot.png", width = 5, height = 5)
+```

@@ -1,0 +1,281 @@
+---
+title: "Bortkewitsch's Horsekicks"
+author: "coop711"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+프러시아에서 20년간 14개 연대에서 발생한 말발굽에 채여 사망한 사고 기록 [^1] 
+[^1]: 원시자료는 `pscl` 패키지의 `prussian`이다.
+
+```{r, message = FALSE}
+# install.packages("pscl", repos = "https://cran.rstudio.com")
+options(digits = 7)
+library(tidyverse)
+library(pscl)
+library(magrittr)
+library(knitr)
+library(pander)
+data(prussian)
+str(prussian)
+head(prussian)
+horsekick <- prussian %>%
+  group_by(y) %>%
+  summarise(Count = n()) %>%
+  rename(Deaths = y, Corps = Count)
+#   `colnames<-`(c("Deaths", "Corps"))
+str(horsekick)
+options(width = 180)
+```
+
+이 자료의 기초통계는 
+
+```{r}
+prussian$y %>%
+  summary
+```
+
+또는 `horsekick` tibble의 구조를 `rep`에 적용하여 
+다음과 같이 풀 수도 있다.
+
+```{r}
+horsekick %$%
+  rep(Deaths, Corps) %>%
+  summary
+```
+
+위 자료를 누적분포로 도식화하기 위한 첫 작업
+
+```{r fig.width = 5.5, fig.height = 5.5}
+options(digits = 3)
+#> 한글 폰트 설정
+par(family = "KoPubWorldDotum Medium")
+#> 백분율로 표시
+# horsekick$Perc <- prussian$y %>%
+#   table %>%
+#   prop.table %>%
+#   `*`(100) 
+horsekick$Perc <- horsekick$Corps %>%
+  `/`(sum(.)) %>%
+  `*`(100) 
+horsekick$Perc %>%
+  format(digits = 1, nsmall = 1) %>%
+  paste0("%") %>%
+  `names<-`(0:4)
+#> 누적백분율
+horsekick$Cum <- horsekick$Perc %>%
+  cumsum
+#> 백분율과 누적백분율 비교
+horsekick %>%
+#> `tibble`이 `format` 함수와 갖는 작은 문제로 인하여 `as.data.frame` 적용. 이 조치를 하지 않았을 떄 어떤 결과물이 나오는지 비교.
+  as.data.frame %>%
+  select(c("Perc", "Cum"))  %>%
+  format(digits = 1, nsmall = 1)
+#> `Deaths`를 숫자로 변환하여 산점도의 수평축으로 
+#> 누적백분율을 점으로 표시. `yaxt = "n"` 의 효과 확인
+horsekick %$%
+plot(x = Deaths, y = Cum, 
+     xlim = c(-0.5, 4.5), ylim = c(50, 100), 
+     xlab = "사망자 수", ylab = "누적 백분률(%)", 
+     yaxt = "n")
+#> `axis()` 함수를 이용하여 `y`축 설정. `las = 2`의 역할에 유의
+horsekick %$%
+axis(side = 2,
+     at = Cum, 
+     labels = format(Cum, digits = 1, nsmall = 1),
+     las = 2)
+horsekick %$%
+lines(x = c(0, 1), y = rep(Cum[1], 2), 
+      lty = 1, lwd = 2)
+horsekick %$%
+lines(x = c(1, 2), y = rep(Cum[2], 2), 
+      lty = 1, lwd = 2)
+horsekick %$%
+lines(x = c(2, 3), y = rep(Cum[3], 2), 
+      lty = 1, lwd = 2)
+horsekick %$%
+lines(x = c(3, 4), y = rep(Cum[4], 2), 
+      lty = 1, lwd = 2)
+horsekick %$%
+lines(x = c(4, 5), y = rep(Cum[5], 2), 
+      lty = 1, lwd = 2)
+horsekick %$%
+points(x = Deaths, y = Cum,
+       pch = 21, bg = "black", col = "black")
+horsekick %$%
+points(x = Deaths[2:5], y = Cum[1:4],
+       pch = 21, bg = "white", col = "black")
+```
+
+누적 분포를 알기 쉽도록 격자 설정. 구분선을 아래서부터 차례로 그려갈 때
+
+```{r fig.width = 5.5, fig.height = 5.5}
+options(digits = 3)
+par(family = "KoPubWorldDotum Medium")
+plot(x = horsekick$Deaths, y = horsekick$Cum, 
+     xlim = c(-0.5,4.5), ylim = c(50, 100), 
+     xlab = "사망자 수", ylab = "누적 백분률(%)", 
+     yaxt = "n")
+axis(side = 2,
+     at = c(50, horsekick$Cum), 
+     labels = c("", format(horsekick$Cum[1:4], digits = 2, nsmall = 1), ""),
+     las = 2)
+#> y축 50.0, 100.0의 눈금으로부터 라벨값의 위치를 조정하여 겹치지 않도록 조치
+axis(side = 2,
+     at = c(48.5, horsekick$Cum[5] + 1.5), 
+     tick = FALSE,
+     labels = format(c(50, horsekick$Cum[5]), digits = 2, nsmall = 1),
+     las = 2)
+abline(v = 0:4, lty = 3)
+lines(c(0, 1), rep(horsekick$Cum[1], 2), lty = 1, lwd = 2)
+lines(c(1, 2), rep(horsekick$Cum[2], 2), lty = 1, lwd = 2)
+lines(c(2, 3), rep(horsekick$Cum[3], 2), lty = 1, lwd = 2)
+lines(c(3, 4), rep(horsekick$Cum[4], 2), lty = 1, lwd = 2)
+lines(c(4, 5), rep(horsekick$Cum[5], 2), lty = 1, lwd = 2)
+horsekick %$%
+points(x = horsekick$Deaths, y = horsekick$Cum,
+       pch = 21, bg = "black", col = "black")
+points(x = horsekick$Deaths[2:5], y = horsekick$Cum[1:4],
+       pch = 21, bg = "white", col = "black")
+```
+
+반복되는 `lines()`는 아래와 같이 `apply()`를 이용하여 작업을 다소 줄일 수도 있다. 우선, 좌표를 정리한다.
+
+```{r}
+h_x <- cbind(rep(0, 5), 1:5)
+h_x
+h_y <- sapply(horsekick$Cum, FUN = rep, times = 2)
+h_y
+h_xy <- cbind(h_x, t(h_y))
+h_xy
+```
+
+`plot()`에서 `abline()`까지가 반복해서 나올 것이므로, `source()`를 이용하기 위한 코드 작성.
+
+격자선을 놓는 과정까지를 두 줄로 줄일 수 있다.
+
+```{r fig.width = 5.5, fig.height = 5.5}
+par(family = "KoPubWorldDotum Medium")
+source("horsekick_plot_v2.R", echo = TRUE)
+apply(h_xy, MARGIN = 1, 
+      FUN = function(h) lines(x = h[1:2], y = h[3:4], lty = 3))
+l_xy <- function(h) lines(x = h[1:2], y = h[3:4], lty = 3)
+```
+
+사망자 수의 기대값(평균)은 
+
+$0\times P(사망자수 = 0) + 1\times P(사망자수 = 1) + 2\times P(사망자수 = 2) + 3\times P(사망자수 = 3) + 4\times P(사망자수 = 4)$
+
+$= 0\times0.514 + 1\times(0.839-0.514) + 2\times(0.954-0.839) + 3\times(0.993-0.954) + 4\times(1-0.997)$
+
+을 계산한 것과 같다. 이는 누적도표 위에서 막대의 면적들을 합한 것과 같다.
+
+```{r fig.width = 5.5, fig.height = 5.5, message = FALSE}
+par(family = "KoPubWorldDotum Medium")
+library(RColorBrewer)
+h_pal <- brewer.pal(4, name = "Purples")
+source("horsekick_plot_v2.R", echo = FALSE)
+apply(h_xy, MARGIN = 1, FUN = l_xy)
+polygon(c(0, 1, 1, 0), c(rep(horsekick$Cum[1], 2), rep(horsekick$Cum[2], 2)), 
+        col = h_pal[1])
+polygon(c(0, 2, 2, 0), c(rep(horsekick$Cum[2], 2), rep(horsekick$Cum[3], 2)), 
+        col = h_pal[2])
+polygon(c(0, 3, 3, 0), c(rep(horsekick$Cum[3], 2), rep(horsekick$Cum[4], 2)), 
+        col = h_pal[3])
+polygon(c(0, 4, 4, 0), c(rep(horsekick$Cum[4], 2), rep(horsekick$Cum[5], 2)), 
+        col = h_pal[4])
+points(x = horsekick$Deaths, y = horsekick$Cum,
+       pch = 21, bg = "black", col = "black")
+points(x = horsekick$Deaths[2:5], y = horsekick$Cum[1:4],
+       pch = 21, bg = "white", col = "black")
+```
+
+`polygon()`들을 한 줄로 정리하기 위하여 좌표들을 모으고, 
+
+```{r}
+poly_x <- matrix(c(rep(0, 4), rep(1:4, 2), rep(0, 4)), 
+                   ncol = 4, byrow = TRUE)
+poly_y <- rbind(sapply(horsekick$Cum[1:4], rep, times = 2), 
+                  sapply(horsekick$Cum[2:5], rep, times = 2))
+poly_xy <- rbind(poly_x, poly_y)
+poly_xy
+lapply(data.frame(poly_xy), 
+              FUN = function(v) cbind(v[1:4], v[5:8]))
+```
+
+`sapply()`, `lapply()`, `mapply()`를 적재적소에 활용하여 분량을 줄여보자. 빗금친 부분들의 합이 평균임을 알 수 있다.
+
+```{r fig.width = 5.5, fig.height = 5.5, message = FALSE}
+par(family = "KoPubWorldDotum Medium")
+source("horsekick_plot_v2.R")
+# apply(h_xy, MARGIN = 1, FUN = l_xy)
+mapply(polygon, 
+       lapply(data.frame(poly_xy), 
+              FUN = function(v) cbind(v[1:4], v[5:8])), 
+       density = 20, angle = c(45, 135, 45, 135), border = NA)
+points(x = horsekick$Deaths, y = horsekick$Cum,
+       pch = 21, bg = "black", col = "black")
+points(x = horsekick$Deaths[2:5], y = horsekick$Cum[1:4],
+       pch = 21, bg = "white", col = "black")
+```
+
+사망자수의 기대값 계산을 다시 정리하여 보면, 
+
+$1\times0.325 + 2\times0.114 + 3\times0.039 + 4\times0.007$
+
+$= 1\times(0.325 + 0.114 + 0.039 + 0.007) + 1\times(0.114 + 0.039 + 0.007) + 1\times(0.039 + 0.007) + 1\times0.007$
+
+$= P(사망자수\ge1) + P(사망자수\ge2) + P(사망자수\ge3) + P(사망자수\ge4)$, 
+
+즉 누적분포 윗 면적이 된다. 이는 다음 그림에서 막대를 다른 방향으로 집적하였을 때 면적의 합과 같다.
+
+```{r}
+poly_x_2 <- matrix(c(0:3, rep(1:4, 2), 0:3), ncol = 4, byrow = T)
+poly_x_2
+poly_y_2 <- rbind(sapply(horsekick$Cum[1:4], rep, 2), 
+                matrix(rep(horsekick$Cum[5], 8), nrow = 2))
+poly_y_2
+poly_xy_2 <- rbind(poly_x_2, poly_y_2)
+poly_xy_2
+lapply(data.frame(poly_xy_2), 
+       FUN = function(v) cbind(v[1:4], v[5:8]))
+```
+
+```{r fig.width = 5.5, fig.height = 5.5, message = FALSE}
+par(family = "KoPubWorldDotum Medium")
+source("horsekick_plot_v2.R")
+apply(h_xy, MARGIN = 1, FUN = l_xy)
+mapply(polygon, 
+       lapply(data.frame(poly_xy_2), function(v) cbind(v[1:4], v[5:8])), 
+       density = 20, angle = c(45, 135, 45, 135), border = NA)
+points(x = horsekick$Deaths, y = horsekick$Cum,
+       pch = 21, bg = "black", col = "black")
+points(x = horsekick$Deaths[2:5], y = horsekick$Cum[1:4],
+       pch = 21, bg = "white", col = "black")
+```
+
+중간에 약간의 작업이 들어가긴 하지만 아래 소스코드와 비교하라.
+
+```{r fig.width = 5.5, fig.height = 5.5, message = FALSE}
+options(digits = 3)
+par(family = "KoPubWorldDotum Medium")
+source("horsekick_plot_v2.R", echo = FALSE)
+apply(h_xy, MARGIN = 1, FUN = l_xy)
+polygon(c(0, 1, 1, 0), c(rep(horsekick$Cum[1], 2), rep(horsekick$Cum[5], 2)), 
+        col = h_pal[1])
+polygon(c(1, 2, 2, 1), c(rep(horsekick$Cum[2], 2), rep(horsekick$Cum[5], 2)), 
+        col = h_pal[2])
+polygon(c(2, 3, 3, 2), c(rep(horsekick$Cum[3], 2), rep(horsekick$Cum[5], 2)), 
+        col = h_pal[3])
+polygon(c(3, 4, 4, 3), c(rep(horsekick$Cum[4], 2), rep(horsekick$Cum[5], 2)), 
+        col = h_pal[4])
+points(x = horsekick$Deaths, y = horsekick$Cum,
+       pch = 21, bg = "black", col = "black")
+points(x = horsekick$Deaths[2:5], y = horsekick$Cum[1:4],
+       pch = 21, bg = "white", col = "black")
+```
+
+이번에 쌓아놓은 막대 면적의 합은 평균을 계산한 것임을 확인.
+
+
+

@@ -1,0 +1,101 @@
+---
+title: "BFI MI data : DS1901"
+author: "coop711"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+library(pander)
+library(magrittr)
+panderOptions("table.split.table", Inf)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Data
+
+```{r, xlsx}
+library(xlsx)
+options(width = 180)
+#> 성격특성 raw data 읽어들이기
+BFI <- "../data/BFI_DS.xlsx" %>% 
+  read.xlsx(sheetIndex = 1, 
+            startRow = 2, endRow = 41, 
+            colIndex = c(4:5, 10:21),
+#            colIndex = 1:13, 
+            header = TRUE, 
+            encoding = "UTF-8",
+            stringsAsFactors = FALSE)
+names(BFI) %<>%
+  `[<-`(1, "ID")
+# names(BFI)[1] <- "ID"
+#>  데이터에 개별적으로 성격특성의 이름을 붙인다면, 
+BFI %<>%
+  `names<-`(c("ID", "Name", "E1", "A1", "O1", "C1", "N1", "E2", "A2", "O2", "C2", "N2", "O3", "A3"))
+BFI$ID %<>%
+  as.character
+BFI[-2] %>% 
+  head %>%
+  kable
+#> 자가 진단 데이터 읽어들이기
+BFI_self <- "../data/BFI_DS.xlsx" %>% 
+  read.xlsx(sheetIndex = 1, 
+            startRow = 2, endRow = 41, 
+            colIndex = c(4, 22:26),
+#            colIndex = 1:13, 
+            header = TRUE, 
+            encoding = "UTF-8",
+            stringsAsFactors = FALSE)
+BFI_self %<>%
+  `names<-`(c("ID", "E", "N", "C", "A", "O"))
+BFI_self$ID %<>%
+  as.character
+BFI_self %>%
+  head %>%
+  kable
+#> 자가 진단 결과를 ord.factor로 변환. sapply는 안 되고, lapply는 되는 이유가 무엇일까?
+# BFI_self[-1] <- 
+#   lapply(BFI_self[-1], factor, levels = c("낮음", "중하", "중상", "높음"), ordered = TRUE)
+#> piping으로 사용자 함수 표기하는 방식에 유의
+BFI_self[-1] %<>% 
+  lapply(. %>% factor(., levels = c("낮음", "중하", "중상", "높음"), ordered = TRUE))
+
+#> 다중지능테스트 데이터 읽어들이기
+MI <- "../data/MI_DS.xlsx" %>%
+  read.xlsx(sheetIndex = 1, 
+            startRow = 2, endRow = 41, 
+            colIndex = c(4, 10:65),
+#            colIndex = 1:57, 
+            header = TRUE, 
+            encoding = "UTF-8",
+            stringsAsFactors = FALSE)
+MI %<>%
+  `names<-`(c("ID", paste0("Q", 1:56)))
+# names(MI) <- c("ID", paste0("Q", 1:56))
+MI$ID %<>% 
+  as.character
+kable(head(MI[1:15]))
+kable(head(MI[c(1, 16:29)]))
+kable(head(MI[c(1, 30:43)]))
+kable(head(MI[c(1, 44:57)]))
+## piping을 이용한 다음 대안들을 개선해 보세요.
+# lapply(list(1:15, c(1, 16:29), c(1, 30:43), c(1, 44:57)), 
+#        function(x) MI %>% `[`(x) %>% head %>% kable)
+# list(1:15, c(1, 16:29), c(1, 30:43), c(1, 44:57)) %>%
+#   lapply(function(x) MI %>% `[`(x) %>% head %>% kable)
+# list(1:15, c(1, 16:29), c(1, 30:43), c(1, 44:57)) %>%
+#   lapply(. %>% {kable(head(MI[.]))})
+
+#> BFI에서 학번과 이름만 발췌
+class_roll <- BFI[, 1:2]
+class_roll %<>%
+  `names<-`(c("ID", "Name"))
+```
+
+### Save Data
+
+```{r, save.image}
+save.image("./BFI_MI_DS1901.RData")
+```
+

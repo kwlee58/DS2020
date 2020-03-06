@@ -1,0 +1,8 @@
+*.log
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+R/*.html
+R/*.rda
+R/rsconnect/*

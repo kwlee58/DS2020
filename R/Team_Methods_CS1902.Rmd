@@ -1,0 +1,144 @@
+---
+title: "Team Allocation for Class CS1902 "
+author: "coop711"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(magrittr)
+library(xlsx)
+library(knitr)
+```
+
+### Data
+
+```{r, data}
+class_roll <- "../data/class_roll1902v2.xlsx" %>%
+  read.xlsx(sheetIndex = 1,
+             startRow = 2, endRow = 40,
+             colIndex = c(3:7, 9),
+             colClasses = rep("character", 6),
+            encoding = "UTF-8",
+            stringsAsFactors = FALSE)
+names(class_roll) <- c("dept", "id", "name", "year", "email", "cell_no")
+str(class_roll)
+```
+
+### 랜덤하게 4 Team으로 나누기
+
+```{r, team id, echo = TRUE}
+set.seed(1)
+N <- nrow(class_roll)
+group <- 1 + sample(1:N) %% 12
+class_roll$group <- factor(group, 
+                           levels = 1:12, 
+                           labels = paste("Team", 1:12))
+kable(class_roll)
+```
+
+### 학번
+
+```{r, id}
+ID_18 <- factor(ifelse(substr(class_roll$id, 1, 4) >= 2018, 
+                       "18학번", "17학번이전"), 
+                levels = c("17학번", "16학번이전"))
+kable(table("팀" = class_roll$group, 
+            "17학번 기준" = ID_17))
+ID_17 <- factor(ifelse(substr(class_roll$id, 1, 4) >= 2017, 
+                       "17학번", "16학번이전"), 
+                levels = c("17학번", "16학번이전"))
+kable(table("팀" = class_roll$group, 
+            "17학번 기준" = ID_17))
+ID_16 <- factor(ifelse(substr(class_roll$id, 1, 4) >= 2016, 
+                       "16학번이후", "15학번이전"), 
+                levels = c("16학번이후", "15학번이전"))
+kable(table("팀" = class_roll$group, 
+            "16학번 기준" = ID_16))
+ID_15 <- factor(ifelse(substr(class_roll$id, 1, 4) >= 2015, 
+                       "15학번이후", "14학번이전"), 
+                levels = c("15학번이후", "14학번이전"))
+kable(table("팀" = class_roll$group,
+            "15학번 기준" = ID_15))
+```
+
+### email 서비스업체
+
+```{r, e_mail}
+email_list <- strsplit(class_roll$email, "@", fixed = TRUE)
+mail_com <- sapply(email_list, `[`, 2)
+kable(table("팀" = class_roll$group,
+            "e-mail" = mail_com))
+```
+
+### 학년 분포
+
+```{r, School Year, echo = TRUE}
+kable(table("팀"= class_roll$group, "학년" = class_roll$year))
+```
+
+### 성씨 분포
+
+```{r, name}
+f_name <- substring(class_roll$name, 
+                    first = 1, last = 1)
+kable(table("팀" = class_roll$group,
+            "Family Name" = f_name))
+```
+
+#### 많이 나오는 성씨
+
+```{r, frequent family name, echo = TRUE}
+f_name <- substring(class_roll$name, 
+                    first = 1, 
+                    last = 1)
+# f_name %in% c("김","이","박")
+f_name_f <- factor(ifelse(f_name %in% c("김", "이", "박", "최"), 
+                          f_name, "기타"), 
+                   levels = c("김", "이", "박", "최", "기타"))
+kable(table("팀" = class_roll$group, "Family Name" = f_name_f))
+```
+
+### Team 별로 모으기
+
+```{r, list, echo = TRUE, results = 'markup'}
+gr_names_o <- order(class_roll$group, class_roll$name)
+gr_names_o
+names_by_gr <- class_roll[gr_names_o, c("group", "dept", "id", "name", "year", "email", "cell_no")]
+kable(names_by_gr)
+```
+
+<!--
+#### Team 1
+
+```{r, team 1}
+Team_1_names <- names_by_gr[names_by_gr$group == "Team 1", c("id", "name")]
+kable(Team_1_names)
+```
+
+#### Team 2
+
+```{r, team 2}
+Team_2_names <- names_by_gr[names_by_gr$group == "Team 2", c("id", "name")]
+kable(Team_2_names)
+```
+
+#### Team 3
+
+```{r, team 3}
+Team_3_names <- names_by_gr[names_by_gr$group == "Team 3", c("id", "name")]
+kable(Team_3_names)
+```
+
+#### Team 4
+
+```{r, team 4}
+Team_4_names <- names_by_gr[names_by_gr$group == "Team 4", c("id", "name")]
+kable(Team_4_names)
+```
+
+```{r, save}
+save.image("./team_1801_data_out.RData")
+```
+-->

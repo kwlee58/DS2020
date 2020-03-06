@@ -1,0 +1,169 @@
+---
+title: "Red and Black 170303 : id Masked"
+author: "coop711"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(knitr)
+```
+
+### Data
+
+```{r, data}
+class_roll <- read.table("../data/class_roll_masked.txt", 
+                         header = TRUE, 
+                         stringsAsFactors = FALSE, 
+                         encoding = "UTF-8")
+str(class_roll)
+```
+
+### Randomization
+
+```{r, randomization}
+# set.seed(107)
+N <- nrow(class_roll) 
+class_roll$group <- sample(1:N) %% 2 + 1
+class_roll$group <- factor(class_roll$group, 
+                           labels = c("Red", "Black"))
+red_id <- which(class_roll$group == "Red")
+black_id <- which(class_roll$group == "Black")
+```
+
+### 학번
+
+```{r, id}
+ID_16 <- factor(ifelse(substr(class_roll$id, 1, 4) >= 2016, 
+                       "younger_16", "older_16"), 
+                levels = c("younger_16", "older_16"))
+kable(table("그룹" = class_roll$group, 
+            "16학번 기준" = ID_16))
+ID_15 <- factor(ifelse(substr(class_roll$id, 1, 4) >= 2015, 
+                       "younger_15", "older_15"), 
+                levels = c("younger_15", "older_15"))
+kable(table("그룹" = class_roll$group,
+            "15학번 기준" = ID_15))
+ID_14 <- factor(ifelse(substr(class_roll$id, 1, 4) >= 2014, 
+                       "younger_14", "older_14"), 
+                levels = c("younger_14", "older_14"))
+kable(table("그룹" = class_roll$group,
+            "14학번 기준" = ID_14))
+ID_13 <- factor(ifelse(substr(class_roll$id, 1, 4) >= 2013, 
+                       "younger_13", "older_13"), 
+                levels = c("younger_13", "older_13"))
+kable(table("그룹" = class_roll$group,
+            "13학번 기준" = ID_13))
+```
+
+<!--
+### 학번 홀짝
+
+```{r, odd or even}
+odd.even <- as.numeric(class_roll$id) %% 2
+kable(table("odd_even" = odd.even, "Group"= class_roll$group))
+```
+-->
+
+### email 서비스업체
+
+```{r, e_mail}
+email_list <- strsplit(class_roll$email, "@", fixed = TRUE)
+mail_com <- sapply(email_list, `[`, 2)
+kable(table("그룹" = class_roll$group,
+            "e-mail" = mail_com))
+```
+
+### 성씨 분포
+
+```{r, name}
+f_name <- substring(class_roll$name, 
+                    first = 1, last = 1)
+kable(table("Group" = class_roll$group,
+            "Family Name" = f_name))
+```
+
+### 많이 나오는 성씨
+
+```{r, frequent names}
+f_name_f <- factor(ifelse(f_name %in% c("김", "이", "박"), 
+                          f_name, "기타"), 
+                   levels = c("김", "이", "박", "기타"))
+kable(table("Group" = class_roll$group, 
+            "Family Name" = f_name_f))
+```
+
+### 전화번호의 분포
+
+```{r}
+cell_numbers <- sapply(substr(class_roll$cell_no, 5, 8), 
+                       as.numeric)
+# cut_label <- c("1000~1999", "2000~2999", "3000~3999", "4000~4999", "5000~5999", "6000~6999",
+#                "7000~7999", "8000~8999", "9000~9999")
+cut_label <- paste(paste0(1:9, "000"), paste0(1:9, "999"), sep = "~")
+kable(t(table(cut(cell_numbers, 
+                  labels = cut_label, 
+                  breaks = seq(1000, 10000, by = 1000)))))
+hist(cell_numbers)
+```
+
+<!--
+### 학과
+
+```{r, departments}
+# kable(class_roll)
+kable(table("그룹" = class_roll$group, "학과" = class_roll$dept))
+```
+-->
+
+### 출석부에서 8명 비복원 랜덤 표집
+
+```{r, colleges}
+# set.seed(1)
+kable(class_roll[sample(1:nrow(class_roll), size = 8), ])
+```
+
+<!--
+<P style = "page-break-before:always">
+-->
+
+### `set.seed()` 의 용법
+
+`set.seed()`를 이용하면 랜덤넘버에 의존하는 실험을 재현할 수 있다. 
+다음 코드를 반복 수행하거나 다른 사람들의 수행결과와 비교해 보라.
+
+세 결과가 모두 다른 경우
+
+```{r}
+sample(1:6, size = 2)
+sample(1:6, size = 2)
+sample(1:6, size = 2)
+```
+
+ 세 번의 수행 결과가 똑같이 반복되는 경우
+
+```{r}
+set.seed(1)
+sample(1:6, size = 2)
+sample(1:6, size = 2)
+sample(1:6, size = 2)
+```
+
+동일한 결과를 반복적으로 얻는 경우
+
+```{r}
+set.seed(1)
+sample(1:6, size = 2)
+set.seed(1)
+sample(1:6, size = 2)
+set.seed(1)
+sample(1:6, size = 2)
+```
+
+<!--
+```{r, save}
+save.image("../R/red_and_black_170303_data_masked.RData")
+```
+-->

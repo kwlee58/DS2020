@@ -1,0 +1,79 @@
+---
+title: "Pandor 190325"
+author: "coop711"
+date: '2019-04-22'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(knitr)
+```
+
+## Problem
+
+MBN은 2019.3.25 시사프로 판도라에서 고위공직자 범죄 수사처 설립 필요 여부에 대하여 공방을 벌이면서 찬반여론을 보여주는 그래프를 왜곡하여 비난을 사게 되었다.
+
+`r include_graphics("../pics/pandora1903.jpg", dpi = 240)`
+
+이 도표를 제대로 그리면 어떻게 나오는지 알아보자. Base R의 `pie()`함수를 활용한다. 
+도표 안의 레이블 좌표는 극좌표 변환식 $x = r \cos(\theta), y = r \sin(\theta)$를 이용한다.
+
+각 텍스트 라벨의 좌표를 계산하려면 극좌표의 각도를 게산하기 위하여 시계 반대 방향으로 90도가 25%에 해당한다는 점에 착안한다. 텍스트 라벨 12.6이 새겨져 있는 각도가 4.5%와 12.6%의 가운데이므로 (25% + 4.5%)와 (25% + 4.5% + 12.6%)의 가운데이고 이를 각도로 표현하면 $\frac{(25 + 4.5) + (25 + 4.5 + 12.6)}{2}\times\frac{1}{100}\times2\pi$이 된다. 같은 방식으로 텍스트 라벨 4.5이 새겨진 위치의 각도는 25%와 (25% + 4.5%)의 가운데인 $\frac{25 + (25 + 4.5)}{2}\times\frac{1}{100}\times2\pi$
+이 된다. 또는 텍스트 라벨 12.6의 위치를 25% + 27.8% 에서 12.6%의 반을 더한 것으로 이해하여도 된다. 이 때의 식은 $25 + 4.5 + 12.6/2)\times\times\frac{1}{100}2\pi$으로 표현할 수 있다. 텍스트 라벨 4.5의 위치는 25%에서 4.5%의 반을 더한 위치, $(25 + 4.5/2)\times\frac{1}{100}\times2\pi$이 된다.
+
+## Data
+
+```{r}
+poll <- c(82.9, 12.6, 4.5)
+names(poll) <- c("찬성", "반대", "모름/무응답")
+pos <- cumsum(poll) - poll / 2
+#> 도표 안 레이블의 좌표 계산. 시계 방향인 점과 시작점이 90도 각도인 점이 어덯게 코드에 반영되는지 유의.
+x_text <- 0.65 * cos(pi / 2 - (2 * pi) * pos / 100)
+y_text <- 0.65 * sin(pi / 2 - (2 * pi) * pos / 100)
+# x_text <- 0.65 * cos(c(((25 + 4.5 + 12.6) + (25 + 4.5 + 12.6 + 82.9)) * pi / 100, 
+#                        ((25 + 4.5) + (25 + 4.5 + 12.6)) * pi / 100, 
+#                        (25 + (25 + 4.5)) * pi / 100))
+# y_text <- 0.65 * sin(c(((25 + 4.5 + 12.6) + (25 + 4.5 + 12.6 + 82.9)) * pi / 100, 
+#                        ((25 + 4.5) + (25 + 4.5 + 12.6)) * pi / 100, 
+#                        (25 + (25 + 4.5)) * pi / 100))
+kable(t(as.matrix(poll)), caption = "김영란법 국회 통과")
+```
+
+<P style ="page-break-before: always">
+
+## `pie()`
+
+```{r, fig.width = 6, fig.height = 6}
+par(family = "KoPubWorldDotum Medium")
+pie(poll, 
+    labels = "", 
+    radius = 1,
+    clockwise = TRUE, 
+    border = NA,
+    init.angle = 90,
+    col = c("deepskyblue3", "firebrick", "gray"))
+par(new = TRUE)
+pie(1,
+    labels = "",
+    radius = 0.3,
+    border = NA,
+    col = "darkgray")
+text(x = 0, y = 0, 
+     labels = "", 
+     cex = 1.5)
+text(x = x_text, y = y_text, 
+     labels = names(poll), 
+     col = "white", 
+     pos = 3,
+     cex = 1.5)
+text(x = x_text, y = y_text, 
+     labels = paste0(poll, "%"), 
+     col = "black", 
+     pos = 1,
+     cex = 1.5)
+title(main = "고위공직자 범죄수사처 설립 찬반", cex.main = 2)
+box(which = "figure", lwd = 3)
+dev.copy(png, "../pics/pandora.png", width = 480, height = 480)
+dev.off()
+```

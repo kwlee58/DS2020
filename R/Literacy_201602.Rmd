@@ -1,0 +1,300 @@
+---
+title: "Literacy 201602"
+author: "coop711"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+#### Data 
+
+<!--#### Excel 자료 읽어들이기 
+
+* excel 파일을 잘 읽어들이는 `xlsx` 패키지를 올려놓고, 자료구조에 맞춰 argument 설정.
+    * Sheet 번호, startRow, colIndex, header 의 용도 파악. 
+-->
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(xlsx)
+library(pander)
+library(knitr)
+panderOptions('table.split.table', Inf)
+panderOptions('table.alignment.rownames', 'left')
+panderOptions('table.alignment.default', 'right')
+options(width=180)
+# panderOptions('digits', 3)
+```
+
+<!--
+권현종 학생의 위치가 100번쨰에 놓여 있어서 결석생들의 위치만 가지고 group을 나눠줄 수 없었음. 그들의 id를 다시 찾아서  id와 일치하는 group을 부여하게 됨.
+-->
+
+```{r, read data, echo = FALSE, results = 'hide'}
+literacy.roll <- read.xlsx("../data/literacy_RnB0912.xlsx", 1, startRow = 3, endRow  = 102, colIndex = c(3:7, 9:35), colClasses = c(rep("character", 32)), header = FALSE, stringsAsFactors = FALSE)
+names(literacy.roll) <- c("dept", "id", "name", "year", "e.mail", "cell.no", paste("Q", 1:25, sep = ""), "group")
+(na.group <- is.na(literacy.roll$group))
+table(literacy.roll$group, exclude = NULL)
+(na.id <- literacy.roll$id[na.group])
+# load("./red_and_black_160907_data.rda")
+class_roll0907 <- read.xlsx("../data/quiz0907.xlsx", 1, startRow = 3, endRow = 102, colIndex = c(3:7, 9:14), colClasses = c(rep("character", 11)), header = FALSE, stringsAsFactors = FALSE)
+class_roll0912 <- read.xlsx("../data/class_roll0912.xlsx", 1, startRow = 3, endRow = 102, colIndex = c(3:7, 9:10), colClasses = c(rep("character", 7)), header = FALSE, stringsAsFactors = FALSE)
+names(class_roll0907) <- c("dept", "id", "name", "year", "e.mail", "cell.no", "Q1", "Q2", "Q3", "Q4", "group")
+names(class_roll0912) <- c("dept", "id", "name", "year", "e.mail", "cell.no", "group")
+literacy.roll[literacy.roll$id %in% na.id, "id"]
+literacy.roll[literacy.roll$id %in% na.id, "group"]
+class_roll0912[class_roll0912$id %in% na.id, "id"]
+class_roll0912[class_roll0912$id %in% na.id, "group"]
+fix.o <- match(class_roll0907$id, class_roll0912$id)
+fix.o.2 <- match(class_roll0912$id, class_roll0907$id)
+class_roll0907$group <- factor(class_roll0907$group, levels = c("Red", "Black"))
+class_roll0912$group <- factor(class_roll0912$group, levels = c("Red", "Black"))
+(literacy.roll$group <- factor(literacy.roll$group, levels = c("red", "black"), labels = c("Red", "Black")))
+(literacy.roll[literacy.roll$id %in% na.id, "group"] <- class_roll0912[class_roll0912$id %in% na.id, "group"])
+table(literacy.roll$group)
+literacy.roll.2 <- literacy.roll[fix.o.2, ]
+literacy.roll.2$group <- class_roll0912$group
+literacy <- literacy.roll[, 7:32]
+literacy.2 <- literacy.roll.2[, 7:32]
+head(literacy, n = 10)
+head(literacy.2, n = 10)
+kable(literacy)
+kable(literacy.2)
+```
+<!--
+```{r, pander literacy, echo = FALSE}
+pander(literacy)
+```
+
+#### 문해력 점수 계산
+
+<!--* 정답 맞춰보기
+    * 정답 읽어들이기. `what=""`로 설정하여 `char`취급. 
+-->
+
+```{r, read ans, echo = FALSE, results = 'hide'}
+(ans <- scan("../data/literacy_ans.txt", what = ""))
+```
+
+<!--* 각 학생들의 답안과 맞춰보기 위하여 정답표 작성.
+    * 문항별로 정답과 비교하기 위하여 각 문항을 리스트의 원소로 분리
+    * `split()` 의 기능과 한계에 유의. `factor` 성격으로부터 `1, 10, 11, ..., 2, 20, ..., 3, 4, 5, ... , 9`로 순서를 잡게 되므로 다시 한번 정리할 필요.
+-->
+    
+    
+```{r, ans list and unlist, echo = FALSE, results = 'hide'}
+(ans.l <- split(ans, f = paste("A", 1:25, sep = "")))
+(ans.l.2 <- ans.l[paste("A", 1:25, sep = "")])
+
+# ans.mat <- matrix(rep(ans, each = nrow(literacy)), nrow = 70)
+# head(ans.mat)
+# literacy.marks <- literacy[, -26] == ans.mat
+```
+
+##### 정답과 대조하여 R(Right)/W(Wrong) 표시 
+    
+<!--* 채점표라는 의미의 `literacy.marks` 로 저장, (# 표시한 방식으로는 작동하지 않음)-->
+    
+```{r, marks, echo = FALSE}
+# 첫 세 학생의 응답을 기초로 확대, mapply()의 활용 방식에 유의
+literacy.marks.rw.q1_3 <- mapply(function(x, y) factor(ifelse(x == y, "R", "W")), y = ans.l.2[1:3], literacy[, 1:3])
+literacy.marks.rw <- mapply(function(x, y) factor(ifelse(x == y, "R", "W")), y = ans.l.2, literacy[, -26])
+# literacy.marks.rw <- mapply(function(x, y = ans.l.2) factor(ifelse(x == y, "R", "W")), literacy[, -26])
+# literacy.marks.rw <- sapply(literacy[, -26], function(x, y = ans.l.2) factor(ifelse(x == y, "R", "W")))
+pander(literacy.marks.rw)
+```
+
+##### 학생별 점수 산출
+
+<!--+ 정답을 집계하기 위하여 "R" 갯수를 다시 산출하는 `ifelse()` 적용.
+    + 4점씩 곱하면 100점 만점 기준의 점수가 됨. 
+    + 조사표는 작성해서 제출했지만 빈칸이 있는 경우는 그 문항을 0점 처리, 결석의 경우는 점수가 모두 0으로 나오는 경우를  NA처리 
+-->
+
+```{r, sum of rights answers, echo = FALSE, results = 'hide'}
+literacy.marks <- ifelse(literacy.marks.rw == "R", 1, 0)
+literacy.score <- apply(literacy.marks, 1, sum, na.rm = TRUE) * 4
+literacy.score[literacy.score == 0] <- NA
+which(literacy.score < 60)
+```
+
+```{r, pander score, echo = FALSE}
+pander(literacy.score)
+```
+
+<P style = "page-break-before:always">
+
+##### Red and Black 비교
+
+```{r, summary by group, echo = FALSE}
+pander(tapply(literacy.score, literacy$group, summary))
+# stem(literacy.score, scale = 2)
+stem(literacy.score, scale = 1)
+Red <- literacy$group == "Red"
+Black <- literacy$group == "Black"
+```
+
+- Red
+
+```{r, stem for Red}
+stem(literacy.score[Red], scale = 0.5)
+```
+
+- Black
+
+```{r, stem for Black}
+stem(literacy.score[Black])
+```
+
+<P style = "page-break-before:always">
+
+<!--#### Plots-->
+
+##### Box Plots
+
+```{r, boxplots, echo = FALSE, fig.width = 6, fig.height = 6}
+boxplot(literacy.score ~ literacy$group)
+```
+
+##### QQ plot
+
+```{r, qqplots, echo = FALSE, fig.width = 6, fig.height = 6}
+qqplot(x = literacy.score[Red], y = literacy.score[Black], xlab = "Red", ylab = "Black", ylim = c(65, 100))
+```
+
+<P style = "page-break-before:always">
+
+##### ECDF plot
+
+```{r, ECDF, echo = FALSE, fig.width = 6, fig.height = 6}
+literacy.score.red <- literacy.score[literacy$group == "Red" & !is.na(literacy.score)]
+literacy.score.black <- literacy.score[literacy$group == "Black" & !is.na(literacy.score)]
+plot(ecdf(literacy.score.red), xlim = range(c(literacy.score.red, literacy.score.black)), col = "red", main = "ECDF")
+plot(ecdf(literacy.score.black), add = TRUE)
+```
+
+<!--
+<P style = "page-break-before:always">
+-->
+
+##### 문해력 등급 판정
+    
+* I수준(24점 이하), II수준(28 ~ 48점), III수준(52 ~ 72점), IV수준(76점 이상) 
+    
+```{r, literacy grade, echo = FALSE}
+literacy.level <- factor(ifelse(literacy.score <= 24, "I", ifelse(literacy.score <= 48, "II", ifelse(literacy.score <= 72, "III", "IV"))), levels = c("I", "II", "III", "IV"))
+tbl.level <- table("문해력 등급 분포" = literacy.level, exclude = NULL)
+names(tbl.level)[5] <- "결석"
+pander(tbl.level, caption = "문해력 등급 분포")
+tbl.level.group <- table("Group" = literacy$group, "문해력 등급 분포" = literacy.level, exclude = NULL)
+colnames(tbl.level.group)[5] <- "결석"
+pander(tbl.level.group[1:2, ], caption = "그룹별 문해력 등급 분포")
+```
+
+<P style = "page-break-before:always">
+
+#### 문항 유형별 점수 분석
+
+```{r, item by type, echo = FALSE}
+type <- scan(file = "../data/literacy_type.txt", what = "")
+type.kr <- factor(type, levels = c("a", "b", "c"), labels = c("사실적", "추론적", "비판적"))
+```
+
+<!--* 유형별 점수 파악
+    * 왜 `literacy.marks`의 전치행렬을 사용하고 있는지 이해 필요.
+    * 변수들은 사실상 각 학생을 나타내므로 변수명을 `s1, s2, ...` 등으로 바꿈.
+    * 일부 문항의 응답이 NA이면 그 문항을 0점 처리, 결석이면 NA 처리. 
+-->
+
+```{r, computing scores by types, echo = FALSE, results = 'hide'}
+literacy.type.score <- aggregate(t(literacy.marks), list("유형" = type.kr), sum, na.rm = TRUE)
+literacy.type.score == 0
+literacy.type.score[literacy.type.score == 0] <- NA
+literacy.type.score.by.student <- t(literacy.type.score[, -1])
+N <- nrow(literacy)
+dimnames(literacy.type.score.by.student) <- list(paste("s", 1:N, sep = ""), paste(levels(type.kr), c("(52점)", "(36점)", "(12점)"), sep=""))
+```
+
+```{r, scores by types, echo = FALSE, results = 'hide'}
+pander(literacy.type.score.by.student * 4)
+```
+
+<!--##### 문항별 정답률-->
+
+<!--* 결석한 경우와 일부 문항에 답을 내지 않은 경우를 구분하는 것이 핵심.
+    + `literacy.marks`를 그대로 이용하면 쉽게 계산되나, `is.na`학습 목적으로 `literacy.mark.rw`에서 출발
+    + 모든 문항에 NA로 답한 결석한 학생들의 인덱스를 먼저 찾아내고,
+-->
+
+```{r, NA management, echo = FALSE, results = 'hide'}
+apply(literacy.marks.rw, 1, function(x) all(is.na(x)))
+na.all <- which(apply(literacy.marks.rw, 1, function(x) all(is.na(x))))
+```
+
+<!--* 정답률 계산
+    + NA를 모두 오답처리한 후, 결석한 학생들만 다시 NA로 정정.
+    + TRUE의 갯수를 합하여 평균. 
+-->
+
+```{r, computing correct answer rates, echo = FALSE, results = 'hide'}
+literacy.marks.2 <- literacy.marks.rw
+literacy.marks.2[is.na(literacy.marks.2)] <- "W"
+literacy.marks.2[na.all, ] <- NA
+literacy.marks.2 <- ifelse(literacy.marks.2 == "R", 1, 0)
+rate.by.item <- apply(literacy.marks.2, 2, mean, na.rm = TRUE)*100
+str(rate.by.item)
+rate.by.item <- as.matrix(rate.by.item, 25)
+dimnames(rate.by.item) <- list("문항" =  paste("문", 1:25, sep = ""), "정답률" = "정답률")
+# colnames(rate.by.item) <- "정답률"
+```
+
+<!--
+```{r, correct answer rates, echo = FALSE}
+pander(rate.by.item, digits = 3)
+```
+-->
+
+##### 유형별 정답률
+
+```{r, rates by types, echo = FALSE}
+rate.by.item.type <- data.frame("유형" = type.kr, "정답률" = rate.by.item)
+dimnames(rate.by.item.type) <- list("문항" = paste("문", 1:25, sep = ""), "유형과 정답률" = c("유형", "정답률"))
+pander(format(rate.by.item.type, digits = 3, nsmall = 1), align = c("l", "r"))
+```
+
+<!--* `replace()`를 이용하면, 
+
+```{r}
+(literacy.marks.3 <- replace(literacy.marks.rw, is.na(literacy.marks.rw), "W"))
+literacy.marks.3[na.all, ] <- NA
+literacy.marks.3
+```
+-->
+
+<!--<P style = "page-break-before:always">-->
+
+#### 어려운 문제?
+
+##### 정답률 80% 이하
+
+```{r, hardest question below 80, echo = FALSE}
+pander(rate.by.item[which(rate.by.item <= 80), ])
+```
+
+##### 정답률 70% 이하
+
+```{r, hardest question below 70, echo = FALSE}
+pander(rate.by.item[which(rate.by.item <= 70), ])
+```
+
+##### 정답률 60% 이하
+
+```{r, hardest question below 60, echo = FALSE}
+pander(t(rate.by.item[which(rate.by.item <= 60), , drop = FALSE]))
+```
+
+<!--## Data 정리
+
+```{r}
+save.image("literacy_201602.rda")
+```
+-->

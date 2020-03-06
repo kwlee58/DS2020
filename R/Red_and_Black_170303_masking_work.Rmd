@@ -1,0 +1,91 @@
+---
+# title: "Red and Black 170303 : Names Masked"
+# author: "coop711"
+# date: "`r Sys.Date()`"
+output: html_document
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(knitr)
+```
+
+### Data
+
+```{r, data}
+class_roll <- read.table("../data/class_roll_masked.txt", header = TRUE, stringsAsFactors = FALSE, encoding = "CP949")
+str(class_roll)
+```
+
+### Randomization
+
+```{r, randomization}
+set.seed(107)
+N <- nrow(class_roll) 
+class_roll$group <- sample(1:N) %% 2 + 1
+class_roll$group <- factor(class_roll$group, labels = c("Red", "Black"))
+red.id <- which(class_roll$group == "Red")
+black.id <- which(class_roll$group == "Black")
+```
+
+### 학번
+
+```{r, id}
+ID.16 <- factor(ifelse(substr(class_roll$id, 1, 4) >= 2016, "younger.16", "older.16"), levels = c("younger.16", "older.16"))
+kable(table("16학번 기준" = ID.16, "그룹" = class_roll$group))
+ID.15 <- factor(ifelse(substr(class_roll$id, 1, 4) >= 2015, "younger.15", "older.15"), levels = c("younger.15", "older.15"))
+kable(table("15학번 기준" = ID.15, "그룹" = class_roll$group))
+ID.14 <- factor(ifelse(substr(class_roll$id, 1, 4) >= 2014, "younger.14", "older.14"), levels = c("younger.14", "older.14"))
+kable(table("14학번 기준" = ID.14, "그룹" = class_roll$group))
+ID.13 <- factor(ifelse(substr(class_roll$id, 1, 4) >= 2013, "younger.13", "older.13"), levels = c("younger.13", "older.13"))
+kable(table("13학번 기준" = ID.13, "그룹" = class_roll$group))
+```
+
+### 학번 홀짝
+
+```{r, odd or even}
+odd.even <- as.numeric(class_roll$id) %% 2
+kable(table("odd_even" = odd.even, "Group"= class_roll$group))
+```
+
+### e-mail 서비스업체
+
+```{r, e_mail}
+e.mail.list <- strsplit(class_roll$e.mail, "@", fixed = TRUE)
+mail.com <- mapply("[", e.mail.list, 2)
+kable(table("e-mail" = mail.com, "그룹" = class_roll$group))
+```
+
+### 성씨 분포
+
+```{r, name}
+f.name <- substring(class_roll$name, first = 1, last = 1)
+kable(table("Family Name" =f.name, "Group" = class_roll$group))
+```
+
+### 많이 나오는 성씨
+
+```{r, frequent names}
+f.name.f <- factor(ifelse(f.name %in% c("김", "이", "박"), f.name, "기타"), levels = c("김", "이", "박", "기타"))
+kable(table("Group" = class_roll$group, "Family Name" = f.name.f))
+```
+
+### 학과
+
+```{r, departments}
+# kable(class_roll)
+kable(table("그룹" = class_roll$group, "학과" = class_roll$dept))
+```
+
+### 전체 출석부
+
+```{r, colleges}
+kable(class_roll)
+```
+
+<!--
+```{r, save}
+save.image("../R/red_and_black_170303_data_masked.RData")
+```
+-->

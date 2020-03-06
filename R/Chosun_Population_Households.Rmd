@@ -1,0 +1,105 @@
+---
+title: "Chosun Population and Housholds"
+output: html_document
+---
+
+## Problem
+
+오기수 교수의 논문 조선시대 각 도별 인구 및 전답과 조세부담액 분석에 등장하는 __연도별 호수 및 인구와 호당인구__ 를 도표로 제시
+
+```{r}
+knitr::include_graphics("../pics/chosun_population_households.png", dpi = 84)
+```
+
+<P style = "page-break-before:always">
+
+## Data
+
+```{r, data}
+Years <- c(1404, 1406, 1432, 1648, 1657, 1669, 1672, 1678, 1717, 1724, 1726, 1777)
+Households <- c(153403, 180246, 201853, 441321, 658771, 1313453, 1178144, 1342428, 1560561, 1572086, 1576598, 1715371)
+Population <- c(322746, 370365, 692475, 1531365, 2290083, 5018644, 4701359, 5246972, 6846568, 6865286, 7032425, 7238546)
+chosun_df <- data.frame(Years, Households, Population)
+str(chosun_df)
+```
+
+## Plot (R Base)
+
+```{r, base plot, fig.width = 9, fig.height = 6.75}
+par(family = "KoPubWorldDotum Medium")
+plot(Population / 10000 ~ Years, data = chosun_df, type = "b", 
+     pch = 21, col = "red", bg = "white",
+     ylim = c(0, 800), xaxt = "n", yaxt = "n", ann = FALSE)
+lines(Households / 10000 ~ Years, data = chosun_df, type = "b",
+      pch = 21, col = "blue", bg = "white")
+Years_ticks <- c(1404, 1432, 1648, 1669, 1678, 1717, 1777)
+Years %in% Years_ticks
+Households_ticks <- Households[Years %in% c(1404, 1669, 1777)]
+Population_ticks <- Population[Years %in% c(1404, 1432, 1648, 1657, 1669, 1717, 1777)]
+y_breaks <- c(Population_ticks, Households_ticks) / 10000
+y_labels <- format(c(Population_ticks, Households_ticks) / 10000, digits = 3, nsmall = 0)
+axis(side = 1, at = Years_ticks, labels = Years_ticks, las = 2)
+axis(side = 2, 
+     at = c(Population_ticks, Households_ticks) / 10000, 
+     labels = format(c(Population_ticks, Households_ticks) / 10000, digits = 3, nsmall = 0), 
+     las = 2)
+legend("topleft", inset = 0.05, legend = c("인구", "호수"), lty = 1, col = c("red", "blue"))
+text(x = 1700, y = c(500, 100), labels = c("인구", "호수"))
+main_title <- "조선시대 호수와 인구수의 변화"
+x_lab <- "연도"
+y_lab <- "호수와 인구수\n(단위 만)"
+title(main = main_title, line = 1, cex.main = 2, family = "KoPubWorldDotum Bold")
+title(xlab = x_lab, ylab = y_lab, line = 2, family = "KoPubWorldDotum Bold")
+# dev.copy(png, file = "../pics/chosun_demo.png", width = 800, height = 450)
+# dev.off()
+```
+
+<!--
+<P style = "page-break-before:always">
+-->
+
+## ggplot
+
+### Reshaping
+
+```{r, reshape}
+library(ggplot2)
+library(reshape2)
+source("theme_kr.R")
+chosun_melt <- melt(chosun_df, 
+                    id.vars = "Years", measure.vars = c("Households", "Population"),
+                    variable.name = "Variable", value.name = "Counts")
+str(chosun_melt)
+```
+
+### geom_line(), geom_point(), ...
+
+```{r, ggplot, fig.width = 9, fig.height = 5.1}
+g1 <- ggplot(data = chosun_melt, 
+             mapping = aes(x = Years, y = Counts / 10000, colour = Variable)) + 
+  geom_line() + 
+  geom_point(shape = 21, fill = "white", size = 3, show.legend = FALSE) 
+g2 <- g1 + 
+  theme_bw() +  
+  theme_kr
+g3 <- g2 + 
+#  theme(panel.grid.major = element_line(linetype = "dotted", colour = "black")) +
+  scale_x_continuous(name = x_lab, breaks = Years_ticks, labels = Years_ticks) +
+  theme(axis.text.x = element_text(angle = 90))
+g4 <- g3 +
+  scale_y_continuous(name = y_lab, breaks = y_breaks, labels = y_labels) +
+  theme(axis.text.y = element_text(angle = 0))
+g5 <- g4 + 
+  scale_colour_manual(values = c("red", "blue"), labels = c("호수", "인구수")) +
+  theme(legend.title = element_blank())
+g6 <- g5 + 
+  theme(legend.position = c(0.2, 0.8), 
+        legend.background = element_rect(colour = "black", linetype = "solid"))
+g7 <- g6 + 
+  ggtitle(main_title) + 
+  theme(plot.title = element_text(hjust = 0.5, size = 18, margin = margin(b = 12))) +
+  annotate("text", x = 1700, y = c(500, 100), label = c("인구", "호수"), 
+           family = "KoPubWorldDotum Medium")
+g7
+# ggsave("../pics/chosun_demo_ggplot.png", width = 9, height = 81/16, units = "in", dpi = 72)
+```
