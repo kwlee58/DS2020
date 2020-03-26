@@ -8,8 +8,8 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-# install.packages("xlsx", repos = "https://cran.rstudio.com")
-library(xlsx)
+# install.packages("openxlsx", repos = "https://cran.rstudio.com")
+library(openxlsx)
 library(knitr)
 ```
 
@@ -17,14 +17,12 @@ library(knitr)
 
 ```{r, data}
 class_roll <- read.xlsx("../data/class_roll0303_deid.xlsx", 
-                        sheetIndex = 1, 
+                        sheet = 1, 
                         startRow = 2, 
-                        endRow = 162, 
-                        colIndex = c(3:7, 9), 
-                        colClasses = rep("character", 6), 
-                        encoding = "UTF-8", 
-                        stringsAsFactors = FALSE)
+                        cols = c(3:7, 9))
 names(class_roll) <- c("dept", "id", "name", "year", "email", "cell_no")
+class(class_roll$id) <- "character"
+class(class_roll$year) <- "character"
 ```
 
 ### 학번 가리기
