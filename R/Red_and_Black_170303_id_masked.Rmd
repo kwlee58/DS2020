@@ -24,9 +24,9 @@ str(class_roll)
 ### Randomization
 
 ```{r, randomization}
-set.seed(107)
+set.seed(1)
 N <- nrow(class_roll) 
-class_roll$group <- sample(1:N) %% 2 + 1
+class_roll$group <- sample(1:N) %% 2 
 class_roll$group <- factor(class_roll$group, 
                            labels = c("Red", "Black"))
 red_id <- which(class_roll$group == "Red")
