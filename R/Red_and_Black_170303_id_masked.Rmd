@@ -17,14 +17,14 @@ library(knitr)
 class_roll <- read.table("../data/class_roll_masked.txt", 
                          header = TRUE, 
                          stringsAsFactors = FALSE, 
-                         encoding = "UTF-8")
+                         encoding = "CP949")
 str(class_roll)
 ```
 
 ### Randomization
 
 ```{r, randomization}
-# set.seed(107)
+set.seed(107)
 N <- nrow(class_roll) 
 class_roll$group <- sample(1:N) %% 2 + 1
 class_roll$group <- factor(class_roll$group, 
@@ -97,15 +97,17 @@ kable(table("Group" = class_roll$group,
 
 ### 전화번호의 분포
 
+전화번호 앞 두자리를 모두 11로 바꿨던 점에 유의.
+
 ```{r}
 cell_numbers <- sapply(substr(class_roll$cell_no, 5, 8), 
                        as.numeric)
-# cut_label <- c("1000~1999", "2000~2999", "3000~3999", "4000~4999", "5000~5999", "6000~6999",
-#                "7000~7999", "8000~8999", "9000~9999")
-cut_label <- paste(paste0(1:9, "000"), paste0(1:9, "999"), sep = "~")
+# cut_label <- c("1100~1109", "1110~1119", "1120~1129", "1130~1139", # "1140~1149", "1150~1159", "1160~1169", "1170~1179", "1180~1189", # "1190~1199")
+cut_label <- paste(paste0(seq(1100, 1190, by = 10)),
+ paste0(seq(1109, 1199, by = 10)), sep = "~")
 kable(t(table(cut(cell_numbers, 
                   labels = cut_label, 
-                  breaks = seq(1000, 10000, by = 1000)))))
+                  breaks = seq(1100, 1200, by = 10)))))
 hist(cell_numbers)
 ```
 
