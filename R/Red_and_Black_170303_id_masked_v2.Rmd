@@ -1,0 +1,231 @@
+---
+title: "Red and Black 170303 : id Masked"
+author: "coop711"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(knitr)
+```
+
+## Data
+
+`Class_roll_170303_data_maskingv2.Rmd`에서 생성한 `class_roll_masked.txt`를 읽어들인다  윈도우 시스템에서 작업을 하기 때문에 `encoding = "CP949"`가 들어가 있다. 
+파일 경로에 나오는 텍스트 파일을 열었을 때 글자들이 깨져 보이면  File > `Reopen with Encoding = `을 `CP949`로 설정한다.
+이도저도 잘 안되면 위의 Rmd 파일을 다시 실행하여 `CP949`로 encoding한 텍스트 파일을 생성하여 읽어들인다.
+
+`header = TRUE`는 텍스트 파일의 첫 줄을 변수 이름으로 읽어들이라는 설정이고, `stringsAsFactors = FALSE`는 글자들이 `factor`로 변환되는 것을 방지하고 글자 속성을 유지하도록 한다.
+
+`str`은 `R` object의 구조를 보여준다. 당초 ID가리기 파일에서 모두 글자(character)로 설정하였으나 텍스트 파일을 읽어들이는 과정에서는 학번과 학년이 정수(integer)로 바뀌어 있음에 유의하여야 한다.
+
+```{r, data}
+class_roll <- read.table("../data/class_roll_masked.txt", 
+                         header = TRUE, 
+                         stringsAsFactors = FALSE,
+                         encoding = "CP949")
+str(class_roll)
+```
+
+## Randomization
+
+출석부를 랜덤하게 두 집단으로 나누어보자. 맨 앞에 나오는 
+`set.seed()` 랜덤 넘버를 생성하는 데 쓰이는 초기값을 설정하는 함수이다. 초기값을 설정해 줌으로써 실험을 반복 구현할 수 있다.
+우선 전체 인원을 파악하여 `N`에 저장한다. 전체 인원은 `class_roll`의 행의 갯수에 해당하므로 행의 갯수를 계산해 주는 `nrow()`함수를 사용한다. 이렇게 함으로써 다른 출석부에 대하여 동일한 작업을 수행하려 할 때 `N`값만 바꿔주면 된다.  
+
+랜덤화 작업을 위해서 필요한 함수는 1에서 `N`까지의 일련번호, 즉, `1:N`, 을 랜덤하게 섞어 놓는 기능을 가진 `sample()`함수이다. `:`를 어떻게 사용하는 지 도움말을 살펴보려면 `?":"`라고 하면 된다. 따옴표 대신에 backtick, "`"을 사용하여도 된다. 
+`sample()`함수를 어떻게 사용하는 지 도움말을 살펴보면 
+
+`sample(x, size, replace = FALSE, prob = NULL)`
+
+모집단에 해당하는 `x`, 표본의 크기를 설정하는 `size`, 복원추출인지  비복원추출인지 설정하는 `replace =`, 그리고 표본 추출 과정에서 각 모집단의 각 구성요소가 추출되는 확률을 정해주는 `prob =`를 조정할 수 있다.  
+비복원추출이 기본값으로 설정되어 있음을 알 수 있다.
+`size`를 설정하지 않으면 모집단 전체를 랜덤하게 재배치하는 것으로 출석부를 랜덤하게 둘로 나누는 작업에 적합하다. 
+
+몇 번에 걸쳐 `sample(1:N)`을 실행해 보면 어떻게 일련번호를 랜덤하게 재배치하는 지 알 수 있다. 서로 닮은 두 집단으로 나누는 것은 마치 동전을 던져 앞면이 나온 집단과 뒷면이 나온 집단이 서로 닮듯이 1에서 `N`을 랜덤하게 재배치한 후 2로 나누어 나머지가 0인 집단과 나머지가 1인 집단으로 나누면 각각의 확률이 1/2로 같기 때문에 서로 닮은 두 집단이 나오게 된다.`%%`는 나눗셈에서 나머지를 계산하는 함수이다. 이 함수의 사용법에 대하여 도움말을 찾으려면 역시 `?"%%"`라고 하면 된다. 나눗셈에서 몫을 찾는 함수는 `%/%`이다. 세번째 줄의 오른쪽 코드를 실행해 본다. 이렇게 생성된 0과 1을 `class_roll$group`으로 저장한다. 
+
+각 집단에 `Red`와 `Black`이라는 이름(label)을 붙이고자 한다.
+이와 같은 분류에 적합한 `R` object가 바로 `factor()`이다. 
+분류에 필요한 수준(levels)과 각 수준에 붙이는 이름(labels)이 따른다. 이름(labels)은 별도로 설정하지 않으면 수준(levels)을 그대로 쓴다. `class_roll$group`은 0과 1로 되어 있어서 수준을 따로 설정하지 않으면 그대로 0과 1을 수준으로 갖는다. "Red"와 "Black"을 각 수준의 이름으로 설정하려면 `labels = c("Red", "Black")` 이라고 설정해주면 된다. 이를 설정하지 않고 기본값으로 `factor` 변화하면 수준을 어떻게 자연수로 표시하는지 `str`함수를 이용해서 살펴보도록 한다. 
+
+
+```{r, randomization}
+set.seed(1)
+N <- nrow(class_roll) 
+class_roll$group <- sample(1:N) %% 2 
+class_roll$group <- factor(class_roll$group, 
+                           labels = c("Red", "Black"))
+```
+
+## 랜덤화 효과
+
+### 입학년도
+
+`Red` 집단과 `Black`짐단이 어떻게 닮았는지 학번을 기준으로 살펴본다. 입학년도를 추출하는 것은 신상정보 가리기 학습에서 본 바와 같이 `substr()`함수를 이용한다. 분할표 만으로도 충분히 두 집단이 얼마나 닮았는지 살필 수 있기 때문에 `table()`을 이용하여 그룹별로 입학년도의 분포를 살핀다. 주의할 점은 `class_roll$id` 는 `integer`이고 숫자이지만 `substr()`을 적용하면서 글자로 변환된다는 것이다. 그래서 별도의 글자 전환없이 그대로 사용할 수 있다.   
+
+```{r, entrance}
+kable(table("그룹" = class_roll$group, 
+            "학번" = substr(class_roll$id, 
+                          start = 1, stop = 4)))
+```
+
+### 학번
+
+한편, 학번을 기준으로 $2\times2$ 테이블을 만들어 두 집단을 비교한다. 16학번을 기준으로 한다면 앞 4자리를 추출하여 2016과 비교하여 같거나 크면 16이후 학번이고, 그렇지 않으면 15이전 학번이다. 이와 같은 이분법에 적합한 함수가 `ifelse()`이다. 
+`substr()`함수를 이용하여 입학년도가 2016보다 크거나 같으면 `"younger_16"`, 그렇지 않으면 `"older_16"`라고 값을 준다.
+이를 다시 같은 수준을 갖는 `factor`로 변환하고 이원분할표를 만든다. 16학번 뿐 아니라 15학번, 14학번에 대하여 반복하고 얼마나 닮았는지 살핀다. 
+
+```{r, id}
+ID_16 <- factor(ifelse(substr(class_roll$id, 1, 4) >= 2016, 
+                       "younger_16", "older_16"), 
+                levels = c("younger_16", "older_16"))
+kable(table("그룹" = class_roll$group, 
+            "16학번 기준" = ID_16))
+ID_15 <- factor(ifelse(substr(class_roll$id, 1, 4) >= 2015, 
+                       "younger_15", "older_15"), 
+                levels = c("younger_15", "older_15"))
+kable(table("그룹" = class_roll$group,
+            "15학번 기준" = ID_15))
+ID_14 <- factor(ifelse(substr(class_roll$id, 1, 4) >= 2014, 
+                       "younger_14", "older_14"), 
+                levels = c("younger_14", "older_14"))
+kable(table("그룹" = class_roll$group,
+            "14학번 기준" = ID_14))
+ID_13 <- factor(ifelse(substr(class_roll$id, 1, 4) >= 2013, 
+                       "younger_13", "older_13"), 
+                levels = c("younger_13", "older_13"))
+kable(table("그룹" = class_roll$group,
+            "13학번 기준" = ID_13))
+```
+
+<!--
+### 학번 홀짝
+
+```{r, odd or even}
+odd.even <- as.numeric(class_roll$id) %% 2
+kable(table("odd_even" = odd.even, "Group"= class_roll$group))
+```
+-->
+
+### email 서비스업체
+
+e-mail 주소는 `@`을 중심으로 사용자명과 서비스업체주소로 나뉜다. 이를 기준으로 글자 벡터를 쪼개는 데는 `strsplit()`함수를 사용할 수 있다. `split = "@"`에서 글자 쪼개는 기준을 설정한다. `.` 등 정규표현에 나오는 특수 문자들을 있는 그대로 읽으려면 `fixed = TRUE`로 설정해야 한다. 이 경우에는 굳이 설정하지 않아도 된다. FALSE가 기본값이다.
+
+쪼갠 결과는 `list` 로 나오는데 서비스업체는 그 중 두번째 요소들로 구성된다. 두번째 요소를 추출하는 것은 `"["` 함수를 이용하면 되고, `email_list`의 모든 요소에 똑같은 함수를 적용하므로 `sapply()`가 아주 유용하게 사용된다. 그 결과를 
+`mail_com`에 저장하여 분할표 작성에 사용한다. 
+
+```{r, e_mail}
+email_list <- strsplit(class_roll$email, 
+                       split = "@", 
+                       fixed = FALSE)
+mail_com <- sapply(email_list, 
+                   FUN = `[`, 2)
+kable(table("그룹" = class_roll$group,
+            "e-mail" = mail_com))
+```
+
+### 성씨 분포
+
+비식별화 출석부에서 활용가능한 또 하나의 변수는 성씨이다. 
+성씨는 이름 맨 앞자리에 나오므로 `substr()`이나 `substring()`함수를 사용할 수 있다. `class_roll$name`에서 첫 글자만 뽑아서 `f_name`이라 하고, 분할표를 만들어 두 집단을 비교한다. 
+
+```{r, name}
+f_name <- substring(class_roll$name, 
+                    first = 1, last = 1)
+kable(table("Group" = class_roll$group,
+            "Family Name" = f_name))
+```
+
+### 많이 나오는 성씨
+
+성씨 중에 많이 나오는 김, 이, 박씨들을 그대로 두고, 나머지 성씨들은 "기타"로 하여 분포를 살핀다. `"%in%"`함수가 나오는 코드는 바로 위에서 구한 `f_name` 과 `c("김", "이", "박")`을 비교하여 있으면 `TRUE`, 없으면 `FALSE`를 출력한다. `ifelse()`를 거치면서 `TRUE`이면 "김", "이", "박" 을 그대로 나타내고, `FALSE`이면 "기타"로 나온다. 그 결과를 다시 `factor`로 변환하고 분할표로 두 그룹을 비교한다.
+
+```{r, frequent names}
+f_name_f <- factor(ifelse(f_name %in% c("김", "이", "박"), 
+                          f_name, "기타"), 
+                   levels = c("김", "이", "박", "기타"))
+kable(table("Group" = class_roll$group, 
+            "Family Name" = f_name_f))
+```
+
+### 전화번호의 분포
+
+전화번호 앞 두자리를 모두 11로 바꿨던 점에 유의하자. 전화번호의 중간 네 자리를 추출하기 위하여 `substr()`함수를 사용한다. 추출한 결과는 글자인데, 이를 활용하여 히스토그램을 그리려니까 숫자로 변환하기 위하여 `as.numeric()`을 전체에 적용한다. `sapply()`의 전형적인 사용사례이다. 
+
+분포표를 작성하기 위하여 각 계급구간에 해당하는 이름을 `paste()`함수를 이중으로 구사하였는 데 각각을 따로 실행하여 각각 어떤 목적으로 작성되었는지 살핀다. 전화번호 네자리의 분포표를 만들기 위하여 `cut()`함수를 사용하였는 데 사용법을 파악하고 `hist()`함수로 그린 그림이 균일한 분포라고 할 수 있는 지 판단하라. 
+
+```{r}
+cell_numbers <- sapply(substr(class_roll$cell_no, 
+                              start = 5, stop = 8), 
+                       as.numeric)
+# cut_label <- c("1100~1109", "1110~1119", "1120~1129", "1130~1139", # "1140~1149", "1150~1159", "1160~1169", "1170~1179", "1180~1189", # "1190~1199")
+cut_label <- paste(paste0(seq(1100, 1190, by = 10)),
+ paste0(seq(1109, 1199, by = 10)), sep = "~")
+kable(t(table(cut(cell_numbers, 
+                  labels = cut_label, 
+                  breaks = seq(1100, 1200, by = 10)))))
+hist(cell_numbers)
+```
+
+<!--
+### 학과
+
+```{r, departments}
+# kable(class_roll)
+kable(table("그룹" = class_roll$group, "학과" = class_roll$dept))
+```
+-->
+
+### 출석부에서 8명 비복원 랜덤 표집
+
+출석부에서 8명만 비복원으로 랜덤하게 뽑는 코드이다. `"["` 의  사용방법을 알 수 있는 사례이다. `sample()`함수가 어떻게 작동하고 `"["` 가 행과 열을 어떻게 구분하는지 살핀다. 
+
+```{r, colleges}
+# set.seed(1)
+kable(class_roll[sample(1:nrow(class_roll), size = 8), ])
+```
+
+<!--
+<P style = "page-break-before:always">
+-->
+
+### `set.seed()` 의 용법
+
+`set.seed()`를 이용하면 랜덤넘버에 의존하는 실험을 재현할 수 있다. 
+다음 코드를 반복 수행하거나 다른 사람들의 수행결과와 비교해 보라.
+
+세 결과가 모두 다른 경우
+
+```{r}
+sample(1:6, size = 2)
+sample(1:6, size = 2)
+sample(1:6, size = 2)
+```
+
+ 세 번의 수행 결과가 똑같이 반복되는 경우
+
+```{r}
+set.seed(1)
+sample(1:6, size = 2)
+sample(1:6, size = 2)
+sample(1:6, size = 2)
+```
+
+동일한 결과를 반복적으로 얻는 경우
+
+```{r}
+set.seed(1)
+sample(1:6, size = 2)
+set.seed(1)
+sample(1:6, size = 2)
+set.seed(1)
+sample(1:6, size = 2)
+```
+
+<!--
+```{r, save}
+save.image("../R/red_and_black_170303_data_masked.RData")
+```
+-->

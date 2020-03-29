@@ -16,7 +16,7 @@ library(knitr)
 ```{r, data}
 class_roll <- read.table("../data/class_roll_masked.txt", 
                          header = TRUE, 
-                         stringsAsFactors = FALSE, 
+                         stringsAsFactors = FALSE,
                          encoding = "CP949")
 str(class_roll)
 ```
