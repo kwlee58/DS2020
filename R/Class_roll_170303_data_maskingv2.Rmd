@@ -80,8 +80,8 @@ kable(class_roll[sample(1:nrow(class_roll), size = 20), ])
 
 ```{r, save}
 write.table(class_roll, 
-            file ="../data/class_roll_masked.txt",
-            fileEncoding = "CP949")
+            file ="../data/class_roll_masked.txt")
+#            fileEncoding = "UTF-8")
+#            fileEncoding = "CP949")
 save.image("../R/class_roll_170303_data_masked.RData")
 ```
--->
