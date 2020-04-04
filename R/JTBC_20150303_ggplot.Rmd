@@ -8,13 +8,14 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(knitr)
+getwd()
 ```
 
 # Problem,
 
 JTBC 뉴스룸에서 김영란법 국회 통과에 관련하여 여론조사한 결과라고 보여 준 자료는 더 이상 남아 있지 않으나 트위터에 다음과 같은 내용으로 남아 있다. 어딘가 이상하다.
 
-```{r, echo = FALSE, out.width = "50%", fig.align = "center"}
+```{r, echo = TRUE, out.width = "50%", fig.align = "center"}
 include_graphics("../pics/JTBC_20150303.png")
 ```
 
@@ -22,7 +23,7 @@ include_graphics("../pics/JTBC_20150303.png")
 이 도표의 문제점을 여러 네티즌들이 지적하였더니 방송본에는 다음과 같은 스크린캡처가 남아 있다.
 
 
-```{r, echo = FALSE, out.width = "45%", fig.align = "center"}
+```{r, echo = TRUE, out.width = "45%", fig.align = "center"}
 include_graphics("../pics/JTBC_20150303v2.png")
 ```
 
@@ -119,3 +120,7 @@ ggplot(data = poll_tbl,
         legend.text = element_text(family = "")) +
   coord_polar(theta = "y")
 ```
+
+## Comments
+
+Cheating Charts 를 학습하고 느낀 점을 간단히 기술합니다.  
