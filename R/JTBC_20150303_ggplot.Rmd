@@ -1,7 +1,7 @@
 ---
-title: "JTBC 20150303"
+title: "Cheating Charts : JTBC 20150303"
 author: "coop711"
-date: '2018-03-26'
+date: "`r Sys.Date()`"
 output: html_document
 ---
 
@@ -10,7 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(knitr)
 ```
 
-# Problem, context
+# Problem,
 
 JTBC 뉴스룸에서 김영란법 국회 통과에 관련하여 여론조사한 결과라고 보여 준 자료는 더 이상 남아 있지 않으나 트위터에 다음과 같은 내용으로 남아 있다. 어딘가 이상하다.
 
