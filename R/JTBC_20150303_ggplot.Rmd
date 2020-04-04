@@ -10,21 +10,35 @@ knitr::opts_chunk$set(echo = TRUE)
 library(knitr)
 ```
 
-## Problem
+# Problem, context
 
-JTBC 뉴스룸에서 김영란법 국회 통과에 관련하여 여론조사한 결과라고 보여 준 자료는 더 이상 남아 있지 않으나 트위터에 다음과 같은 내용으로 남아 있다. 
+JTBC 뉴스룸에서 김영란법 국회 통과에 관련하여 여론조사한 결과라고 보여 준 자료는 더 이상 남아 있지 않으나 트위터에 다음과 같은 내용으로 남아 있다. 어딘가 이상하다.
 
-`r include_graphics("../pics/JTBC_20150303.png", dpi = NA)`
+```{r, echo = FALSE, out.width = "50%", fig.align = "center"}
+include_graphics("../pics/JTBC_20150303.png")
+```
+
 
 이 도표의 문제점을 여러 네티즌들이 지적하였더니 방송본에는 다음과 같은 스크린캡처가 남아 있다.
 
-`r include_graphics("../pics/JTBC_20150303v2.png", dpi = 48)`
 
-이 도표를 제대로 그리면 어떻게 나오는지 알아보자. Base R의 `pie()`함수를 활용한다. 
-도표 안의 레이블 좌표는 극좌표 변환식 $x = r \cos(\theta), y = r \sin(\theta)$를 이용한다.
+```{r, echo = FALSE, out.width = "45%", fig.align = "center"}
+include_graphics("../pics/JTBC_20150303v2.png")
+```
+
+이 도표를 제대로 그려보자.
+
+# Math
+
+Base R의 `pie()`함수를 활용한다. 
+도표 안의 레이블 좌표는 극좌표 변환식 $x = r \cos(\theta),\; y = r \sin(\theta)$를 이용한다.
 
 각 텍스트 레벨의 좌표를 계산하려면 64.0의 각도가 0으로 세팅되어 있음에 유의하고, 극좌표의 각도를 계산하기 위하여 시계 반대 방향으로 90도가 25%에 해당한다는 점에 착안한다. 텍스트 라벨 7.3이 새겨져 있는 각도가 28.7%와 7.3%의 가운데이므로 (25% + 28.7%)와 (25% + 28.7% + 7.3%)의 가운데이고 이를 각도로 표현하면 $\frac{(25 + 28.7) + (25 + 28.7 + 7.3)}{2}\times\frac{1}{100}\times2\pi$이 된다. 같은 방식으로 텍스트 라벨 28.7이 새겨진 위치의 각도는 25%와 (25% + 28.7%)의 가운데인 $\frac{25 + (25 + 28.7)}{2}\times\frac{1}{100}\times2\pi$
-이 된다. 또는 텍스트 라벨 7.3의 위치를 25% + 27.8% 에서 7.3%의 반을 더한 것으로 이해하여도 된다. 이 때의 식은 $25 + 28.7 + 7.3/2)\times\times\frac{1}{100}2\pi$으로 표현할 수 있다. 텍스트 라벨 28.7의 위치는 25%에서 28.7%의 반을 더한 위치, $(25 + 28.7/2)\times\frac{1}{100}\times2\pi$이 된다.
+이 된다. 
+
+또는 텍스트 라벨 7.3의 위치를 25% + 27.8% 에서 7.3%의 반을 더한 것으로 이해하여도 된다. 이 때의 식은 $(25 + 28.7 + 7.3/2)\times\frac{1}{100}\times2\pi$으로 표현할 수 있다. 텍스트 라벨 28.7의 위치는 25%에서 28.7%의 반을 더한 위치, $(25 + 28.7/2)\times\frac{1}{100}\times2\pi$이 된다.
+
+# Programming
 
 ## Data
 
@@ -51,7 +65,7 @@ kable(t(as.matrix(poll)), caption = "김영란법 국회 통과")
 ## `pie()`
 
 ```{r, fig.width = 6, fig.height = 6}
-par(family = "KoPubWorldDotum Medium")
+par(family = "")
 pie(poll, 
     labels = names(poll), 
     radius = 1,
@@ -85,10 +99,15 @@ library(ggplot2)
 pos <- cumsum(poll) - poll / 2
 pos2 <- pos
 pos2[1] <- 25
-poll_tbl <- data.frame(key = names(poll), value = poll, row.names = NULL)
-ggplot(data = poll_tbl, mapping = aes(x = 2, y = value, fill = key)) +
+poll_tbl <- data.frame(key = names(poll), 
+                       value = poll, 
+                       row.names = NULL)
+ggplot(data = poll_tbl, 
+       mapping = aes(x = 2, y = value, fill = key)) +
   geom_bar(stat = "identity") +
-  geom_text(aes(y = pos2, label = poll), size = 8, colour = "white") +
+  geom_text(aes(y = pos2, label = poll), 
+            size = 8, 
+            colour = "white") +
   xlim(0.5, 2.5) +
   labs(x = NULL, y = NULL) +
   scale_fill_manual(values = c("gray", "red", "blue")) +
@@ -97,6 +116,6 @@ ggplot(data = poll_tbl, mapping = aes(x = 2, y = value, fill = key)) +
   theme_void() +
   theme(axis.ticks = element_blank(),
         axis.text = element_blank(),
-        legend.text = element_text(family = "HCR Dotum LVT")) +
+        legend.text = element_text(family = "")) +
   coord_polar(theta = "y")
 ```
