@@ -8,8 +8,8 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-# install.packages("xlsx", repos = "https://cran.rstudio.com")
-library(xlsx)
+# install.packages("openxlsx", repos = "https://cran.rstudio.com")
+library(openxlsx)
 library(knitr)
 ```
 
@@ -17,15 +17,12 @@ library(knitr)
 
 ```{r, data}
 class_roll <- read.xlsx("../data/class_roll0303_deid.xlsx", 
-                        sheetIndex = 1, 
+                        sheet = 1, 
                         startRow = 2, 
-                        endRow = 162, 
-                        colIndex = c(3:7, 9), 
-                        colClasses = rep("character", 6), 
-                        encoding = "UTF-8", 
-                        stringsAsFactors = FALSE)
+                        cols = c(3:7, 9))
 names(class_roll) <- c("dept", "id", "name", "year", "email", "cell_no")
-str(class_roll)
+class(class_roll$id) <- "character"
+class(class_roll$year) <- "character"
 ```
 
 ### 학번 가리기
@@ -72,16 +69,12 @@ email 주소는 `@`를 사이에 두고 나뉘어진다.
 
 ```{r, e_mail}
 class_roll$email <- sub("^.+@", "user_name@", class_roll$email)
-kable(class_roll[sample(1:nrow(class_roll), size = 20), ])
+kable(class_roll[sample(1:nrow(class_roll), size = 25), ])
 ```
 
-`class_roll`을 텍스트 파일로 저장하여 다음 수업에 활용한다. 
-`fileEncoding = "CP949"`는 생성되는 텍스트 파일의 폰트를 설정하는 것으로 한글 윈도우의 기본 폰트인 `CP949`를 명시한다.
-
+<!--
 ```{r, save}
-write.table(class_roll, 
-            file ="../data/class_roll_masked.txt")
-#            fileEncoding = "UTF-8")
-#            fileEncoding = "CP949")
+write.table(class_roll, file ="../data/class_roll_masked.txt")
 save.image("../R/class_roll_170303_data_masked.RData")
 ```
+-->
