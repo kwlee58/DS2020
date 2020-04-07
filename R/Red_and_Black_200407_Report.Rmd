@@ -43,7 +43,8 @@ class_roll %$%
 # pander(table("그룹" = class_roll$group, substr(class_roll$id, 1, 4)))
 ```
 
-### 19학번 기준
+<!--
+### 20학번 기준
 
 ```{r, echo = FALSE}
 class_roll$id %>%
@@ -60,7 +61,7 @@ class_roll$id %>%
 #                 labels = c("19학번", "18학번 이전"))
 # pander(table("그룹" = class_roll$group, "19학번 기준" = ID_19))
 ```
-
+-->
 ### 19학번 기준
 
 ```{r, echo = FALSE}

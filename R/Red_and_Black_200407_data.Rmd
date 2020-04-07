@@ -33,7 +33,7 @@ str(class_roll)
 ### Randomization
 
 ```{r, randomization}
-set.seed(3)
+set.seed(8)
 N <- nrow(class_roll) 
 class_roll$group <- sample(1:N) %% 2 %>%
   factor(levels = c(0, 1), labels = c("Red", "Black"))
@@ -48,9 +48,9 @@ class_roll %$%
 # pander(table("그룹" = class_roll$group, substr(class_roll$id, 1, 4)))
 class_roll %$%
   substr(.$id, 1, 4) %>%
-  `>=`(2020) %>%
-  ifelse("younger_20", "older_20") %>%
-  factor(levels = c("younger_20", "older_20")) %>%
+  `>=`(2018) %>%
+  ifelse("younger_18", "older_18") %>%
+  factor(levels = c("younger_18", "older_18")) %>%
   table(class_roll$group, .) %>%
   pander
 # ID_19 <- factor(ifelse(substr(class_roll$id, 1, 4) >= 2019, "younger_19", "older_19"), 
