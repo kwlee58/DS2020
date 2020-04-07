@@ -93,7 +93,8 @@ sum(dice)
 Simulate sum of two tosses of a die, or the sum of two dice thrown. The difference between `roll()` and `roll`.
 
 ```{r}
-roll <- function() {
+roll <- 
+  function() {
   die <- 1:6
   dice <- sample(die, size = 2, replace = TRUE)
   sum(dice)
@@ -107,7 +108,8 @@ roll
 How to implement an input variable, Why we need to set up a default value.
 
 ```{r}
-roll2 <- function(bones) {
+roll2 <- 
+  function(bones) {
   dice <- sample(bones, size = 2, replace = TRUE)
   sum(dice)
 }
@@ -120,7 +122,8 @@ roll2(1:20)
 ## Default Value
 
 ```{r}
-roll2 <- function(bones = 1:6) {
+roll2 <- 
+  function(bones = 1:6) {
   dice <- sample(bones, size = 2, replace = TRUE)
   sum(dice)
 }

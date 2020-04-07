@@ -445,17 +445,17 @@ ls()</code></pre>
 <p><code>x</code> for the population, <code>size</code> for the sample size. Note how the arguments are recognized.</p>
 <pre class="r"><code># ?sample
 sample(die)</code></pre>
-<pre><code>## [1] 5 4 3 2 1 6</code></pre>
+<pre><code>## [1] 5 6 3 1 4 2</code></pre>
 <pre class="r"><code>sample(x = 1:4, size = 2)</code></pre>
-<pre><code>## [1] 2 3</code></pre>
+<pre><code>## [1] 1 4</code></pre>
+<pre class="r"><code>sample(x = die, size = 1)</code></pre>
+<pre><code>## [1] 1</code></pre>
+<pre class="r"><code>sample(x = die, size = 1)</code></pre>
+<pre><code>## [1] 3</code></pre>
 <pre class="r"><code>sample(x = die, size = 1)</code></pre>
 <pre><code>## [1] 4</code></pre>
-<pre class="r"><code>sample(x = die, size = 1)</code></pre>
-<pre><code>## [1] 6</code></pre>
-<pre class="r"><code>sample(x = die, size = 1)</code></pre>
-<pre><code>## [1] 5</code></pre>
 <pre class="r"><code>sample(die, size = 1)</code></pre>
-<pre><code>## [1] 2</code></pre>
+<pre><code>## [1] 1</code></pre>
 <pre class="r"><code># round(3.1415, corners = 2)
 args(round)</code></pre>
 <pre><code>## function (x, digits = 0) 
@@ -463,24 +463,24 @@ args(round)</code></pre>
 <pre class="r"><code>round(3.1415, digits = 2)</code></pre>
 <pre><code>## [1] 3.14</code></pre>
 <pre class="r"><code>sample(die, 1)</code></pre>
-<pre><code>## [1] 2</code></pre>
+<pre><code>## [1] 1</code></pre>
 <pre class="r"><code>sample(size = 1, x = die)</code></pre>
-<pre><code>## [1] 6</code></pre>
+<pre><code>## [1] 4</code></pre>
 <pre class="r"><code># ?sample</code></pre>
 </div>
 <div id="sample-with-replacement" class="section level2">
 <h2>Sample with Replacement</h2>
 <pre class="r"><code>sample(die, size = 2)</code></pre>
-<pre><code>## [1] 4 1</code></pre>
+<pre><code>## [1] 3 5</code></pre>
 <pre class="r"><code>sample(die, size = 2, replace = TRUE)</code></pre>
-<pre><code>## [1] 6 2</code></pre>
+<pre><code>## [1] 4 3</code></pre>
 <pre class="r"><code>sample(die, size = 2, replace = TRUE)</code></pre>
-<pre><code>## [1] 1 2</code></pre>
+<pre><code>## [1] 6 6</code></pre>
 <pre class="r"><code>dice &lt;- sample(die, size = 2, replace = TRUE)
 dice</code></pre>
-<pre><code>## [1] 5 3</code></pre>
+<pre><code>## [1] 5 4</code></pre>
 <pre class="r"><code>sum(dice)</code></pre>
-<pre><code>## [1] 8</code></pre>
+<pre><code>## [1] 9</code></pre>
 </div>
 </div>
 <div id="writing-your-own-functions" class="section level1">
@@ -488,7 +488,8 @@ dice</code></pre>
 <div id="the-function-constructor" class="section level2">
 <h2>The Function Constructor</h2>
 <p>Simulate sum of two tosses of a die, or the sum of two dice thrown. The difference between <code>roll()</code> and <code>roll</code>.</p>
-<pre class="r"><code>roll &lt;- function() {
+<pre class="r"><code>roll &lt;- 
+  function() {
   die &lt;- 1:6
   dice &lt;- sample(die, size = 2, replace = TRUE)
   sum(dice)
@@ -505,26 +506,28 @@ roll()</code></pre>
 <div id="arguments" class="section level2">
 <h2>Arguments</h2>
 <p>How to implement an input variable, Why we need to set up a default value.</p>
-<pre class="r"><code>roll2 &lt;- function(bones) {
+<pre class="r"><code>roll2 &lt;- 
+  function(bones) {
   dice &lt;- sample(bones, size = 2, replace = TRUE)
   sum(dice)
 }
 roll2(bones = 1:4)</code></pre>
-<pre><code>## [1] 5</code></pre>
+<pre><code>## [1] 6</code></pre>
 <pre class="r"><code>roll2(bones = 1:5)</code></pre>
-<pre><code>## [1] 4</code></pre>
+<pre><code>## [1] 6</code></pre>
 <pre class="r"><code>roll2(1:20)</code></pre>
-<pre><code>## [1] 18</code></pre>
+<pre><code>## [1] 20</code></pre>
 <pre class="r"><code># roll2()</code></pre>
 </div>
 <div id="default-value" class="section level2">
 <h2>Default Value</h2>
-<pre class="r"><code>roll2 &lt;- function(bones = 1:6) {
+<pre class="r"><code>roll2 &lt;- 
+  function(bones = 1:6) {
   dice &lt;- sample(bones, size = 2, replace = TRUE)
   sum(dice)
 }
 roll2()</code></pre>
-<pre><code>## [1] 6</code></pre>
+<pre><code>## [1] 10</code></pre>
 </div>
 <div id="dump-and-source" class="section level2">
 <h2>Dump and Source</h2>
