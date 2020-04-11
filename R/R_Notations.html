@@ -9,9 +9,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="coop711" />
+<meta name="author" content="Your ID and Name" />
 
-<meta name="date" content="2018-03-26" />
 
 <title>R Notations</title>
 
@@ -364,8 +363,8 @@ summary {
 
 
 <h1 class="title toc-ignore">R Notations</h1>
-<h4 class="author">coop711</h4>
-<h4 class="date">2018-03-26</h4>
+<h4 class="author">Your ID and Name</h4>
+<h4 class="date">Submission Date</h4>
 
 </div>
 
@@ -373,244 +372,245 @@ summary {
 <div id="read.csv" class="section level2">
 <h2>read.csv</h2>
 <pre class="r"><code>read.csv(&quot;../data/cards.csv&quot;)</code></pre>
-<pre><code>##     X  face     suit value
-## 1   1  king   spades    13
-## 2   2 queen   spades    12
-## 3   3  jack   spades    11
-## 4   4   ten   spades    10
-## 5   5  nine   spades     9
-## 6   6 eight   spades     8
-## 7   7 seven   spades     7
-## 8   8   six   spades     6
-## 9   9  five   spades     5
-## 10 10  four   spades     4
-## 11 11 three   spades     3
-## 12 12   two   spades     2
-## 13 13   ace   spades     1
-## 14 14  king    clubs    13
-## 15 15 queen    clubs    12
-## 16 16  jack    clubs    11
-## 17 17   ten    clubs    10
-## 18 18  nine    clubs     9
-## 19 19 eight    clubs     8
-## 20 20 seven    clubs     7
-## 21 21   six    clubs     6
-## 22 22  five    clubs     5
-## 23 23  four    clubs     4
-## 24 24 three    clubs     3
-## 25 25   two    clubs     2
-## 26 26   ace    clubs     1
-## 27 27  king diamonds    13
-## 28 28 queen diamonds    12
-## 29 29  jack diamonds    11
-## 30 30   ten diamonds    10
-## 31 31  nine diamonds     9
-## 32 32 eight diamonds     8
-## 33 33 seven diamonds     7
-## 34 34   six diamonds     6
-## 35 35  five diamonds     5
-## 36 36  four diamonds     4
-## 37 37 three diamonds     3
-## 38 38   two diamonds     2
-## 39 39   ace diamonds     1
-## 40 40  king   hearts    13
-## 41 41 queen   hearts    12
-## 42 42  jack   hearts    11
-## 43 43   ten   hearts    10
-## 44 44  nine   hearts     9
-## 45 45 eight   hearts     8
-## 46 46 seven   hearts     7
-## 47 47   six   hearts     6
-## 48 48  five   hearts     5
-## 49 49  four   hearts     4
-## 50 50 three   hearts     3
-## 51 51   two   hearts     2
-## 52 52   ace   hearts     1</code></pre>
+<pre><code>##     face     suit value
+## 1   king   spades    13
+## 2  queen   spades    12
+## 3   jack   spades    11
+## 4    ten   spades    10
+## 5   nine   spades     9
+## 6  eight   spades     8
+## 7  seven   spades     7
+## 8    six   spades     6
+## 9   five   spades     5
+## 10  four   spades     4
+## 11 three   spades     3
+## 12   two   spades     2
+## 13   ace   spades     1
+## 14  king    clubs    13
+## 15 queen    clubs    12
+## 16  jack    clubs    11
+## 17   ten    clubs    10
+## 18  nine    clubs     9
+## 19 eight    clubs     8
+## 20 seven    clubs     7
+## 21   six    clubs     6
+## 22  five    clubs     5
+## 23  four    clubs     4
+## 24 three    clubs     3
+## 25   two    clubs     2
+## 26   ace    clubs     1
+## 27  king diamonds    13
+## 28 queen diamonds    12
+## 29  jack diamonds    11
+## 30   ten diamonds    10
+## 31  nine diamonds     9
+## 32 eight diamonds     8
+## 33 seven diamonds     7
+## 34   six diamonds     6
+## 35  five diamonds     5
+## 36  four diamonds     4
+## 37 three diamonds     3
+## 38   two diamonds     2
+## 39   ace diamonds     1
+## 40  king   hearts    13
+## 41 queen   hearts    12
+## 42  jack   hearts    11
+## 43   ten   hearts    10
+## 44  nine   hearts     9
+## 45 eight   hearts     8
+## 46 seven   hearts     7
+## 47   six   hearts     6
+## 48  five   hearts     5
+## 49  four   hearts     4
+## 50 three   hearts     3
+## 51   two   hearts     2
+## 52   ace   hearts     1</code></pre>
 <pre class="r"><code>deck &lt;- read.csv(&quot;../data/cards.csv&quot;)
 str(deck)</code></pre>
-<pre><code>## &#39;data.frame&#39;:    52 obs. of  4 variables:
-##  $ X    : int  1 2 3 4 5 6 7 8 9 10 ...
+<pre><code>## &#39;data.frame&#39;:    52 obs. of  3 variables:
 ##  $ face : Factor w/ 13 levels &quot;ace&quot;,&quot;eight&quot;,..: 6 8 5 11 7 2 9 10 3 4 ...
 ##  $ suit : Factor w/ 4 levels &quot;clubs&quot;,&quot;diamonds&quot;,..: 4 4 4 4 4 4 4 4 4 4 ...
 ##  $ value: int  13 12 11 10 9 8 7 6 5 4 ...</code></pre>
 <pre class="r"><code>deck &lt;- read.csv(&quot;../data/cards.csv&quot;, stringsAsFactors = FALSE)
 str(deck)</code></pre>
-<pre><code>## &#39;data.frame&#39;:    52 obs. of  4 variables:
-##  $ X    : int  1 2 3 4 5 6 7 8 9 10 ...
+<pre><code>## &#39;data.frame&#39;:    52 obs. of  3 variables:
 ##  $ face : chr  &quot;king&quot; &quot;queen&quot; &quot;jack&quot; &quot;ten&quot; ...
 ##  $ suit : chr  &quot;spades&quot; &quot;spades&quot; &quot;spades&quot; &quot;spades&quot; ...
 ##  $ value: int  13 12 11 10 9 8 7 6 5 4 ...</code></pre>
 <pre class="r"><code>head(deck)</code></pre>
-<pre><code>##   X  face   suit value
-## 1 1  king spades    13
-## 2 2 queen spades    12
-## 3 3  jack spades    11
-## 4 4   ten spades    10
-## 5 5  nine spades     9
-## 6 6 eight spades     8</code></pre>
+<pre><code>##    face   suit value
+## 1  king spades    13
+## 2 queen spades    12
+## 3  jack spades    11
+## 4   ten spades    10
+## 5  nine spades     9
+## 6 eight spades     8</code></pre>
 </div>
 <div id="positive-integers" class="section level2">
 <h2>Positive Integers</h2>
 <pre class="r"><code>deck[1, 1]</code></pre>
-<pre><code>## [1] 1</code></pre>
+<pre><code>## [1] &quot;king&quot;</code></pre>
 <pre class="r"><code>deck[1, 1:3]</code></pre>
-<pre><code>##   X face   suit
-## 1 1 king spades</code></pre>
+<pre><code>##   face   suit value
+## 1 king spades    13</code></pre>
 <pre class="r"><code>new &lt;- deck[1, 1:3]
 new</code></pre>
-<pre><code>##   X face   suit
-## 1 1 king spades</code></pre>
+<pre><code>##   face   suit value
+## 1 king spades    13</code></pre>
 <pre class="r"><code>vec &lt;- c(6, 1, 3, 6, 10, 5)
 vec[1:3]</code></pre>
 <pre><code>## [1] 6 1 3</code></pre>
 <pre class="r"><code>vec[c(2, 4, 6)]</code></pre>
 <pre><code>## [1] 1 6 5</code></pre>
 <pre class="r"><code>str(deck[1, 1])</code></pre>
-<pre><code>##  int 1</code></pre>
+<pre><code>##  chr &quot;king&quot;</code></pre>
 <pre class="r"><code>str(deck[1, 1, drop = FALSE])</code></pre>
 <pre><code>## &#39;data.frame&#39;:    1 obs. of  1 variable:
-##  $ X: int 1</code></pre>
+##  $ face: chr &quot;king&quot;</code></pre>
 <pre class="r"><code>str(deck[1, 1:3])</code></pre>
 <pre><code>## &#39;data.frame&#39;:    1 obs. of  3 variables:
-##  $ X   : int 1
-##  $ face: chr &quot;king&quot;
-##  $ suit: chr &quot;spades&quot;</code></pre>
+##  $ face : chr &quot;king&quot;
+##  $ suit : chr &quot;spades&quot;
+##  $ value: int 13</code></pre>
 <pre class="r"><code>str(deck[1:3, 1])</code></pre>
-<pre><code>##  int [1:3] 1 2 3</code></pre>
+<pre><code>##  chr [1:3] &quot;king&quot; &quot;queen&quot; &quot;jack&quot;</code></pre>
 <pre class="r"><code>str(deck[1:3, 1, drop = FALSE])</code></pre>
 <pre><code>## &#39;data.frame&#39;:    3 obs. of  1 variable:
-##  $ X: int  1 2 3</code></pre>
+##  $ face: chr  &quot;king&quot; &quot;queen&quot; &quot;jack&quot;</code></pre>
 <pre class="r"><code>## Negative Integers
 deck[-1, 1:3]</code></pre>
-<pre><code>##     X  face     suit
-## 2   2 queen   spades
-## 3   3  jack   spades
-## 4   4   ten   spades
-## 5   5  nine   spades
-## 6   6 eight   spades
-## 7   7 seven   spades
-## 8   8   six   spades
-## 9   9  five   spades
-## 10 10  four   spades
-## 11 11 three   spades
-## 12 12   two   spades
-## 13 13   ace   spades
-## 14 14  king    clubs
-## 15 15 queen    clubs
-## 16 16  jack    clubs
-## 17 17   ten    clubs
-## 18 18  nine    clubs
-## 19 19 eight    clubs
-## 20 20 seven    clubs
-## 21 21   six    clubs
-## 22 22  five    clubs
-## 23 23  four    clubs
-## 24 24 three    clubs
-## 25 25   two    clubs
-## 26 26   ace    clubs
-## 27 27  king diamonds
-## 28 28 queen diamonds
-## 29 29  jack diamonds
-## 30 30   ten diamonds
-## 31 31  nine diamonds
-## 32 32 eight diamonds
-## 33 33 seven diamonds
-## 34 34   six diamonds
-## 35 35  five diamonds
-## 36 36  four diamonds
-## 37 37 three diamonds
-## 38 38   two diamonds
-## 39 39   ace diamonds
-## 40 40  king   hearts
-## 41 41 queen   hearts
-## 42 42  jack   hearts
-## 43 43   ten   hearts
-## 44 44  nine   hearts
-## 45 45 eight   hearts
-## 46 46 seven   hearts
-## 47 47   six   hearts
-## 48 48  five   hearts
-## 49 49  four   hearts
-## 50 50 three   hearts
-## 51 51   two   hearts
-## 52 52   ace   hearts</code></pre>
+<pre><code>##     face     suit value
+## 2  queen   spades    12
+## 3   jack   spades    11
+## 4    ten   spades    10
+## 5   nine   spades     9
+## 6  eight   spades     8
+## 7  seven   spades     7
+## 8    six   spades     6
+## 9   five   spades     5
+## 10  four   spades     4
+## 11 three   spades     3
+## 12   two   spades     2
+## 13   ace   spades     1
+## 14  king    clubs    13
+## 15 queen    clubs    12
+## 16  jack    clubs    11
+## 17   ten    clubs    10
+## 18  nine    clubs     9
+## 19 eight    clubs     8
+## 20 seven    clubs     7
+## 21   six    clubs     6
+## 22  five    clubs     5
+## 23  four    clubs     4
+## 24 three    clubs     3
+## 25   two    clubs     2
+## 26   ace    clubs     1
+## 27  king diamonds    13
+## 28 queen diamonds    12
+## 29  jack diamonds    11
+## 30   ten diamonds    10
+## 31  nine diamonds     9
+## 32 eight diamonds     8
+## 33 seven diamonds     7
+## 34   six diamonds     6
+## 35  five diamonds     5
+## 36  four diamonds     4
+## 37 three diamonds     3
+## 38   two diamonds     2
+## 39   ace diamonds     1
+## 40  king   hearts    13
+## 41 queen   hearts    12
+## 42  jack   hearts    11
+## 43   ten   hearts    10
+## 44  nine   hearts     9
+## 45 eight   hearts     8
+## 46 seven   hearts     7
+## 47   six   hearts     6
+## 48  five   hearts     5
+## 49  four   hearts     4
+## 50 three   hearts     3
+## 51   two   hearts     2
+## 52   ace   hearts     1</code></pre>
 <pre class="r"><code>deck[-(2:52), 1:3]</code></pre>
-<pre><code>##   X face   suit
-## 1 1 king spades</code></pre>
+<pre><code>##   face   suit value
+## 1 king spades    13</code></pre>
 </div>
 <div id="blank-spaces" class="section level2">
 <h2>Blank Spaces</h2>
 <pre class="r"><code>deck[1, ]</code></pre>
-<pre><code>##   X face   suit value
-## 1 1 king spades    13</code></pre>
+<pre><code>##   face   suit value
+## 1 king spades    13</code></pre>
 <pre class="r"><code>deck[ , 1]</code></pre>
-<pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25
-## [26] 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50
-## [51] 51 52</code></pre>
+<pre><code>##  [1] &quot;king&quot;  &quot;queen&quot; &quot;jack&quot;  &quot;ten&quot;   &quot;nine&quot;  &quot;eight&quot; &quot;seven&quot; &quot;six&quot;   &quot;five&quot; 
+## [10] &quot;four&quot;  &quot;three&quot; &quot;two&quot;   &quot;ace&quot;   &quot;king&quot;  &quot;queen&quot; &quot;jack&quot;  &quot;ten&quot;   &quot;nine&quot; 
+## [19] &quot;eight&quot; &quot;seven&quot; &quot;six&quot;   &quot;five&quot;  &quot;four&quot;  &quot;three&quot; &quot;two&quot;   &quot;ace&quot;   &quot;king&quot; 
+## [28] &quot;queen&quot; &quot;jack&quot;  &quot;ten&quot;   &quot;nine&quot;  &quot;eight&quot; &quot;seven&quot; &quot;six&quot;   &quot;five&quot;  &quot;four&quot; 
+## [37] &quot;three&quot; &quot;two&quot;   &quot;ace&quot;   &quot;king&quot;  &quot;queen&quot; &quot;jack&quot;  &quot;ten&quot;   &quot;nine&quot;  &quot;eight&quot;
+## [46] &quot;seven&quot; &quot;six&quot;   &quot;five&quot;  &quot;four&quot;  &quot;three&quot; &quot;two&quot;   &quot;ace&quot;</code></pre>
 <pre class="r"><code>deck[ , 1, drop = FALSE]</code></pre>
-<pre><code>##     X
-## 1   1
-## 2   2
-## 3   3
-## 4   4
-## 5   5
-## 6   6
-## 7   7
-## 8   8
-## 9   9
-## 10 10
-## 11 11
-## 12 12
-## 13 13
-## 14 14
-## 15 15
-## 16 16
-## 17 17
-## 18 18
-## 19 19
-## 20 20
-## 21 21
-## 22 22
-## 23 23
-## 24 24
-## 25 25
-## 26 26
-## 27 27
-## 28 28
-## 29 29
-## 30 30
-## 31 31
-## 32 32
-## 33 33
-## 34 34
-## 35 35
-## 36 36
-## 37 37
-## 38 38
-## 39 39
-## 40 40
-## 41 41
-## 42 42
-## 43 43
-## 44 44
-## 45 45
-## 46 46
-## 47 47
-## 48 48
-## 49 49
-## 50 50
-## 51 51
-## 52 52</code></pre>
+<pre><code>##     face
+## 1   king
+## 2  queen
+## 3   jack
+## 4    ten
+## 5   nine
+## 6  eight
+## 7  seven
+## 8    six
+## 9   five
+## 10  four
+## 11 three
+## 12   two
+## 13   ace
+## 14  king
+## 15 queen
+## 16  jack
+## 17   ten
+## 18  nine
+## 19 eight
+## 20 seven
+## 21   six
+## 22  five
+## 23  four
+## 24 three
+## 25   two
+## 26   ace
+## 27  king
+## 28 queen
+## 29  jack
+## 30   ten
+## 31  nine
+## 32 eight
+## 33 seven
+## 34   six
+## 35  five
+## 36  four
+## 37 three
+## 38   two
+## 39   ace
+## 40  king
+## 41 queen
+## 42  jack
+## 43   ten
+## 44  nine
+## 45 eight
+## 46 seven
+## 47   six
+## 48  five
+## 49  four
+## 50 three
+## 51   two
+## 52   ace</code></pre>
 </div>
 <div id="logical-values" class="section level2">
 <h2>Logical Values</h2>
 <pre class="r"><code>deck[1, c(TRUE, TRUE, FALSE)]</code></pre>
-<pre><code>##   X face value
-## 1 1 king    13</code></pre>
+<pre><code>##   face   suit
+## 1 king spades</code></pre>
 <pre class="r"><code>rows &lt;- c(TRUE, rep(FALSE, 51))
 deck[rows, ]</code></pre>
-<pre><code>##   X face   suit value
-## 1 1 king spades    13</code></pre>
+<pre><code>##   face   suit value
+## 1 king spades    13</code></pre>
 </div>
 <div id="names" class="section level2">
 <h2>Names</h2>
@@ -679,66 +679,65 @@ deck[rows, ]</code></pre>
   cards[1, ]
   }
 deal(deck)</code></pre>
-<pre><code>##   X face   suit value
-## 1 1 king spades    13</code></pre>
+<pre><code>##   face   suit value
+## 1 king spades    13</code></pre>
 <pre class="r"><code>deck2 &lt;- deck[1:52, ]
 head(deck2)</code></pre>
-<pre><code>##   X  face   suit value
-## 1 1  king spades    13
-## 2 2 queen spades    12
-## 3 3  jack spades    11
-## 4 4   ten spades    10
-## 5 5  nine spades     9
-## 6 6 eight spades     8</code></pre>
+<pre><code>##    face   suit value
+## 1  king spades    13
+## 2 queen spades    12
+## 3  jack spades    11
+## 4   ten spades    10
+## 5  nine spades     9
+## 6 eight spades     8</code></pre>
 <pre class="r"><code>deck2 &lt;- deck[52:1, ]
 head(deck2)</code></pre>
-<pre><code>##     X  face   suit value
-## 52 52   ace hearts     1
-## 51 51   two hearts     2
-## 50 50 three hearts     3
-## 49 49  four hearts     4
-## 48 48  five hearts     5
-## 47 47   six hearts     6</code></pre>
+<pre><code>##     face   suit value
+## 52   ace hearts     1
+## 51   two hearts     2
+## 50 three hearts     3
+## 49  four hearts     4
+## 48  five hearts     5
+## 47   six hearts     6</code></pre>
 <pre class="r"><code>deck3 &lt;- deck[c(2, 1, 3:52), ]
 head(deck3)</code></pre>
-<pre><code>##   X  face   suit value
-## 2 2 queen spades    12
-## 1 1  king spades    13
-## 3 3  jack spades    11
-## 4 4   ten spades    10
-## 5 5  nine spades     9
-## 6 6 eight spades     8</code></pre>
+<pre><code>##    face   suit value
+## 2 queen spades    12
+## 1  king spades    13
+## 3  jack spades    11
+## 4   ten spades    10
+## 5  nine spades     9
+## 6 eight spades     8</code></pre>
 <pre class="r"><code>random &lt;- sample(1:52, size = 52)
 random</code></pre>
-<pre><code>##  [1] 12 22 44 28  1 16 37  8 18 24 43 14 46  6 27 13 23 21 25 49 33 30 35 15 29
-## [26]  7 50 52 40 42 51 19 32 38  9  5 39  2  3 17 34 45 26 47 20 11 36 41 10 48
-## [51]  4 31</code></pre>
+<pre><code>##  [1] 34 32 11  9 25  8 28  2 40 42 47 14 51 13 16 20  6 31 48 35 15 22  7 10 30
+## [26] 49 18 29 24 21 46 43 41 33  4 36 39  5 50 45 26 12  3 37 27 17 52 23 19 38
+## [51] 44  1</code></pre>
 <pre class="r"><code>deck4 &lt;- deck[random, ]
 head(deck4)</code></pre>
-<pre><code>##     X  face     suit value
-## 12 12   two   spades     2
-## 22 22  five    clubs     5
-## 44 44  nine   hearts     9
-## 28 28 queen diamonds    12
-## 1   1  king   spades    13
-## 16 16  jack    clubs    11</code></pre>
+<pre><code>##     face     suit value
+## 34   six diamonds     6
+## 32 eight diamonds     8
+## 11 three   spades     3
+## 9   five   spades     5
+## 25   two    clubs     2
+## 8    six   spades     6</code></pre>
 <pre class="r"><code>shuffle &lt;- function(cards) {
   random &lt;- sample(1:52, size = 52)
   cards[random, ]
 }
 deal(deck)</code></pre>
-<pre><code>##   X face   suit value
-## 1 1 king spades    13</code></pre>
+<pre><code>##   face   suit value
+## 1 king spades    13</code></pre>
 <pre class="r"><code>deck2 &lt;- shuffle(deck)
 deal(deck2)</code></pre>
-<pre><code>##   X  face   suit value
-## 6 6 eight spades     8</code></pre>
+<pre><code>##    face  suit value
+## 14 king clubs    13</code></pre>
 </div>
 <div id="dollar-signs-and-double-brackets" class="section level2">
 <h2>Dollar Signs and Double Brackets</h2>
 <pre class="r"><code>str(deck)</code></pre>
-<pre><code>## &#39;data.frame&#39;:    52 obs. of  4 variables:
-##  $ X    : int  1 2 3 4 5 6 7 8 9 10 ...
+<pre><code>## &#39;data.frame&#39;:    52 obs. of  3 variables:
 ##  $ face : chr  &quot;king&quot; &quot;queen&quot; &quot;jack&quot; &quot;ten&quot; ...
 ##  $ suit : chr  &quot;spades&quot; &quot;spades&quot; &quot;spades&quot; &quot;spades&quot; ...
 ##  $ value: int  13 12 11 10 9 8 7 6 5 4 ...</code></pre>
