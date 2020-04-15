@@ -1,5 +1,5 @@
 # R Modifying Values
-deck <- read.csv("../data/cards.csv", stringsAsFactors = FALSE)
+deck <- read.csv("./data/cards.csv", stringsAsFactors = FALSE)
 deck2 <- deck
 ## Changing Values in Place
 vec <- rep(0, 6)
