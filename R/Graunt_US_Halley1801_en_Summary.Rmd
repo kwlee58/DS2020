@@ -1,0 +1,631 @@
+---
+title: "Graunt, Halley, and US 1993 Life Table : Summary"
+author: "coop711"
+date: '`r Sys.Date()`'
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+# Source of Data
+
+<img src = "../pics/graunt_table.png" width = "240"/>
+
+<!--## Data Input-->
+
+<P style = "page-break-before:always">
+
+# R base graphics
+
+## Graunt
+
+<!--
+```{r, graunt data input}
+graunt <- data.frame(x = c(0, seq(6, 76, by = 10)), 
+                     xPo_g = c(100, 64, 40, 25, 16, 10, 6, 3, 1))
+```
+
+### More data
+
+* US 1993 life table for the same age group
+
+```{r, us93 data input}
+us93 <- data.frame(x = graunt$x, 
+                   xPo_us = c(100, 99, 99, 98, 97, 95, 92, 84, 70))
+```
+
+
+```{r one data frmae}
+(graunt_us <- data.frame(graunt, 
+                         xPo_us = us93$xPo))
+```
+
+### Life Expectancy
+
+The basic principle is that the area under the survival function is the life expectancy. 
+
+$X \ge 0$, $X \sim F(x)$ => $X \equiv F^{-1}(U), U \sim U(0,1)$, therefore, 
+
+$E(X) = E\{F^{-1}(U)\} = \int_{0}^{1} F^{-1}(u)du = \int_0^{\infty} 1-F(x) dx = \int_{0}^{\infty} S(x) dx$
+
+
+### Setting up coordinates for `polygon()` (Clockwise)
+
+```{r, polygon coordinates}
+(graunt_x <- c(graunt$x, 0))
+(graunt_y <- c(graunt$xPo_g, 0))
+graunt_poly <- data.frame(x = graunt_x, y = graunt_y)
+```
+-->
+
+```{r, title axis labels, fig.width = 6, fig.height = 6, echo = FALSE}
+png(filename = "../pics/graunt_plots.png", width = 640, height = 960)
+par(mfrow = c(3, 2))
+plot(graunt, ann = FALSE, xaxt = "n", yaxt = "n", type = "b")
+plot(graunt, ann = FALSE, xaxt = "n", yaxt = "n", type = "b")
+axis(side = 1, at = graunt$x, labels = graunt$x)
+axis(side = 2, at = graunt$xPo_g, labels = graunt$xPo_g)
+plot(graunt, ann = FALSE, xaxt = "n", yaxt = "n", type = "b")
+axis(side = 1, at = graunt$x, labels = graunt$x)
+axis(side = 2, at = graunt$xPo_g, labels = graunt$xPo_g)
+abline(v = c(0, 76), lty = 2)
+plot(graunt, ann = FALSE, xaxt = "n", yaxt = "n", type = "b")
+axis(side = 1, at = graunt$x, labels = graunt$x)
+axis(side = 2, at = graunt$xPo_g, labels = graunt$xPo_g)
+abline(v = c(0, 76), lty = 2)
+polygon(graunt_poly, density = 15)
+plot(graunt, ann = FALSE, xaxt = "n", yaxt = "n", type = "b")
+axis(side = 1, at = graunt$x, labels = graunt$x)
+axis(side = 2, at = graunt$xPo_g, labels = graunt$xPo_g)
+abline(v = c(0, 76), lty = 2)
+polygon(graunt_poly, density = 15)
+abline(v = graunt$x, lty = 2)
+plot(graunt, ann = FALSE, xaxt = "n", yaxt = "n", type = "b")
+axis(side = 1, at = graunt$x, labels = graunt$x)
+axis(side = 2, at = graunt$xPo_g, labels = graunt$xPo_g)
+abline(v = c(0, 76), lty = 2)
+polygon(graunt_poly, density = 15)
+abline(v = graunt$x, lty = 2)
+points(graunt, pch = 21, col = "black", bg = "white")
+# dev.copy(png, file = "../pics/graunt_plots.png", width = 720, height = 1080)
+dev.off()
+plot(graunt, ann = FALSE, xaxt = "n", yaxt = "n", type = "b")
+axis(side = 1, at = graunt$x, labels = graunt$x)
+axis(side = 2, at = graunt$xPo_g, labels = graunt$xPo_g)
+abline(v = c(0, 76), lty = 2)
+polygon(graunt_poly, density = 15)
+abline(v = graunt$x, lty = 2)
+points(graunt, pch = 21, col = "black", bg = "white")
+main_title <- "Graunt's Survival Function"
+x_lab <- "Age (years)"
+y_lab <- "Proportion of Survival (%)"
+title(main = main_title, xlab = x_lab, ylab = y_lab)
+dev.copy(png, file = "../pics/graunt_surv.png", 480, 480)
+dev.off()
+```
+
+<!--### Area under the curve-->
+
+<!--
+*  `diff()`, `head()`, and `tail()` can be used to write a function to compute the area easily.  
+
+```{r, area function}
+area.R <- function(x, y) {
+  sum(diff(x) * (head(y, -1) + tail(y, -1))/2)
+  }
+```
+-->
+
+The area under the curve can be approximated by the sum of the areas of trapezoids, therefore the area is $\sum_{i=1}^{n-1} (x_{i+1}-x_i)\times\frac{1}{2}(y_i + y_{i+1})$. Therefore, the life expectancy of Graunt's life table is 
+`r area.R(graunt$x, graunt$xPo_g)/100`(years).
+
+<P style = "page-break-before:always">
+
+## Graunt and US 1993
+
+The shaded area between the survival function of Graunt and that of US 1993 represents the difference of life expectancies.
+
+<!--
+
+### Setting coordinates for `polygon()`
+
+```{r, polygon coordinates us 93 added}
+us_graunt_x <- c(us93$x, rev(graunt$x))
+us_graunt_y <- c(us93$xPo_us, rev(graunt$xPo_g))
+us_graunt <- data.frame(x = us_graunt_x, y = us_graunt_y)
+```
+-->
+
+```{r, title-axis-labels, fig.width = 6, fig.height = 6, echo = FALSE}
+plot(graunt, ann = FALSE, xaxt = "n", yaxt = "n", type = "b")
+axis(side = 1, at = graunt$x, labels = graunt$x)
+axis(side = 2, at = graunt$xPo, labels = graunt$xPo_g)
+abline(v = c(0, 76), lty = 2)
+lines(us93, type = "b")
+abline(h = 70, lty = 2)
+axis(side = 2, at = 70, labels = 70, las = 1)
+polygon(us_graunt, density = 15, col = "blue", border = NA)
+abline(v = graunt$x, lty = 2)
+points(us_graunt, pch = 21, col = "black", bg = "white")
+main_title_g_us <- "Survival Function of Graunt and US 1993"
+title(main = main_title_g_us, xlab = x_lab, ylab = y_lab)
+```
+
+The area under the US 1993 survival function is `r area.R(us93$x, us93$xPo_us)/100`, so, the area of shaded region, that is the difference of life expectancy, is `r area.R(us93$x, us93$xPo_us)/100 - area.R(graunt$x, graunt$xPo_g)/100` (years).
+
+<P style = "page-break-before:always">
+
+## Part of Halley's life table
+
+```{r, Halley lifetable, echo = FALSE}
+age <- 0:84
+lx <- c(1238, 1000, 855, 798, 760, 732, 710, 692, 680, 670, 661, 653, 646, 640, 634, 628, 622, 616, 610, 604, 598, 592, 586, 579, 573, 567, 560, 553, 546, 539, 531, 523, 515, 507, 499, 490, 481, 472, 463, 454, 445, 436, 427, 417, 407, 397, 387, 377, 367, 357, 346, 335, 324, 313, 302, 292, 282, 272, 262, 252, 242, 232, 222, 212, 202, 192, 182, 172, 162, 152, 142, 131, 120, 109, 98, 88, 78, 68, 58, 50, 41, 34, 28, 23, 20)
+halley <- data.frame(age, lx)
+halley$xPo <- round(halley$lx / lx[1] * 100, digits = 1)
+```
+
+```{r, Halley lifetable with xPo, echo = FALSE}
+library(knitr)
+kable(cbind(head(halley, n = 10), 
+            tail(halley, n = 10)), 
+      align = c("c", "r", "r", "c", "r", "r"), 
+      caption = "Halley's Lifetable")
+```
+
+```{r, Halley with xPo only, echo = FALSE, results = 'hide'}
+halley_lx <- halley[-3]
+halley <- halley[-2]
+head(halley)
+tail(halley)
+```
+
+<P style = "page-break-before:always">
+
+## Graunt and Halley
+
+<!--
+
+
+```{r, data subsetting}
+age_graunt <- age %in% graunt$x
+halley_graunt <- subset(halley, age_graunt)
+xPo_halley_age_6 <- halley$xPo[age == 6]
+main_title_2 <- "Survival Function of Graunt and Halley"
+```
+
+## Polygon
+
+Setting the coordinates for `polygon()`. The intersection is found at `x = 10.8, y = 52.8` with `locator(1)` and couple of trial and errors.
+
+* Upper region
+
+```{r, coords upper region}
+poly_1_x <- c(graunt$x[1:2], 10.8, halley$age[11:1])
+poly_1_y <- c(graunt$xPo_g[1:2], 52.8, halley$xPo[11:1])
+poly_upper <- data.frame(x = poly_1_x, y = poly_1_y)
+```
+
+* Lower region
+
+```{r, coords lower region}
+poly_2_x <- c(10.8, halley$age[12:85], graunt$x[9:3])
+poly_2_y <- c(52.8, halley$xPo[12:85], graunt$xPo_g[9:3])
+poly_lower <- data.frame(x = poly_2_x, y = poly_2_y)
+```
+
+--> 
+
+```{r, fill the points, fig.width = 6, fig.height = 6, echo = FALSE}
+plot(halley, ann = FALSE, xaxt = "n", yaxt = "n", type = "l")
+abline(v = c(0, 76, 84), lty = 2)
+points(halley_graunt, pch = 21, col = "black", bg = "white")
+lines(graunt, type = "b", pch = 21, col = "black", bg = "white")
+axis(side = 1, at = c(graunt$x, 84), labels = c(graunt$x, 84))
+axis(side = 2, at = graunt$xPo_g, labels = graunt$xPo_g, las = 1)
+axis(side = 2, at = xPo_halley_age_6, labels = xPo_halley_age_6, las = 1)
+text(x = c(16, 36), y = c(20, 50), label = c("Graunt", "Halley"))
+title(main = main_title_2, xlab = x_lab, ylab = y_lab)
+polygon(poly_upper, angle = 45, density = 15, col = "red", border = NA)
+polygon(poly_lower, angle = 45, density = 15, col = "green", border = NA)
+points(graunt, pch = 21, col = "black", bg = "white")
+points(halley_graunt, pch = 21, col = "black", bg = "white")
+points(x = 84, y = halley$xPo[85], pch = 21, col = "black", bg = "white")
+```
+
+<!--### Life expectancy-->
+
+Compute the difference of life expectancies, Halley's is `r area.R(halley$age, halley$xPo)/100` (years), and Graunt's is `r area.R(graunt$x, graunt$xPo_g)/100` (years).
+
+<P style = "page-break-before:always">
+
+## Graunt, Halley, and US 1993
+
+<!--Polygon with R Base Plot-->
+
+<!--
+### Coordinates 
+
+In order to make the graphs truncated at the age 76, restrict the age of Halley up to 76.
+
+```{r, polygon data}
+graunt_2 <- graunt
+halley_2 <- halley
+us93_2 <- us93
+names(graunt_2) <- c("x", "Graunt")
+names(halley_2) <- c("x", "Halley")
+names(us93_2) <- c("x", "US93")
+poly_lower_76 <- subset(poly_lower, poly_lower$x <= 76)
+poly_3_x <- c(us93_2$x, halley_2$x[85:12], 10.8, graunt_2$x[2:1])
+poly_3_y <- c(us93_2$US93, halley_2$Halley[85:12], 52.8, graunt_2$Graunt[2:1])
+poly_us <- data.frame(x = poly_3_x, y = poly_3_y)
+poly_us_76 <- subset(poly_us, poly_us$x <= 76)
+```
+
+### Straight to Polygon
+-->
+
+```{r, Graunt Halley and US 1993 together, fig.width = 6, fig.height = 6, echo = FALSE}
+plot(halley, ann = FALSE, xaxt = "n", yaxt = "n", type = "l")
+abline(v = c(0, 76, 84), lty = 2)
+points(halley_graunt, pch = 21, col = "black", bg = "white")
+lines(graunt, type = "b", pch = 21, col = "black", bg = "white")
+lines(us93, type = "b", pch = 21, col = "black", bg = "white")
+axis(side = 1, at = c(graunt$x, 84), labels = c(graunt$x, 84))
+axis(side = 2, at = c(graunt$xPo_g, xPo_halley_age_6), labels = c(graunt$xPo_g, xPo_halley_age_6), las = 1)
+abline(h = 70, lty = 2)
+axis(side = 2, at = 70, labels = 70, las = 1)
+main_title_3 <- "Survival Function Plots"
+title(main = main_title_3, xlab = x_lab, ylab = y_lab)
+polygon(poly_upper, angle = 45, density = 15, col = "red", border = NA)
+polygon(poly_lower_76, angle = 45, density = 15, col = "green", border = NA)
+polygon(poly_us_76, angle = 45, density = 15, col = "blue", border = NA)
+points(graunt, pch = 21, col = "black", bg = "white")
+points(halley_graunt, pch = 21, col = "black", bg = "white")
+points(us93_2, pch = 21, col = "black", bg = "white")
+points(x = 84, y = halley$xPo[85], pch = 21, col = "black", bg = "white")
+text(x = c(16, 36, 70), y = c(25, 50, 90), label = c("Graunt", "Halley", "US93"))
+```
+
+<P style = "page-break-before:always">
+
+# ggplot 
+
+<!--
+```{r, library ggplot2}
+library(ggplot2)
+```
+
+## Data Reshape
+
+Attach `reshape2` package to change wide format to long format
+
+```{r, reshape2}
+library(reshape2)
+```
+
+How `melt()` works
+
+```{r, format of melt}
+graunt_us_melt <- melt(graunt_us, 
+                       id.vars = "x", 
+                       measure.vars = c("xPo_g", "xPo_us"), 
+                       value.name = "xPo", variable.name = "times")
+graunt_us_melt
+str(graunt_us_melt)
+```
+
+* Change factor levels of `times`
+
+```{r, factor level}
+levels(graunt_us_melt$times) <- c("Graunt", "US1993")
+str(graunt_us_melt)
+```
+-->
+
+## Graunt
+
+<!--
+## Structure of ggplot
+
+```{r, geom aes, fig.width = 6, fig.height = 6, echo = FALSE}
+g1 <- ggplot() + 
+  geom_line(data = graunt, 
+            mapping = aes(x = graunt$x, y = graunt$xPo))
+g2 <- g1 +
+  geom_point(data = graunt, 
+             mapping = aes(x = graunt$x, y = graunt$xPo), 
+             shape = 21, fill = "white")
+g3 <- g2 +
+  theme_bw()
+g4 <- g3 +
+   xlab(x_lab) + 
+   ylab(y_lab) + 
+   ggtitle(main_title) +
+   scale_x_continuous(breaks = graunt$x) + 
+   scale_y_continuous(breaks = graunt$xPo_g)
+g5 <- g4 +
+  geom_vline(xintercept = graunt$x, linetype = "dotted") +
+  geom_hline(yintercept = 0, linetype = "dotted")
+pg4 <- g4 +
+  geom_polygon(data = graunt_poly, 
+               mapping = aes(x = x, y = y), 
+               alpha = 0.7, fill = "grey")
+```
+-->
+
+```{r, graunt polygon ggplot, fig.width = 6, fig.height = 6, echo = FALSE}
+pg4
+```
+
+<P style = "page-break-before:always">
+
+## Graunt and US 1993
+
+<!--### Points and Lines
+
+Step by step approach to understand the grammar of ggplot
+
+* We set `ggplot()` to accept varying `data.frame()` and `aes()`in `geom_polygon`
+
+```{r, geom_point geom_line, fig.width = 6, fig.height = 6}
+gu1 <- ggplot() + 
+  geom_line(data = graunt_us_melt, 
+            mapping = aes(x = x, y = xPo, colour = times))
+gu2 <- gu1 + 
+  geom_point(data = graunt_us_melt, 
+             mapping = aes(x = x, y = xPo, colour = times), 
+             shape = 21, fill = "white")
+gu3 <- gu2 + 
+  theme_bw()
+```
+
+## Polygon 
+
+Reuse `us_graunt` which contains `x = us_graunt_x` and `y = us_graunt_y` for `polygon()`. Note that we start with `gu3`, and also note how to remove default legends.
+
+```{r, polygon, fig.width = 6, fig.height = 6}
+gup3 <- gu3 + 
+  geom_polygon(data = us_graunt, 
+               mapping = aes(x = x, y = y), 
+               alpha = 0.3, fill = "blue")
+gup4 <- gup3 + 
+  guides(colour = "none")
+```
+
+## Change default annotations
+
+### Points and Lines
+
+1. Change the x-axis and y-axis labels
+    
+```{r, axis labels, fig.width = 6, fig.height = 6}
+gu4 <- gu3 + 
+   xlab(x_lab) + 
+   ylab(y_lab)
+```
+
+2. Add main title
+
+```{r, ggtitle, fig.width = 6, fig.height = 6}
+gu4 <- gu3 + 
+   xlab(x_lab) + 
+   ylab(y_lab) + 
+   ggtitle(main_title_g_us)
+```
+
+3. Change legend title
+    
+```{r, legends title, fig.width = 6, fig.height = 6}
+gu4 <- gu3 + 
+   xlab(x_lab) + 
+   ylab(y_lab) + 
+   ggtitle(main_title_g_us) +
+   labs(colour = "Era")
+```
+
+4. Change legends.
+    
+```{r, change legends, fig.width = 6, fig.height = 6}
+gu4 <- gu3 + 
+   xlab(x_lab) + 
+   ylab(y_lab) +
+   ggtitle(main_title_g_us) +
+   labs(colour = "Era") +
+   scale_colour_discrete(labels = c("Graunt Era", "US 1993"))
+```
+
+5. Place legends inside the plot
+
+```{r, legends inside, fig.width = 6, fig.height = 6}
+gu5 <- gu4 + 
+   theme(legend.position = c(0.8, 0.5))
+```
+
+6. Change x-axis and y-axis tick marks
+
+```{r, axis tick marks, fig.width = 6, fig.height = 6}
+gu6 <- gu5 + 
+   scale_x_continuous(breaks = graunt$x) + 
+   scale_y_continuous(breaks = graunt$xPo_g)
+```
+
+## Polygon
+
+Add information to the plot drawn with `polygon()`
+
+1. Start with `gup4`
+
+```{r, start with p4, fig.width = 6, fig.height = 6}
+gup4
+```
+
+2. Main title, x-axis and y-axis labels
+
+```{r, title and axis labels,  fig.width = 6, fig.height = 6}
+gup5 <- gup4 + 
+   xlab(x_lab) + 
+   ylab(y_lab) +
+   ggtitle(main_title_g_us)
+```
+
+3. `"Graunt Era"`, `"US 1993"`, `"Difference of Life Expectancies"` at proper positions
+    
+```{r, text polygon,  fig.width = 6, fig.height = 6}
+gup6 <- gup5 + 
+   annotate("text", 
+            x = c(20, 40, 70), y = c(20, 60, 90), 
+            label = c("Graunt Era", "Difference of\nLife Expectancies", "US 1993"))
+```
+
+4. x-axis and y-axis tick marks-->
+
+```{r, familiar axis labels, fig.width = 6, fig.height = 6, echo = FALSE}
+(gup7 <- gup6 + 
+   scale_x_continuous(breaks = graunt$x) + 
+   scale_y_continuous(breaks = graunt$xPo_g))
+```
+
+<P style = "page-break-before:always">
+
+## Graunt and Halley
+
+<!--
+### Data Reshaping
+
+Since the observed ages are different, we need final structure of the data frame to be melted. So, create copies of `graunt` and `halley` and extract parts of what we need and give feasible names.  
+
+```{r, data reshaping}
+graunt_halley_melt <- melt(list(graunt_2, halley_2), 
+                           id.vars = "x", 
+                           value.name = "xPo", 
+                           variable.name = "Who")
+str(graunt_halley_melt)
+graunt_halley_melt <- graunt_halley_melt[-4]
+(graunt_halley_melt_g <- subset(graunt_halley_melt, 
+                                graunt_halley_melt$x %in% graunt$x))
+```
+ 
+## Survival Function, Step by Step
+
+```{r, first plot for Graunt and Halley, fig.width = 6, fig.height = 6}
+(gh1 <- ggplot() + 
+  geom_line(data = graunt_halley_melt, 
+            mapping = aes(x = x, y = xPo, colour = Who)))
+(gh2 <- gh1 + 
+  geom_point(data = graunt_halley_melt_g, 
+             mapping = aes(x = x, y = xPo, colour = Who), 
+             shape = 21, fill = "white"))
+(gh3 <- gh2 + 
+  theme_bw() + 
+  xlab(x_lab) + 
+  ylab(y_lab) + 
+  ggtitle(main_title_2))
+(gh4 <- gh3 + 
+  theme(legend.position = c(0.8, 0.8)) +
+  annotate("text", 
+           x = c(16, 36), y = c(20, 50), 
+           label = c("Graunt", "Halley")) +
+  scale_x_continuous(breaks = c(graunt$x, 84)) + 
+  scale_y_continuous(breaks = c(graunt$xPo_g, xPo_halley_age_6)))
+```
+
+## Polygon
+
+Reuse `poly_upper` data frame and `poly_lower` data frame.
+
+```{r, polygon for Graunt and Halley, fig.width = 6, fig.height = 6}
+(ghp4 <- gh4 + 
+  geom_polygon(data = poly_upper, 
+               mapping = aes(x = x, y = y), 
+               alpha = 0.3, fill = "red"))
+(ghp5 <- ghp4 + 
+  geom_polygon(data = poly_lower, 
+               mapping = aes(x = x, y = y), 
+               alpha = 0.3, fill = "green"))
+```
+-->
+
+```{r, ghp, fig.width = 6, fig.height = 6, echo = FALSE}
+(ghp5 <- ghp5 +
+  geom_point(data = data.frame(x = 84, y = halley$xPo[85]), 
+             mapping = aes(x = x, y = y),  
+             colour = 3, shape = 21, fill = "white"))
+```
+
+<P style = "page-break-before:always">
+
+## Graunt, Halley, and US93
+
+<!--
+## Data Reshape
+
+```{r, reshape stage 3}
+# us93_2 <- us93
+# names(us93_2) <- c("x", "US93")
+ghu_melt <- melt(list(graunt_2, halley_2, us93_2), 
+                 id.vars = "x", 
+                 value.name = "xPo", 
+                 variable.name = "Who")
+ghu_melt_g <- ghu_melt[ghu_melt$x %in% graunt$x, ]
+# main_title_3 <- "Survival Function Plots"
+```
+
+## Survival Function Plots with ggplot
+
+```{r, Survival function plot for Graunt Halley and US93, fig.width = 6, fig.height = 6}
+ghu1 <- ggplot() + 
+  geom_line(data = ghu_melt, 
+            mapping = aes(x = x, y = xPo, colour = Who))
+ghu2 <- ghu1 + 
+  geom_point(data = ghu_melt_g, 
+             mapping = aes(x = x, y = xPo, colour = Who), 
+             shape = 21, fill = "white")
+ghu3 <- ghu2 + 
+  theme_bw() + 
+  xlab(x_lab) + 
+  ylab(y_lab) + 
+  ggtitle(main_title_3)
+ghu4 <- ghu3 + 
+  theme(legend.position = c(0.2, 0.2)) +
+  annotate("text", 
+           x = c(36, 36, 70), y = c(25, 50, 90), 
+           label = c("Graunt", "Halley", "US93")) +
+  scale_x_continuous(breaks = c(graunt$x, 84)) + 
+  scale_y_continuous(breaks = c(graunt$xPo_g, xPo_halley_age_6))
+```
+
+## Polygon
+
+```{r, polygon for Graunt Halley and US93, fig.width = 6, fig.height = 6}
+ghup4 <- ghu4 + 
+  geom_polygon(data = poly_upper, 
+               mapping = aes(x = x, y = y), 
+               alpha = 0.3, fill = "red")
+ghup5 <- ghup4 + 
+  geom_polygon(data = poly_lower_76, 
+               mapping = aes(x = x, y = y), 
+               alpha = 0.3, fill = "green")
+ghup6 <- ghup5 +
+  geom_polygon(data = poly_us_76, 
+               mapping = aes(x = x, y = y), 
+               alpha = 0.3, fill = "blue")
+```
+-->
+
+```{r, ghup, fig.width = 6, fig.height = 6, echo = FALSE}
+(ghup7 <- ghup6 +
+  geom_point(data = data.frame(x = 84, y = halley$xPo[85]), 
+             mapping = aes(x = x, y = y),  
+             colour = 3, shape = 21, fill = "white"))
+```
+
+<!--
+### `dump()` and `source()`
+
+* Check out how to save and retrieve. Use `source()` and `load()` for retrieval.
+
+```{r, dump and save}
+dump("area.R", file = "area.R")
+save.image("graunt_halley_1801.RData")
+```
+-->
