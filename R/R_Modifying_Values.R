@@ -17,7 +17,7 @@ vec
 vec[9] <- 0
 vec
 vec[9] <- NULL
-vec <- vec[-9]
+vec <- vec[-8]
 vec
 deck2$new <- 1:52
 N <- nrow(deck2)
@@ -36,7 +36,7 @@ deck2[seq(13, 52, by = 13), 3]
 deck2[seq(13, 52, by = 13), c(FALSE, FALSE, TRUE)]
 deck2$value[seq(13, 52, by = 13)] <- 14
 head(deck2, n = 13)
-source("./shuffle.R", echo = TRUE)
+source("./R/shuffle.R", echo = TRUE)
 deck3 <- shuffle(deck)
 deck3
 head(deck3)
@@ -151,4 +151,4 @@ deck3$value[deck3$face == "ace"]
 deck3$value[ace3] <- NA
 deck3
 ls()
-save.image(file = "./r_modifying_values.RData")
+save.image(file = "./R/r_modifying_values.RData")
