@@ -11,7 +11,7 @@ output: html_document
 <img src = "../pics/graunt_table.png" width = "240"/>
 -->
 
-```{r, out.width = "25%", fig.align = "left"}
+```{r, echo = TRUE, out.width = "25%", fig.align = "left"}
 knitr::include_graphics("../pics/graunt_table.png")
 ```
 
@@ -296,7 +296,8 @@ abline(v = graunt$x, lty = 2)
 points(us_graunt, pch = 21, col = "black", bg = "white")
 main_title_g_us <- "Survival Function of Graunt and US 1993"
 title(main = main_title_g_us, xlab = x_lab, ylab = y_lab)
-# dev.copy(device = png, file = "../pics/graunt_us93_png")
+dev.copy(device = png, file = "../pics/graunt_us93.png")
+dev.off()
 ```
 
 <P style = "page-break-before:always">
@@ -402,13 +403,13 @@ graunt_us_melt
   geom_polygon(data = graunt_poly, 
                mapping = aes(x = x, y = y), 
                alpha = 0.3, fill = "grey"))
-# ggsave("../pics/graunt_poly_ggplot.png", pg4)
+# ggsave("../pics/graunt_poly_ggplot.png", pg5)
 ```
 
 ```{r, fig.width = 8, fig.height = 12}
 library(gridExtra)
 g_graunt <- grid.arrange(g1, g2, g3, g4, g5, pg5, nrow = 3)
-ggsave(g_graunt, file = "../pics/graunt_ggplots.png", width = 8, height = 12)
+# ggsave(g_graunt, file = "../pics/graunt_ggplots.png", width = 8, height = 12)
 ```
 
 <P style = "page-break-before:always">
@@ -589,3 +590,5 @@ gup4
 dump("area.R", file = "area.R")
 save.image("./graunt_halley.RData")
 ```
+
+## Comments
