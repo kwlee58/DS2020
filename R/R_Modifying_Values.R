@@ -76,7 +76,7 @@ deck4[, "value"] <- 10
 head(deck4, 13)
 deck4[, 3] <- 0
 deck4$suit == "hearts"
-h <-deck4$suit == "hearts"
+h <- deck4$suit == "hearts"
 which(h)
 which(deck4$suit == "hearts")
 deck4$value[deck4$suit == "hearts"]
