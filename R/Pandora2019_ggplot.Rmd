@@ -8,13 +8,16 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(knitr)
+library(extrafont)
 ```
 
 ## Problem
 
 MBN은 2019.3.25 시사프로 판도라에서 고위공직자 범죄 수사처 설립 필요 여부에 대하여 공방을 벌이면서 찬반여론을 보여주는 그래프를 왜곡하여 비난을 사게 되었다.
 
-`r include_graphics("../pics/pandora1903.jpg", dpi = 240)`
+```{r, echo = FALSE, out.width = "50%", fig.align = "center"}
+include_graphics("../pics/pandora1903.jpg")
+```
 
 이 도표를 제대로 그리면 어떻게 나오는지 알아보자. Base R의 `pie()`함수를 활용한다. 
 도표 안의 레이블 좌표는 극좌표 변환식 $x = r \cos(\theta), y = r \sin(\theta)$를 이용한다.
@@ -85,23 +88,38 @@ dev.off()
 ```{r}
 library(ggplot2)
 # pos <- cumsum(poll) - poll / 2
-poll_tbl <- data.frame(key = names(poll), value = poll, row.names = NULL)
-ggplot(data = poll_tbl, mapping = aes(x = 2, y = value, fill = key)) +
+poll_tbl <- data.frame(key = names(poll), 
+                       value = poll, 
+                       row.names = NULL)
+ggplot(data = poll_tbl, 
+       mapping = aes(x = 2, y = value, fill = key)) +
   geom_bar(stat = "identity") +
-  geom_text(aes(y = pos, label = paste0(poll, "%")), size = 5, vjust = 1) +
+  geom_text(aes(y = pos, 
+                label = paste0(poll, "%")),
+            size = 5, vjust = 1) +
   geom_text(aes(y = pos, label = key), 
-            size = 5, vjust = -1, colour = "white", family = "KoPubWorldDotum Medium") +
+            size = 5, vjust = -1, 
+            colour = "white", 
+            family = "KoPubWorldDotum Medium") +
   xlim(1.2, 2.5) +
-  labs(title = "고위공직자 범죄수사처 설립 찬반", x = NULL, y = NULL) +
+  labs(title = "고위공직자 범죄수사처 설립 찬반", 
+       x = NULL, y = NULL) +
   scale_y_continuous(breaks = NULL) +
   scale_fill_manual(values = c("gray", "firebrick", "deepskyblue3")) +
   guides(fill = "none") +
   theme_void() +
   theme(text = element_text(family = "KoPubWorldDotum Medium"),
-        plot.title = element_text(family = "KoPubWorldDotum Bold", hjust = 0.5, size = 20, 
-                                        margin = margin(t = 0, r = 0, b = -24, l = 0)),
-        panel.background = element_rect(fill = "white", colour = "black"),
+        plot.title = element_text(family = "KoPubWorldDotum Bold", 
+                                  hjust = 0.5, size = 20, 
+                                  margin = margin(t = 0, 
+                                                  r = 0, 
+                                                  b = -24, 
+                                                  l = 0)),
+        panel.background = element_rect(fill = "white", 
+                                        colour = "black"),
         legend.text = element_text(family = "KoPubWorldDotum Light")) +
   coord_polar(theta = "y")
 ggsave(file = "../pics/pandora_ggplot.png", width = 5, height = 5)
 ```
+
+## Comments

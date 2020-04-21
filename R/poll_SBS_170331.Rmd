@@ -7,7 +7,9 @@ output: html_document
 
 SBS 뉴스에서는 다음과 같은 도표의 후보지지도 여론조사 결과를 보도. 
 
-![SBS 뉴스 2017. 3월](../pics/SBS_170331.jpg)
+```{r, echo = FALSE, out.width = "60%", fig.align = "left"}
+knitr::include_graphics("../pics/SBS_170331.jpg")
+```
 
 막대의 높이에 의구심을 표한 시청자들의 항의에 직면함. 
 
@@ -304,3 +306,5 @@ g0 <- ggplot(data = rates_df,
 ggsave("../pics/sbs170331.png", 
        g9.2, width = 8, height = 4, dpi = 72)
 ```
+
+## Comments
