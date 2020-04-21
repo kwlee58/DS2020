@@ -723,18 +723,18 @@ head(deck3)</code></pre>
 ## 6 eight spades     8</code></pre>
 <pre class="r"><code>random &lt;- sample(1:52, size = 52)
 random</code></pre>
-<pre><code>##  [1] 17  8 44  7 27 15  3 38 20 10 21  6 11 40 43 33 49 39 50 46  9 47 24  4 52
-## [26] 35 51 37 42  2 34 30 32 28 45 23 29 14 18 19 36 22 12 26 31  1 13 25 41  5
-## [51] 48 16</code></pre>
+<pre><code>##  [1] 44 52 41 24  9 37 34 36 42 33 28  2 49 18 19 21  5 22 47 40 26 46 20 32 31
+## [26] 43  1  8 27 29 50 11  3 14 48 45  6 13 51 15  4 38 10 16 25  7 17 23 39 30
+## [51] 35 12</code></pre>
 <pre class="r"><code>deck4 &lt;- deck[random, ]
 head(deck4)</code></pre>
 <pre><code>##     face     suit value
-## 17   ten    clubs    10
-## 8    six   spades     6
 ## 44  nine   hearts     9
-## 7  seven   spades     7
-## 27  king diamonds    13
-## 15 queen    clubs    12</code></pre>
+## 52   ace   hearts     1
+## 41 queen   hearts    12
+## 24 three    clubs     3
+## 9   five   spades     5
+## 37 three diamonds     3</code></pre>
 <pre class="r"><code>shuffle &lt;- function(cards) {
   random &lt;- sample(1:52, size = 52)
   cards[random, ]
@@ -744,8 +744,8 @@ deal(deck)</code></pre>
 ## 1 king spades    13</code></pre>
 <pre class="r"><code>deck2 &lt;- shuffle(deck)
 deal(deck2)</code></pre>
-<pre><code>##   face   suit value
-## 3 jack spades    11</code></pre>
+<pre><code>##    face  suit value
+## 26  ace clubs     1</code></pre>
 </div>
 <div id="dollar-signs-and-double-brackets" class="section level2">
 <h2>Dollar Signs and Double Brackets</h2>
