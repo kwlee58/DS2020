@@ -16,7 +16,7 @@ library(knitr)
 ### Data
 
 ```{r, data}
-class_roll <- read.xlsx("../data/class_roll0303.xlsx", 
+class_roll <- read.xlsx("../data/class_roll0303_deid.xlsx", 
                         sheetIndex = 1, 
                         startRow = 2, 
                         endRow = 162, 
