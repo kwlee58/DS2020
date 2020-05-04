@@ -1,6 +1,6 @@
 ---
 title: "Weighted Dice Simulation"
-author: "이기원"
+author: "데이터과학융합스쿨 이기원"
 date: "`r Sys.Date()`"
 output: html_document
 ---
@@ -36,13 +36,15 @@ qplot(rolls, binwidth = 1)
 
 ```{r}
 # roll_w <- roll
-# fix(roll.w)
+# fix(roll_w)
 roll_w <-
-function() {
-die <- 1:6
-dice <- sample(die, size = 2, replace = TRUE, prob = c(rep(1/8, 5), 3/8))
-sum(dice)
-}
+  function() {
+    die <- 1:6
+    dice <- sample(die, size = 2, 
+                   replace = TRUE, 
+                   prob = c(rep(1/8, 5), 3/8))
+    sum(dice)
+    }
 roll_w
 replicate(20, roll_w())
 N <- 10000

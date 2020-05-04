@@ -1,8 +1,8 @@
 ## read.csv
-read.csv("../data/cards.csv")
-deck <- read.csv("../data/cards.csv")
+read.csv("./data/cards.csv")
+deck <- read.csv("./data/cards.csv")
 str(deck)
-deck <- read.csv("../data/cards.csv", stringsAsFactors = FALSE)
+deck <- read.csv("./data/cards.csv", stringsAsFactors = FALSE)
 str(deck)
 head(deck)
 ## Positive Integers

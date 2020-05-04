@@ -1,7 +1,7 @@
 ---
 title: "R Notations"
-author: "coop711"
-date: "2018-03-26"
+author: "Your ID and Name"
+date: "Submission Date"
 output: html_document
 ---
 
@@ -99,4 +99,6 @@ lst$numbers
 lst[[1]]
 lst["numbers"]
 lst[["numbers"]]
+dump(list = c("deal", "shuffle"), file = "shuffle.R")
+save.image(file = "./r_notation.RData")
 ```

@@ -1,5 +1,6 @@
 # R Objects
 ## Atomic Vectors
+getwd()
 die <- 1:6
 is.vector(die)
 five <- 5
@@ -141,13 +142,13 @@ tail(deck)
 deck <- read.csv("https://gist.githubusercontent.com/garrettgman/9629323/raw/ee5dfc039fd581cb467cc69c226ea2524913c3d8/deck.csv",
                  stringsAsFactors = FALSE)
 str(deck)
-write.csv(deck, file = "../data/cards.csv")
-write.csv(deck, file = "../data/cards.csv", 
+write.csv(deck, file = "./data/cards.csv")
+write.csv(deck, file = "./data/cards.csv", 
           row.names = FALSE)
 ls()
-save(list = ls(), file = "./r_objects.RData")
+save(list = ls(), file = "../R/r_objects.RData")
 rm(list = ls())
 ls()
-load("./r_objects.RData")
+load("../R/r_objects.RData")
 ls()
 rm(list = ls())

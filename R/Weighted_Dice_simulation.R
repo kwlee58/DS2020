@@ -23,15 +23,15 @@ fix(roll_w)
 roll_w
 replicate(100, roll_w())
 N <- 10000
-rolls.w <- replicate(N, roll_w())
-table(rolls.w)
+rolls_w <- replicate(N, roll_w())
+table(rolls_w)
 options("digits")
 options(digits = 2)
-table(rolls.w)/N
-table(rolls.w)/N * 64
+table(rolls_w)/N
+table(rolls_w)/N * 64
 options(digits = 1)
-table(rolls.w)/N * 64
+table(rolls_w)/N * 64
 # histogram
-qplot(rolls.w, binwidth = 1)
+qplot(rolls_w, binwidth = 1)
 # dump
 dump(list = "roll_w", file = "./roll_w.R")
