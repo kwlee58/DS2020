@@ -1,6 +1,6 @@
 plot(x = n_deaths, y = horsekick_cum, 
      xlim = c(-0.5,4.5), ylim = c(50, 100), 
-     xlab = "»ç¸ÁÀÚ ¼ö", ylab = "´©Àû ¹éºĞ·ü(%)", 
+     xlab = "ì‚¬ë§ì ìˆ˜", ylab = "ëˆ„ì  ë°±ë¶„ë¥ (%)", 
      yaxt = "n")
 axis(side = 2,
      at = c(50, horsekick_cum), 
