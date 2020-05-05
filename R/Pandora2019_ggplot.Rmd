@@ -96,9 +96,9 @@ ggplot(data = poll_tbl,
   geom_bar(stat = "identity") +
   geom_text(aes(y = pos, 
                 label = paste0(poll, "%")),
-            size = 5, vjust = 1) +
+            size = 4, vjust = 1) +
   geom_text(aes(y = pos, label = key), 
-            size = 5, vjust = -1, 
+            size = 4, vjust = -1, 
             colour = "white", 
             family = "KoPubWorldDotum Medium") +
   xlim(1.2, 2.5) +
@@ -111,11 +111,11 @@ ggplot(data = poll_tbl,
   theme(text = element_text(family = "KoPubWorldDotum Medium"),
         plot.title = element_text(family = "KoPubWorldDotum Bold", 
                                   hjust = 0.5, size = 20, 
-                                  margin = margin(t = 0, 
+                                  margin = margin(t = 12, 
                                                   r = 0, 
                                                   b = -24, 
                                                   l = 0)),
-        panel.background = element_rect(fill = "white", 
+        panel.background = element_rect(fill = "darkgray", 
                                         colour = "black"),
         legend.text = element_text(family = "KoPubWorldDotum Light")) +
   coord_polar(theta = "y")
