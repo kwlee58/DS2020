@@ -1,5 +1,5 @@
 ---
-   title: "Team Allocation for Basic Programming in R "
+title: "Team Allocation for Basic Programming in R "
 author: "coop711"
 date: "2020-05-04"
 output: html_document

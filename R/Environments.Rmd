@@ -1,4 +1,11 @@
-# Environments
+---
+title: "Environments"
+author: "coop711"
+date: "2020-05-11"
+output: html_document
+---
+
+## Data
 
 ```{r}
 load("./r_modifying_values.RData")
@@ -213,3 +220,5 @@ deal()
 environment(deal)
 environment(shuffle)
 ```
+
+## Comments
