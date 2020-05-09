@@ -7,24 +7,24 @@ output: html_document
 
 ```{r include = FALSE}
 library(knitr)
-knitr::opts_chunk$set(echo = TRUE, tidy = TRUE, highlight = FALSE)
+knitr::opts_chunk$set(echo = TRUE, highlight = FALSE)
 ```
 
 ## Data
 
-ÀÚ·á ÀÔ·Â
+ìžë£Œ ìž…ë ¥
 
 <img src = "../pics/korea_labor_income_2010.png" height = "480" width = "480">
 
 ```{r, data, highlight = FALSE}
 (income_kr <- read.table("../data/labor_income_kor.txt", 
                          header = TRUE, 
-                         encoding = "UTF-8",
+#                          encoding = "UTF-8",
                          row.names = 1))
 str(income_kr)
 ```
 
-º¯¼ö¸íÀ» Á¶Á¤ÇÏ°í, ´Ù½Ã È®ÀÎ.
+ë³€ìˆ˜ëª…ì„ ì¡°ì •í•˜ê³ , ë‹¤ì‹œ í™•ì¸.
 
 ```{r}
 names(income_kr) <- c("Earners(%)", "Income(%)")
@@ -35,15 +35,15 @@ rownames(income_kr) <- sub(pattern = "-",
 # kable(income_kr)
 ```
 
-`barplot()` À» ±×¸®±â À§ÇÏ¿© `height`¸¦ ¼³Á¤ÇÏ·Á¸é `width`¸¦ ÆÄ¾ÇÇÏ¿©¾ß ÇÔ. ±×·¯±â À§ÇØ¼­
-¼Òµæ ±¸°£À» `rownames`ÀÇ ±¸°£À¸·ÎºÎÅÍ ¼³Á¤. `strsplit()`ÀÇ È°¿ë¹æ¹ý È®ÀÎ, 
+`barplot()` ì„ ê·¸ë¦¬ê¸° ìœ„í•˜ì—¬ `height`ë¥¼ ì„¤ì •í•˜ë ¤ë©´ `width`ë¥¼ íŒŒì•…í•˜ì—¬ì•¼ í•¨. ê·¸ëŸ¬ê¸° ìœ„í•´ì„œ
+ì†Œë“ êµ¬ê°„ì„ `rownames`ì˜ êµ¬ê°„ìœ¼ë¡œë¶€í„° ì„¤ì •. `strsplit()`ì˜ í™œìš©ë°©ë²• í™•ì¸, 
 
 ```{r, strsplit, results = 'hide'}
 (r_names_split <- strsplit(rownames(income_kr), 
                            split = " - "))
 ```
 
-`[]`, `[[]]`ÀÇ Â÷ÀÌ¿Í `[]`¸¦ ÇÔ¼ö·Î Ç¥ÇöÇÏ´Â ¹æ¹ý¿¡ À¯ÀÇ(`results = 'hide'`¸¦ Áö¿ì°í ½ÇÇà).
+`[]`, `[[]]`ì˜ ì°¨ì´ì™€ `[]`ë¥¼ í•¨ìˆ˜ë¡œ í‘œí˜„í•˜ëŠ” ë°©ë²•ì— ìœ ì˜(`results = 'hide'`ë¥¼ ì§€ìš°ê³  ì‹¤í–‰).
 
 ```{r, results = 'hide'}
 r_names_split[1]
@@ -54,7 +54,7 @@ r_names_split[[1]][1]
 `[[`(r_names_split, 1)
 ```
 
-`anonymous function`°ú `sapply()`¸¦ ÀÌ¿ëÇÏ¿© ±ä character listÀÇ ¾Õ ¿ø¼Ò¸¸ ÃßÃâÇÏ´Â ¹æ¹ýÀ» »ìÇÊ °Í.
+`anonymous function`ê³¼ `sapply()`ë¥¼ ì´ìš©í•˜ì—¬ ê¸´ character listì˜ ì•ž ì›ì†Œë§Œ ì¶”ì¶œí•˜ëŠ” ë°©ë²•ì„ ì‚´í•„ ê²ƒ.
 
 ```{r}
 # (r_names_split_first <- sapply(r_names_split, function(x){x[1]}))
@@ -64,13 +64,13 @@ r_names_split[[1]][1]
 (income_breaks <- c(income_breaks, 2000))
 ```
 
-`width`¿¡ ÇØ´çÇÏ´Â °¢ ¼Òµæ±¸°£ÀÇ ÆøÀ» °è»ê
+`width`ì— í•´ë‹¹í•˜ëŠ” ê° ì†Œë“êµ¬ê°„ì˜ í­ì„ ê³„ì‚°
 
 ```{r, widths}
 (income_widths <- diff(income_breaks))
 ```
 
-°¢ ±âµÕÀÇ ¸éÀûÀÌ ÇØ´ç ¼Òµæ±¸°£ÀÇ ÆÛ¼¾Æ¼Áö¿Í °°°Ô ÇØÁÖ·Á¸é °¢ ÆÛ¼¾Æ¼Áö¸¦ `width`·Î ³ª´²Áà¾ß ÇÔ. ´ÙÀ½ °¢ °æ¿ì¸¦ ºñ±³(`results = 'hide'`¸¦ Áö¿ì°í ½ÇÇà).
+ê° ê¸°ë‘¥ì˜ ë©´ì ì´ í•´ë‹¹ ì†Œë“êµ¬ê°„ì˜ í¼ì„¼í‹°ì§€ì™€ ê°™ê²Œ í•´ì£¼ë ¤ë©´ ê° í¼ì„¼í‹°ì§€ë¥¼ `width`ë¡œ ë‚˜ëˆ ì¤˜ì•¼ í•¨. ë‹¤ìŒ ê° ê²½ìš°ë¥¼ ë¹„êµ(`results = 'hide'`ë¥¼ ì§€ìš°ê³  ì‹¤í–‰).
 
 ```{r, height, results = 'hide'}
 options(digits = 3)
@@ -85,20 +85,20 @@ options(digits = 3)
 
 ## Probability Historam with `barplot()`
 
-¾Æ¹«·± `argument` µµ ¼³Á¤ÇÏÁö ¾Ê°í `barplot()` À» ±×¸®¸é 
+ì•„ë¬´ëŸ° `argument` ë„ ì„¤ì •í•˜ì§€ ì•Šê³  `barplot()` ì„ ê·¸ë¦¬ë©´ 
 
 ```{r, fig.width = 12, fig.height = 4}
 barplot(height_earners, 
         width = income_widths)
 ```
 
-°¢ ¸·´ëÀÇ ÀÌ¸§À» `rownames`¿¡¼­ °¡Á®¿À¸é
+ê° ë§‰ëŒ€ì˜ ì´ë¦„ì„ `rownames`ì—ì„œ ê°€ì ¸ì˜¤ë©´
 
 ```{r, names of bar}
 (names_bar <- rownames(income_kr))
 ```
 
-¸·´ëÀÇ ÀÌ¸§À» ³Ö¾î ´Ù½Ã ±×¸®µÇ, ¸·´ë »çÀÌÀÇ °ø°£À» ¾ø¾Ö¸é
+ë§‰ëŒ€ì˜ ì´ë¦„ì„ ë„£ì–´ ë‹¤ì‹œ ê·¸ë¦¬ë˜, ë§‰ëŒ€ ì‚¬ì´ì˜ ê³µê°„ì„ ì—†ì• ë©´
  
 ```{r, barplot no space, fig.width = 12, fig.height = 4}
 barplot(height_earners, 
@@ -107,7 +107,7 @@ barplot(height_earners,
         names.arg = names_bar)
 ```
 
-½ÇÁ¦ ÀÎ¿øÀº °ÅÀÇ ¾ø´Â °ÍÃ³·³ º¸ÀÌ´Â 5¾ï¿ø ÀÌ»óÀÇ ±¸°£À» ÇÕÃÄ¾ß ÇÒ ÇÊ¿ä. ÀÚ·á¸¦ Àç±¸¼ºÇÏ¸é,
+ì‹¤ì œ ì¸ì›ì€ ê±°ì˜ ì—†ëŠ” ê²ƒì²˜ëŸ¼ ë³´ì´ëŠ” 5ì–µì› ì´ìƒì˜ êµ¬ê°„ì„ í•©ì³ì•¼ í•  í•„ìš”. ìžë£Œë¥¼ ìž¬êµ¬ì„±í•˜ë©´,
 
 ```{r}
 income_kr_2 <- income_kr[1:11, ]
@@ -124,7 +124,7 @@ height_earners_2 <- income_kr_2[, 1]/income_widths_2
 names_bar_2 <- rownames(income_kr_2)
 ```
 
-´Ù½Ã `barplot()`À» ÀÛµ¿½ÃÅ°µÇ È¸»ö ´ë½Å Èò»öÀ» ³Ö°í, ¸·´ë »çÀÌÀÇ °ø°£À» ¾ø¾Ö°í Á¦¸ñ°ú ÃàÀÌ¸§À» ºÙÀÌ¸é
+ë‹¤ì‹œ `barplot()`ì„ ìž‘ë™ì‹œí‚¤ë˜ íšŒìƒ‰ ëŒ€ì‹  í°ìƒ‰ì„ ë„£ê³ , ë§‰ëŒ€ ì‚¬ì´ì˜ ê³µê°„ì„ ì—†ì• ê³  ì œëª©ê³¼ ì¶•ì´ë¦„ì„ ë¶™ì´ë©´
 
 ```{r, fig.width = 12, fig.height = 4}
 title_1 <- "Korea Income Wage Earners' Distribution"
@@ -140,7 +140,7 @@ title(main = title_1,
       ylab = ylab_1)
 ```
 
-1¾ï ÀÌ»óÀÇ ±¸°£À» ÇÕÄ¡±â À§ÇÏ¿© ÀÚ·á¸¦ ´Ù½Ã ¼Õº¸¸é,
+1ì–µ ì´ìƒì˜ êµ¬ê°„ì„ í•©ì¹˜ê¸° ìœ„í•˜ì—¬ ìžë£Œë¥¼ ë‹¤ì‹œ ì†ë³´ë©´,
 
 ```{r}
 income_kr_3 <- income_kr_2[1:9, ]
@@ -152,7 +152,7 @@ height_earners_3 <- income_kr_3[, 1]/income_widths_3
 names_bar_3 <- rownames(income_kr_3)
 ```
 
-1¾ï ÀÌ»óÀÇ ±¸°£À» ÇÕÃÄ barplotÀ» ±×¸®¸é,
+1ì–µ ì´ìƒì˜ êµ¬ê°„ì„ í•©ì³ barplotì„ ê·¸ë¦¬ë©´,
 
 ```{r, barplot 3, fig.width = 12, fig.height = 4}
 barplot(height_earners_3, 
@@ -165,7 +165,7 @@ title(main = title_1,
       ylab = ylab_1)
 ```
 
-°°Àº ¹æ¹ýÀ¸·Î ¼Òµæ±Ô¸ð¿¡ ´ëÇÏ¿© ¼¼ °³ÀÇ `barplot`À» ±×¸®·Á¸é, ¿ì¼± ÀÚ·á¸¦ Á¤¸®ÇÏ°í. 
+ê°™ì€ ë°©ë²•ìœ¼ë¡œ ì†Œë“ê·œëª¨ì— ëŒ€í•˜ì—¬ ì„¸ ê°œì˜ `barplot`ì„ ê·¸ë¦¬ë ¤ë©´, ìš°ì„  ìžë£Œë¥¼ ì •ë¦¬í•˜ê³ . 
 
 ```{r}
 height_income <- income_kr[, 2]/income_widths
@@ -173,7 +173,7 @@ height_income_2 <- income_kr_2[, 2]/income_widths_2
 height_income_3 <- income_kr_3[, 2]/income_widths_3
 ```
 
-¼¼ °³ÀÇ barplotÀ» ÇÑ È­¸é¿¡ ¿¬¼ÓÀûÀ¸·Î ±×¸®±â À§ÇÏ¿© `par(mfrow = c(3, 1))` ¼³Á¤
+ì„¸ ê°œì˜ barplotì„ í•œ í™”ë©´ì— ì—°ì†ì ìœ¼ë¡œ ê·¸ë¦¬ê¸° ìœ„í•˜ì—¬ `par(mfrow = c(3, 1))` ì„¤ì •
 
 ```{r, fig.width = 12, fig.height = 10.5}
 par(mfrow = c(3, 1))
@@ -198,7 +198,7 @@ barplot(height_income_3,
 
 ## Cumulative distribution
 
-`barplot` º¸´Ù ´©ÀûµµÇ¥°¡ ºÐÆ÷ÀÇ À±°ûÀ» »ìÇÇ´Â µ¥ ´õ ³´´Ù´Â Á¡À» »ó±âÇÏ¸é, ´©ÀûºÐÆ÷¸¦ ±¸ÇÏ´Â ÀÏºÎÅÍ ½ÃÀÛÇÏ¿©¾ß ÇÔ. ÀÚ·á·ÎºÎÅÍ ÀÌ¹Ì ¾Æ´Â »ç½ÇÀÌÁö¸¸, `cumsum()`ÇÔ¼öÀÇ È°¿ë°â È®ÀÎÂ÷ °è»êÇØº¸¸é 
+`barplot` ë³´ë‹¤ ëˆ„ì ë„í‘œê°€ ë¶„í¬ì˜ ìœ¤ê³½ì„ ì‚´í”¼ëŠ” ë° ë” ë‚«ë‹¤ëŠ” ì ì„ ìƒê¸°í•˜ë©´, ëˆ„ì ë¶„í¬ë¥¼ êµ¬í•˜ëŠ” ì¼ë¶€í„° ì‹œìž‘í•˜ì—¬ì•¼ í•¨. ìžë£Œë¡œë¶€í„° ì´ë¯¸ ì•„ëŠ” ì‚¬ì‹¤ì´ì§€ë§Œ, `cumsum()`í•¨ìˆ˜ì˜ í™œìš©ê²¸ í™•ì¸ì°¨ ê³„ì‚°í•´ë³´ë©´ 
 
 ```{r}
 income_kr_cum <- apply(income_kr, 
@@ -206,13 +206,13 @@ income_kr_cum <- apply(income_kr,
                        FUN = cumsum)
 ```
 
-´©ÀûµµÇ¥¸¦ ±×¸®·Á¸é Ã¹ ÁÂÇ¥´Â `(0, 0)`ÀÌ¾î¾ß ÇÔ¿¡ À¯ÀÇ. ¸¶Ä§ `income_breaks` ¿Í ¸ÂÃçº¸¸é `income_kr_cum`ÀÇ Ã¹ ÇàÀ» 0À¸·Î¸¸ Ãß°¡ÇØ ÁÖ¸é µÇ´Â ÀÏÀÓ.
+ëˆ„ì ë„í‘œë¥¼ ê·¸ë¦¬ë ¤ë©´ ì²« ì¢Œí‘œëŠ” `(0, 0)`ì´ì–´ì•¼ í•¨ì— ìœ ì˜. ë§ˆì¹¨ `income_breaks` ì™€ ë§žì¶°ë³´ë©´ `income_kr_cum`ì˜ ì²« í–‰ì„ 0ìœ¼ë¡œë§Œ ì¶”ê°€í•´ ì£¼ë©´ ë˜ëŠ” ì¼ìž„.
 
 ```{r}
 income_kr_cum <- rbind(rep(0, 2), income_kr_cum)
 ```
 
-´©ÀûºÐÆ÷ÀÇ °¢ °è±ÞÀº  `10 - 20`ÀÇ ¿­¸®°í ´ÝÈù ±¸°£ÀÌ ¾Æ´Ï¶ó ÇÑ ÂÊÀ¸·Î ¿­¸° ±¸°£ÀÌ¾î¾ß ÇÏ°í, ´©Àû¹éºÐ·üÀÓÀ» ¸í½ÃÇÏ·Á¸é   
+ëˆ„ì ë¶„í¬ì˜ ê° ê³„ê¸‰ì€  `10 - 20`ì˜ ì—´ë¦¬ê³  ë‹«ížŒ êµ¬ê°„ì´ ì•„ë‹ˆë¼ í•œ ìª½ìœ¼ë¡œ ì—´ë¦° êµ¬ê°„ì´ì–´ì•¼ í•˜ê³ , ëˆ„ì ë°±ë¶„ë¥ ìž„ì„ ëª…ì‹œí•˜ë ¤ë©´   
 
 ```{r}
 income_class_cum <- strsplit(rownames(income_kr_cum), 
@@ -228,7 +228,7 @@ earners_kor_cum_df <- data.frame(x = income_breaks, y = income_kr_cum[, 1])
 income_kr_cum_df <- data.frame(x = income_breaks, y = income_kr_cum[, 2])
 ```
 
- `xlim` À» Á¼Çô°¡¸é¼­ ºÐÆ÷ À±°û ÆÄ¾Ç.
+ `xlim` ì„ ì¢í˜€ê°€ë©´ì„œ ë¶„í¬ ìœ¤ê³½ íŒŒì•….
 
 ```{r, fig.width = 12, fig.height = 12}
 par(mfrow = c(2, 2))
@@ -264,8 +264,8 @@ title(main = title_2,
       ylab = ylab_2)
 ```
 
-ÇÑ°¡Áö ±â¾ïÇØ µÑ »ç½ÇÀº ´©ÀûºÐÆ÷ÀÇ À­ ºÎºÐ ¸éÀûÀÌ ¹Ù·Î Æò±ÕÀÌ¶ó´Â Á¡. ´©ÀûºÐÆ÷°¡ È÷½ºÅä±×·¥º¸´Ù ³ªÀº Á¡ ÁßÀÇ ÇÏ³ª°¡ ºÐÀ§¸¦ Ã£±â ½¬¿ï »Ó ¾Æ´Ï¶ó Æò±ÕÀ» ºñ±³ÇÏ´Â °Íµµ ¿ëÀÌÇÏ´Ù´Â °ÍÀÓ. ÁßÀ§¼ÒµæÀº ¹Ù·Î $y$Ãà¿¡¼­ 50%¿¡ ÇØ´çÇÏ´Â °ªÀ» ¼öÆòÀ¸·Î ±×Àº ÈÄ ´©ÀûµµÇ¥¿Í ¸¸³ª´Â Á¡ÀÇ $x$ÁÂÇ¥ÀÌ´Ù. 
-¿©±â¼­ °è»êÇØ º¸¸é $\frac{x-10}{50 - 31.4} = \frac{54.2 - 31.4}{20 - 10}$·ÎºÎÅÍ $x = 18.2$°¡ °è»êµÈ´Ù.
+í•œê°€ì§€ ê¸°ì–µí•´ ë‘˜ ì‚¬ì‹¤ì€ ëˆ„ì ë¶„í¬ì˜ ìœ— ë¶€ë¶„ ë©´ì ì´ ë°”ë¡œ í‰ê· ì´ë¼ëŠ” ì . ëˆ„ì ë¶„í¬ê°€ ížˆìŠ¤í† ê·¸ëž¨ë³´ë‹¤ ë‚˜ì€ ì  ì¤‘ì˜ í•˜ë‚˜ê°€ ë¶„ìœ„ë¥¼ ì°¾ê¸° ì‰¬ìš¸ ë¿ ì•„ë‹ˆë¼ í‰ê· ì„ ë¹„êµí•˜ëŠ” ê²ƒë„ ìš©ì´í•˜ë‹¤ëŠ” ê²ƒìž„. ì¤‘ìœ„ì†Œë“ì€ ë°”ë¡œ $y$ì¶•ì—ì„œ 50%ì— í•´ë‹¹í•˜ëŠ” ê°’ì„ ìˆ˜í‰ìœ¼ë¡œ ê·¸ì€ í›„ ëˆ„ì ë„í‘œì™€ ë§Œë‚˜ëŠ” ì ì˜ $x$ì¢Œí‘œì´ë‹¤. 
+ì—¬ê¸°ì„œ ê³„ì‚°í•´ ë³´ë©´ $\frac{x-10}{50 - 31.4} = \frac{54.2 - 31.4}{20 - 10}$ë¡œë¶€í„° $x = 18.2$ê°€ ê³„ì‚°ëœë‹¤.
 
 ```{r, fig.width = 6, fig.height = 6}
 plot(earners_kor_cum_df, 
@@ -298,7 +298,7 @@ title(main = title_2,
       ylab = ylab_2)
 ```
 
-¼Òµæ ÀÚÃ¼ÀÇ ´©ÀûºÐÆ÷¿¡ ´ëÇØ¼­µµ °°Àº ¹æ¹ýÀ¸·Î ±×·Áº¸¸é 
+ì†Œë“ ìžì²´ì˜ ëˆ„ì ë¶„í¬ì— ëŒ€í•´ì„œë„ ê°™ì€ ë°©ë²•ìœ¼ë¡œ ê·¸ë ¤ë³´ë©´ 
 
 ```{r, fig.width = 12, fig.height = 12}
 par(mfrow = c(2, 2))
@@ -343,7 +343,7 @@ title(main = title_3,
 
 ## Lorenz Curve
 
-ÀÌÁ¦ µÎ ´©ÀûºÐÆ÷¸¦ ÇÑ ÀåÀÇ µµÇ¥·Î »ìÇÇ´Â ¹æ¹ýÀ» »ý°¢ÇØº¸ÀÚ. $x$ ÃàÀ» »ç¶÷, $y$ ÃàÀ» ¼ÒµæÀ¸·Î ÇÏ¿© µÎ Á¡À» ÀÌ¾îÁÖ¸é ¾î¶² °á°ú°¡ ³ª¿À´Â Áö »ìÆì º¸ÀÚ.
+ì´ì œ ë‘ ëˆ„ì ë¶„í¬ë¥¼ í•œ ìž¥ì˜ ë„í‘œë¡œ ì‚´í”¼ëŠ” ë°©ë²•ì„ ìƒê°í•´ë³´ìž. $x$ ì¶•ì„ ì‚¬ëžŒ, $y$ ì¶•ì„ ì†Œë“ìœ¼ë¡œ í•˜ì—¬ ë‘ ì ì„ ì´ì–´ì£¼ë©´ ì–´ë–¤ ê²°ê³¼ê°€ ë‚˜ì˜¤ëŠ” ì§€ ì‚´íŽ´ ë³´ìž.
 
 ```{r, fig.width = 6, fig.height = 6}
 earners <- income_kr_cum[, 1] 
@@ -372,7 +372,7 @@ title(main = title_4,
       ylab = ylab_4)
 ```
 
-ÃÊ½Â´Þ ºÎºÐ¿¡ ºø±ÝÀ» Ä¡°í, °¢ ÃàÀÇ ´«±ÝÀ» °¡´ÉÇÑ ¸¹ÀÌ Ç¥½ÃÇÏ·Á¸é `polygon()`°ú `axis(..., las = )`À» ÀÌ¿ëÇÏ°Ô µÇ´Â µ¥ ÀÌ ¶§ ´Ù°¢ÇüÀ» ±¸¼ºÇÏ´Âµ¥ ÇÊ¿äÇÑ ÁÂÇ¥µéÀº ÀÌ¹Ì `earners_income_df`¿¡ ¸ðµÎ ³ª¿Í ÀÖÀ½.
+ì´ˆìŠ¹ë‹¬ ë¶€ë¶„ì— ë¹—ê¸ˆì„ ì¹˜ê³ , ê° ì¶•ì˜ ëˆˆê¸ˆì„ ê°€ëŠ¥í•œ ë§Žì´ í‘œì‹œí•˜ë ¤ë©´ `polygon()`ê³¼ `axis(..., las = )`ì„ ì´ìš©í•˜ê²Œ ë˜ëŠ” ë° ì´ ë•Œ ë‹¤ê°í˜•ì„ êµ¬ì„±í•˜ëŠ”ë° í•„ìš”í•œ ì¢Œí‘œë“¤ì€ ì´ë¯¸ `earners_income_df`ì— ëª¨ë‘ ë‚˜ì™€ ìžˆìŒ.
 
 ```{r, fig.width = 6, fig.height = 6}
 plot(earners_income_df, 
@@ -401,20 +401,20 @@ points(earners_income_df,
        pch = 21, col = "black", bg = "white")
 ```
 
-ÀÌ °î¼±ÀÇ ÀÌ¸§Àº ¹«¾ùÀÎ°¡¿ä? [Lorenz Curve](https://en.wikipedia.org/wiki/Lorenz_curve) ÂüÁ¶.
+ì´ ê³¡ì„ ì˜ ì´ë¦„ì€ ë¬´ì—‡ì¸ê°€ìš”? [Lorenz Curve](https://en.wikipedia.org/wiki/Lorenz_curve) ì°¸ì¡°.
 
 <P style = "page-break-before:always">
 
 ### Gini coefficient 
 
-Áö´Ï°è¼ö´Â ¿ÏÀüÆòµî¼±°ú ·Î·»Ã÷ °î¼± »çÀÌÀÇ ¸éÀûÀ» ¿ÏÀüºÒÆòµî »óÈ²¿¡¼­ÀÇ ¸éÀû, Áï 1/2·Î ³ª´² ÁØ °ªÀÌ´Ù. ÀÌ °ªÀÌ Å¬¼ö·Ï ºÒÆòµîÀÌ ½ÉÇÑ °ÍÀ¸·Î °£ÁÖÇÒ ¼ö ÀÖ´Ù. ÀÌ ÃÊ½Â´Þ ¸ð¾ç ¸éÀûÀº »ï°¢Çü ¸éÀû¿¡¼­ ·Î·»Ã÷ °î¼± ¾Æ·¡ ¸éÀûÀ» »« °Í°ú °°¾ÆÁö¹Ç·Î ÀÌÀü¿¡ ÀÛ¼ºÇÑ `arae.R`ÇÔ¼ö¸¦ ÀÌ¿ëÇÒ ¼ö ÀÖ´Ù.
+ì§€ë‹ˆê³„ìˆ˜ëŠ” ì™„ì „í‰ë“±ì„ ê³¼ ë¡œë Œì¸  ê³¡ì„  ì‚¬ì´ì˜ ë©´ì ì„ ì™„ì „ë¶ˆí‰ë“± ìƒí™©ì—ì„œì˜ ë©´ì , ì¦‰ 1/2ë¡œ ë‚˜ëˆ  ì¤€ ê°’ì´ë‹¤. ì´ ê°’ì´ í´ìˆ˜ë¡ ë¶ˆí‰ë“±ì´ ì‹¬í•œ ê²ƒìœ¼ë¡œ ê°„ì£¼í•  ìˆ˜ ìžˆë‹¤. ì´ ì´ˆìŠ¹ë‹¬ ëª¨ì–‘ ë©´ì ì€ ì‚¼ê°í˜• ë©´ì ì—ì„œ ë¡œë Œì¸  ê³¡ì„  ì•„ëž˜ ë©´ì ì„ ëº€ ê²ƒê³¼ ê°™ì•„ì§€ë¯€ë¡œ ì´ì „ì— ìž‘ì„±í•œ `arae.R`í•¨ìˆ˜ë¥¼ ì´ìš©í•  ìˆ˜ ìžˆë‹¤.
 
 ```{r, gini coefficient}
 source("area.R")
 gini <- 2 * (1/2 - area_R(x = earners, y = income)/10000)
 ```
 
-°è»êµÈ Áö´Ï°è¼ö¸¦ ±×¸² ¾È¿¡ ÅØ½ºÆ®·Î ³Ö¾îÁÖ·Á¸é `paste()`¸¦ ÀÌ¿ëÇÏ¿© ÀÔ·ÂÅä·ÏÇÑ´Ù.
+ê³„ì‚°ëœ ì§€ë‹ˆê³„ìˆ˜ë¥¼ ê·¸ë¦¼ ì•ˆì— í…ìŠ¤íŠ¸ë¡œ ë„£ì–´ì£¼ë ¤ë©´ `paste()`ë¥¼ ì´ìš©í•˜ì—¬ ìž…ë ¥í† ë¡í•œë‹¤.
 
 ```{r, fig.width = 7, fig.height = 7}
 plot(earners_income_df, 
@@ -448,7 +448,7 @@ text(x = 30, y = 60,
 
 ## ggplot
 
-´Ü°èº°·Î °á°ú¹°À» ÀúÀåÇÏ¸é¼­ ÀÛ¾÷ÇÒ ¼ö ÀÖµµ·Ï ±¸¼ºÇÏ¿´À¸´Ï `fig.keep = 'none'` ¸¦ `fig.keep = 'all'`·Î ¹Ù²ã¼­ ½ÇÇà½ÃÄÑº¸¸é °¢ ´Ü°è¿¡¼­ ¾î¶² Á¡ÀÌ Ãß°¡µÇ´Â Áö »ìÇÊ ¼ö ÀÖ´Ù.
+ë‹¨ê³„ë³„ë¡œ ê²°ê³¼ë¬¼ì„ ì €ìž¥í•˜ë©´ì„œ ìž‘ì—…í•  ìˆ˜ ìžˆë„ë¡ êµ¬ì„±í•˜ì˜€ìœ¼ë‹ˆ `fig.keep = 'none'` ë¥¼ `fig.keep = 'all'`ë¡œ ë°”ê¿”ì„œ ì‹¤í–‰ì‹œì¼œë³´ë©´ ê° ë‹¨ê³„ì—ì„œ ì–´ë–¤ ì ì´ ì¶”ê°€ë˜ëŠ” ì§€ ì‚´í•„ ìˆ˜ ìžˆë‹¤.
 
 ### Cumulative Distribution
 
