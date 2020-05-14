@@ -183,7 +183,7 @@ poly_xy_2 <- rbind(poly_x_2, poly_y_2)
 poly_xy_2
 ```
 
-```{r fig.width = 5.5, fig.height = 5.5, message = FALSE}
+```{r fig.width = 8, fig.height = 8, message = FALSE}
 par(family = "")
 source("horsekick_plot.R")
 apply(h_xy, MARGIN = 1, FUN = l_xy)
@@ -198,7 +198,7 @@ points(x = n_deaths[2:5], y = horsekick_cum[1:4],
 
 중간에 약간의 작업이 들어가긴 하지만 아래 소스코드와 비교하라.
 
-```{r fig.width = 5.5, fig.height = 5.5, message = FALSE}
+```{r fig.width = 8, fig.height = 8, message = FALSE}
 options(digits = 3)
 par(family = "")
 source("horsekick_plot.R", echo = FALSE)
