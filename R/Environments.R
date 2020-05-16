@@ -2,7 +2,7 @@
 ## Environments
 ##### install.packages("pryr", repos = "https://cran.rstudio.com")
 library(pryr)
-load("./r_modifying_values.RData")
+load("./R/r_modifying_values.RData")
 parenvs()
 parenvs(all = TRUE)
 search()

@@ -1,4 +1,4 @@
-sink(file = "../docs/Programs_out.txt")
+sink(file = "./docs/Programs_out.txt")
 # Programs
 ## Intro
 get_symbols <- function() {
