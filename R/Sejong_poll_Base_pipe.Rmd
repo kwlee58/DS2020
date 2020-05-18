@@ -217,7 +217,11 @@ legend("topleft", inset = 0.05, fill = rainbow_2, legend = c("찬성", "반대")
 par(family = "KoPubWorldDotum Medium")
 vote_seoul_class %>%
   t %>%
-  mosaicplot(col = rainbow_2, main = "서울의 찬반", xlab = "계급" , ylab = "찬반")
+  mosaicplot(col = rainbow_2, 
+             main = "서울의 찬반", 
+             xlab = "계급", 
+             ylab = "찬반",
+             off = 1)
 # dev.copy(png, "../pics/sejong_seoul_mosaic.png", width = 480, height = 360)
 # dev.off()
 ```
@@ -258,7 +262,11 @@ legend("topleft", inset = 0.05, fill = rainbow_2, legend = c("찬성", "반대")
 par(family = "KoPubWorldDotum Medium")
 vote_region_bureaus[, -1] %>%
   t %>%
-  mosaicplot(col = rainbow_2, main = "", xlab = "지역", ylab = "찬반")
+  mosaicplot(col = rainbow_2, 
+             main = "", 
+             xlab = "지역", 
+             ylab = "찬반",
+             off = c(3, 1))
 title(main = "지방 관료들의 찬반")
 # dev.copy(png, "../pics/sejong_bureaus_mosaic.png", width = 720, height = 360)
 # dev.off()
@@ -289,7 +297,11 @@ legend("topleft", inset = 0.05, fill = rainbow_2, legend = c("찬성", "반대")
 par(family = "KoPubWorldDotum Medium")
 vote_region_commons %>%
   t %>%
-  mosaicplot(col = rainbow_2, main = "품관촌민의 지역별 찬반", xlab = "지역", ylab = "찬반")
+  mosaicplot(col = rainbow_2, 
+             main = "품관촌민의 지역별 찬반", 
+             xlab = "지역", 
+             ylab = "찬반",
+             off = c(3, 1))
 # dev.copy(png, "../pics/sejong_commons_mosaic.png", width = 720, height = 360)
 # dev.off()
 ```

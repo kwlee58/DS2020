@@ -39,7 +39,7 @@ m2 <- m1 +
   theme_bw(base_family = base_family)
 m3 <- m2 + 
   geom_text(aes(x = center, y = 1.05), 
-            label = tbl_p_df[, 2], 
+            label = ifelse(tbl_p_df[, 2] == 0, "", tbl_p_df[, 2]), 
             family = base_family)
 m4 <- m3 + 
   geom_text(aes(x = center, y = label_height), 

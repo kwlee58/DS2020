@@ -305,7 +305,7 @@ vote_chung_class %>%
   prop.table(margin = 2) %>%
   `*`(100) %>%
   format(digits = 3, nsmall = 1) %>%
-  kable(caption = "Chuncheong", align = "r")
+  kable(caption = "Chungcheong", align = "r")
 ```
 
 ## Save 
