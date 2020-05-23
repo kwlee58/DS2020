@@ -1,5 +1,5 @@
 ---
-title: "King Sejong's National Referendum on Tax Reform"
+title: "King Sejong's National Referendum on Tax Reform : Data"
 author: "coop711"
 date: "`r Sys.Date()`"
 output: html_document
@@ -35,20 +35,27 @@ sejong_ref <- read.table("../data/sejong_ref.txt",
                          header = TRUE, 
                          stringsAsFactors = FALSE)
 str(sejong_ref)
-# pander(sejong_ref)
 kable(sejong_ref[4:1])
 ```
 
 ### Factor conversion
 
-We need Vote, Class, Region as `factor`s. If you leave them as `chr`, it will be coerced to factor when you tabulate it according to alphabetical order, which is not what you want. So, use `factor()` to convert them. `
+Vote, Class, Region 은 `factor`로 전환하여야 한다. 이들을 `character`로 놓아 두면, `table()` 로 요약할 때  알파벳 순, 가나다 순으로 하기 때문이다.  다음을 실행해 보면 쉽게 알 수 있다.
+
+```{r}
+table(sejong_ref$Vote)
+table(sejong_ref$Class)
+table(sejong_ref$Region)
+```
+
+따라서 `factor()`를 활용하여 변환한다. `Vote`는 "찬성", "반대"의 순으로 `level`을 설정한다. 
 
 ```{r, Vote as factor}
 sejong_ref$Vote <- factor(sejong_ref$Vote, 
                           levels = c("찬성","반대"))
 ```
 
-You can check that `labels = ` is not necessary if same as levels. Continue with Class and Region_
+`Class`는 중앙관료, 지방관료, 품관촌민의 순으로 `levels`를 설정한다. 단, "대신_등"을 "대신 등"으로 표시하기 위하여 `labels`도 설정한다.
 
 ```{r, Class as factor}
 Class_levels <- c("대신_등","3품이하현직", "3품이하전직", "수령", "품관촌민")
@@ -58,142 +65,19 @@ sejong_ref$Class <- factor(sejong_ref$Class,
                            labels = Class_labels)
 ```
 
+`Region`은 다음 순서대로 `levels`를 설정한다.  
+
 ```{r, Region as factor}
-Region_levels <- c("서울","유후사", "경기", "평안", "황해", "충청", "강원", "함길", "경상", "전라")
+Region_levels <- c("서울", "유후사", "경기", "평안", "황해", "충청", "강원", "함길", "경상", "전라")
 sejong_ref$Region <- factor(sejong_ref$Region, 
                             levels = Region_levels)
 ```
 
+구조를 살피고, 'Region`, 'Class`, `Vote`, `Counts` 순으로 출력한다. 맨 처음 줄을 해석하면  서울의 대신 등은 21명이 찬성하였고, 194명이 반대하였다 라고 읽을 수 있다. 이 숫자가 매우 중요하다. 분명히 세종대왕이 임명한 최고급관료 중 90%이상이 세종대왕의 개혁 정책에 반대하고 있는 것이다. 21이라는 값은 "서울", "대신 등", "찬성" 이라는 key 값에 대응한다. 
+
 ```{r, data in dataframe}
 str(sejong_ref)
 kable(sejong_ref[4:1])
-```
-
-### Array
-
-We can set up the data as an array
-
-```{r, array structure}
-sejong_ref_array <- xtabs(Counts ~ Vote + Class + Region, 
-                           data = sejong_ref)
-str(sejong_ref_array)
-sejong_ref_array
-```
-
-## Votes
-
-### Total
-
-Check the total Vote with xtabs()
-
-```{r, total yes or no}
-Vote_total <- xtabs(Counts ~ Vote, 
-                    data = sejong_ref)
-kable(t(as.matrix(Vote_total)), 
-      caption = "Total")
-# format(prop.table(Vote_total)*100, digits = 3, nsmall = 1)
-kable(t(as.matrix(format(prop.table(Vote_total) * 100, 
-                         digits = 3, 
-                         nsmall = 1))), 
-      caption = "Percentage", 
-      align = rep("r", 2))
-Vote_total.2 <- apply(sejong_ref_array, 1, sum)
-# kable(t(as.matrix(Vote_total.2)))
-kable(t(as.matrix(Vote_total.2)), 
-      caption = "Total")
-```
-
-### Vote by Class
-
-```{r, by Class}
-Vote_Class <- xtabs(Counts ~ Vote + Class, 
-                    data = sejong_ref)
-kable(Vote_Class, 
-      caption = "계급별")
-Vote_Class_a <- apply(sejong_ref_array, 1:2, sum)
-kable(Vote_Class_a, 
-      caption = "계급별")
-```
-
-### Commons vs Bureaucrats
-
-We need to analyse Commons separately. 
-
-```{r, commons vs bureaus}
-sejong_ref$Class_2 <- factor(ifelse(sejong_ref$Class == "품관촌민", 
-                                       "품관촌민", "관료"), 
-                                levels = c("관료", "품관촌민"))
-kable(sejong_ref[c(4, 3, 5, 2, 1)])
-str(sejong_ref)
-```
-
-Compare the Votes by `Class_2`,  (Bureaucrats vs Commons)
-
-```{r, Vote by Class_2}
-Vote_Class_2 <- xtabs(Counts ~ Vote + Class_2, 
-                      data = sejong_ref)
-kable(Vote_Class_2, caption = "관료와 품관촌민")
-Vote_Class_2_a <- cbind("관료" = rowSums(Vote_Class_a[, -5]),
-                        "품관촌민" =  Vote_Class_a[, 5])
-kable(Vote_Class_2_a, caption = "관료와 품관촌민")
-```
-
-Add subtotals to the margins, 
-
-```{r, subtotals}
-Vote_Class_2_am <- addmargins(Vote_Class_2)
-kable(Vote_Class_2_am)
-```
-
-Compute the marginal proportions. Note the use of `digits = 3` and `nsmall = 1`.
-
-```{r, proportions}
-kable(format(prop.table(Vote_Class_2, margin = 2) * 100, 
-             digits = 3, nsmall = 1), 
-      caption = "관료와 품관촌민", align = rep("r", 2))
-```
-
-### Votes by Region with respect to Class_2 
-
-Count the Vote by Region Class_2 wise.
-
-```{r, Region w.r.t Class_2}
-Class_2 <- sejong_ref$Class_2
-Vote_Region_bureaus <- xtabs(Counts ~ Vote + Region, 
-                             data = sejong_ref, 
-                             Class_2 == "관료", 
-                             drop = TRUE)
-kable(Vote_Region_bureaus, caption = "투표(관료)")
-# xtabs(Counts ~ Vote + Region, data = sejong_ref[Class_2 == "Bureaus", ], drop = TRUE)
-Vote_Region_commons <- xtabs(Counts ~ Vote + Region, 
-                             data = sejong_ref, 
-                             Class_2 == "품관촌민", 
-                             drop = TRUE)
-kable(Vote_Region_commons, caption = "투표(품관촌민)")
-```
-
-Seoul has three times more Bureaucrats than other Regions, so analyse further.
-
-```{r, Seoul}
-Region <- sejong_ref$Region
-Vote_seoul_Class <- xtabs(Counts ~ Vote + Class, 
-                          data = sejong_ref, 
-                          Region == "서울", drop = TRUE)
-kable(Vote_seoul_Class, caption = "서울")
-kable(format(prop.table(Vote_seoul_Class, margin = 2) * 100, 
-             digits  = 3, nsmall = 1), 
-      caption = "서울", align = rep("r", 3))
-```
-
-Chungcheong's case.
-
-```{r, Chungcheong}
-Vote_chung_Class <- xtabs(Counts ~ Vote + Class, 
-                          data = sejong_ref, 
-                          Region == "충청", drop = TRUE)
-kable(format(prop.table(Vote_chung_Class, margin = 2) * 100, 
-             digits = 3, nsmall = 1), 
-      caption = "충청", align = rep("r", 3))
 ```
 
 - Save the working directory image.

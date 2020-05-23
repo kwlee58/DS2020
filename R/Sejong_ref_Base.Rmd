@@ -1,0 +1,372 @@
+---
+title: "King Sejong's National Referendum on Tax Reform (R-Base Plot)"
+author: "coop711"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+# Loading Data 
+
+원자료는 [세종실록](http://sillok.history.go.kr/id/kda_11208010_005), 요약표는 오기수 교수의 논문에서.
+
+```{r, data, echo = TRUE, message = FALSE, results = 'hide'}
+knitr::opts_chunk$set(echo = TRUE)
+library(knitr)
+library(extrafont)
+load("sejong_ref_tbl.RData")
+str(sejong_ref)
+```
+
+## Rearrangement
+
+```{r, kable, echo = TRUE, results = 'asis'}
+vnames_kr <- c("집계", "찬반", "계급", "지역", "관료여부")
+kable(sejong_ref[c(4, 3, 5, 2, 1)], 
+      col.names = vnames_kr[c(4, 3, 5, 2, 1)], 
+      align = c(rep('c', 4), 'r'))
+```
+
+<P style = "page-break-before:always">
+
+## User defined `pos()`
+
+원형그래프와 막대그래프에서 라벨의 위치를 정하는 사용자 정의함수를 작성한다.  
+
+```{r, fig.width = 6, fig.height = 6}
+b0 <- barplot(as.matrix(3:1, ncol = 1), 
+              xlim = c(-1, 6), 
+              ylim = c(0, 7), 
+              col = "white", 
+              axes = FALSE)
+text(x = -0.6, y = c(3, 5, 6), 
+     labels = c("x1", "x1 + x2", "x1 + x2 + x3"))
+text(x = b0, y = c(1.5, 4, 5.5), 
+     labels = "x")
+text(x = 2.5, y = c(1.5, 4, 5.5), 
+     labels = c("x1 - x1/2", "x1 + x2 - x2/2", "x1 + x2 + x3 - x3/2"))
+```
+
+위의 그림으로부터 
+
+```{r}
+pos <- function(x){
+  cumsum(x) - x / 2
+  }
+```
+
+<P style = "page-break-before:always">
+
+## 전체 찬반
+
+### pie
+
+```{r, pie for total, fig.width = 5, fig.height = 5}
+par(family = "KoPubWorldDotum Medium")
+gray_2 <- gray.colors(12)[c(12, 7)]
+rainbow_2 <- rainbow(2)[2:1]
+r <- 0.8
+pos_total <- pos(prop.table(Vote_total) * 100)
+pos_total_x <- r / 2 * cos(2 * pi * pos_total / 100)
+pos_total_y <- r / 2 * sin(2 * pi * pos_total / 100)
+pie(Vote_total,
+    radius = r,
+    labels = NA,
+    col = rainbow_2)
+title(main = "전체 찬반", 
+      cex.main = 1.5,
+      family = "KoPubWorldDotum Bold")
+text(x = pos_total_x, y = pos_total_y,
+     labels = paste(names(Vote_total),
+                    format(Vote_total, big.mark = ","),
+                    sep = ":"))
+```
+
+<P style = "page-break-before:always">
+
+## 계급별 찬반
+
+### pie
+
+```{r, vote by classes, fig.width = 10,fig.height = 5}
+par(family = "KoPubWorldDotum Medium")
+par(mfrow = c(1, 2))
+gray_2 <- gray.colors(12)[c(12, 7)]
+rainbow_2 <- rainbow(2)[2:1]
+r <- 0.8
+pos_Class_2 <- apply(prop.table(Vote_Class_2, margin = 2) * 100,
+                     MARGIN = 2,
+                     FUN = pos)
+pos_Class_2_x <- apply(pos_Class_2, 
+                       MARGIN = 2,
+                       FUN = function(x){r / 2 * cos(2 * pi * x / 100)})
+pos_Class_2_y <- apply(pos_Class_2, 
+                       MARGIN = 2,
+                       FUN = function(x){r / 2 * sin(2 * pi * x / 100)})
+pie(Vote_Class_2[, "관료"],
+    radius = r,
+    labels = NA,
+    col = rainbow_2)
+title(main = "관료", 
+      cex.main = 1.5,
+      family = "KoPubWorldDotum Bold")
+text(x = pos_Class_2_x[, "관료"], 
+     y = pos_Class_2_y[, "관료"],
+     labels = paste(names(Vote_Class_2[, "관료"]),
+                    format(Vote_Class_2[, "관료"], big.mark = ","),
+                    sep = ":"))
+pie(Vote_Class_2[, "품관촌민"],
+    radius = r,
+    labels = NA,
+    col = rainbow_2)
+title(main = "품관촌민", 
+      cex.main = 1.5,
+      family = "KoPubWorldDotum Bold")
+text(x = pos_Class_2_x[, "품관촌민"], 
+     y = pos_Class_2_y[, "품관촌민"],
+     labels = paste(names(Vote_Class_2[, "품관촌민"]),
+                    format(Vote_Class_2[, "품관촌민"], big.mark = ","),
+                    sep = ":"))
+par(mfrow = c(1, 1))
+```
+
+<P style = "page-break-before:always">
+
+## 지역별 찬반
+
+### barplot
+
+```{r, fig.width = 10, fig.height = 5}
+par(family = "KoPubWorldDotum Medium")
+pos_Region <- apply(Vote_Region, MARGIN = 2, pos)
+values_Region <- ifelse(Vote_Region >= 1500, 
+                        Vote_Region, numeric(0))
+labels_Region <- ifelse(is.na(values_Region), 
+                        "", 
+                        format(values_Region, big.mark = ","))
+b1 <- barplot(Vote_Region,
+              col = rainbow_2,
+              axes = FALSE)
+text(x = rep(b1, 2),
+     y = c(t(pos_Region)),
+     labels = c(t(labels_Region)))
+legend("topleft", 
+       inset = 0.05, 
+       fill = rainbow_2, 
+       legend = c("찬성", "반대"))
+title(main = "지역별 찬반", 
+      cex.main = 1.5,
+      family = "KoPubWorldDotum Bold")
+```
+
+<P style = "page-break-before:always">
+
+### mosaicplot
+
+이름이 겹쳐서 유후사를 제외함.
+
+```{r, fig.width = 10, fig.height = 5}
+par(family = "KoPubWorldDotum Medium")
+mosaicplot(t(Vote_Region[, -2]), 
+           col = rainbow_2, 
+           main = "", 
+           xlab = "계급" , 
+           ylab = "찬반",
+           off = c(3, 1)) 
+title(main = "지역별 찬반",
+      cex.main = 1.5,
+      family = "KoPubWorldDotum Bold")
+```
+
+<P style = "page-break-before:always">
+
+## 서울의 찬반
+
+### barplot
+
+```{r, fig.width = 5, fig.height = 5}
+par(family = "KoPubWorldDotum Medium")
+pos_seoul_Class <- apply(Vote_seoul_Class, MARGIN = 2, pos)
+values_seoul_Class <- ifelse(Vote_seoul_Class >= 100, 
+                        Vote_seoul_Class, numeric(0))
+labels_seoul_Class <- ifelse(is.na(values_seoul_Class), 
+                        "", 
+                        format(values_seoul_Class, big.mark = ","))
+b2 <- barplot(Vote_seoul_Class,
+              col = rainbow_2,
+              axes = FALSE)
+text(x = rep(b2, 2),
+     y = c(t(pos_seoul_Class)),
+     labels = c(t(labels_seoul_Class)))
+legend("topleft", 
+       inset = 0.05, 
+       fill = rainbow_2, 
+       legend = c("찬성", "반대"))
+title(main = "서울의 찬반",
+      cex.main = 1.5,
+      family = "KoPubWorldDotum Bold")
+```
+
+<P style = "page-break-before:always">
+
+### mosaic plot
+
+```{r, fig.width = 6, fig.height = 4.5}
+par(family = "KoPubWorldDotum Medium")
+mosaicplot(t(Vote_seoul_Class), 
+           col = rainbow_2, 
+           main = "", 
+           xlab = "계급" , 
+           ylab = "찬반",
+           off = 1)
+title(main = "서울의 찬반",
+      cex.main = 1.5,
+      family = "KoPubWorldDotum Bold")
+```
+
+<P style = "page-break-before:always">
+
+## 관료의 지역별 찬반 (서울 제외)
+
+### barplot
+
+```{r, fig.width = 10, fig.height = 5}
+par(family = "KoPubWorldDotum Medium")
+pos_Region_bureaus <- apply(Vote_Region_bureaus[, -1], MARGIN = 2, pos)
+values_Region_bureaus <- ifelse(Vote_Region_bureaus[, -1] >= 5,
+                                Vote_Region_bureaus[, -1], numeric(0))
+labels_Region_bureaus <- ifelse(is.na(values_Region_bureaus), 
+                                "", 
+                                format(values_Region_bureaus, big.mark = ","))
+b3 <- barplot(Vote_Region_bureaus[, -1],
+              col = rainbow_2,
+              axes = FALSE)
+text(x = rep(b3, 2),
+     y = c(t(pos_Region_bureaus)),
+     labels = c(t(labels_Region_bureaus)))
+legend("topleft", 
+       inset = 0.05, 
+       fill = rainbow_2, 
+       legend = c("찬성", "반대"))
+title(main = "관료의 지역별 찬반",
+      cex.main = 1.5,
+      family = "KoPubWorldDotum Bold")
+```
+
+<P style = "page-break-before:always">
+
+### mosaicplot
+
+```{r, fig.width = 10, fig.height = 5}
+par(family = "KoPubWorldDotum Medium")
+mosaicplot(t(Vote_Region_bureaus[, -1]), 
+           col = rainbow_2, 
+           main = "", 
+           xlab = "계급" , 
+           ylab = "찬반",
+           off = c(2, 1))
+title(main = "관료의 지역별 찬반(서울 제외)",
+      cex.main = 1.5,
+      family = "KoPubWorldDotum Bold")
+```
+
+<P style = "page-break-before:always">
+
+## 품관촌민의 지역별 찬반
+
+### barplot
+
+```{r, fig.width = 10, fig.height = 5}
+par(family = "KoPubWorldDotum Medium")
+pos_Region_commons <- apply(Vote_Region_commons, MARGIN = 2, pos)
+values_Region_commons <- ifelse(Vote_Region_commons >= 1500,
+                                Vote_Region_commons, numeric(0))
+labels_Region_commons <- ifelse(is.na(values_Region_commons), 
+                                "", 
+                                format(values_Region_commons, big.mark = ","))
+b4 <- barplot(Vote_Region_commons,
+              col = rainbow_2,
+              axes = FALSE)
+text(x = rep(b4, 2),
+     y = c(t(pos_Region_commons)),
+     labels = c(t(labels_Region_commons)))
+legend("topleft", 
+       inset = 0.05, 
+       fill = rainbow_2, 
+       legend = c("찬성", "반대"))
+title(main = "품관촌민의 지역별 찬반", 
+      cex.main = 1.5,
+      family = "KoPubWorldDotum Bold")
+```
+
+<P style = "page-break-before:always">
+
+### mosaicplot
+
+```{r, fig.width = 10, fig.height = 5}
+par(family = "KoPubWorldDotum Medium")
+mosaicplot(t(Vote_Region_commons), 
+           col = rainbow_2, 
+           main = "", 
+           xlab = "지역" , 
+           ylab = "찬반",
+           off = c(2, 1))
+title(main = "품관촌민의 지역별 찬반", 
+      cex.main = 1.5,
+      family = "KoPubWorldDotum Bold")
+```
+
+<P style = "page-break-before:always">
+
+
+## 충청의 경우
+
+관료들의 찬반과 품관촌민의 찬반이 다른 곳.
+
+### barplot
+
+```{r, fig.width = 5, fig.height = 5}
+par(family = "KoPubWorldDotum Medium")
+pos_chung_Class <- apply(prop.table(Vote_chung_Class, margin = 2) * 100, 
+                         MARGIN = 2, 
+                         FUN = pos)
+values_chung_Class <- ifelse(prop.table(Vote_chung_Class, margin = 2) * 100 >= 20, 
+                      Vote_chung_Class, numeric(0))
+labels_chung_Class <- ifelse(is.na(values_chung_Class), 
+                        "", 
+                        format(values_chung_Class, big.mark = ","))
+b5 <- barplot(prop.table(Vote_chung_Class, margin = 2) * 100,
+              col = rainbow_2,
+              axes = FALSE)
+text(x = rep(b5, 2),
+     y = c(t(pos_chung_Class)),
+     labels = c(t(labels_chung_Class)))
+legend("topleft", 
+       inset = 0.05, 
+       fill = rainbow_2, 
+       legend = c("찬성", "반대"))
+title(main = "충청의 찬반", 
+      cex.main = 1.5,
+      family = "KoPubWorldDotum Bold")
+```
+
+### mosaicplot
+
+수효의 차이가 너무 커서 비교하기 어려워서 '대신 등'을 제외하고 작업한다.
+
+```{r, fig.width = 9, fig.height = 4.5}
+par(family = "KoPubWorldDotum Medium")
+mosaicplot(t(Vote_chung_Class[, -1]), 
+           col = rainbow_2, 
+           main = "", 
+           xlab = "계급", 
+           ylab = "찬반",
+           off = 1)
+title(main = "충청도의 찬반")
+```
+
+## 작업 디렉토리 이미지 저장
+
+```{r, save}
+save.image(file = "sejong_Base.RData")
+```
+

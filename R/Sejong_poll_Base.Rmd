@@ -299,7 +299,8 @@ mosaicplot(t(vote_region_commons),
            col = rainbow_2, 
            main = "품관촌민의 지역별 찬반", 
            xlab = "지역", 
-           ylab = "찬반")
+           ylab = "찬반",
+           off = c(3, 1))
 # dev_copy(png, "../pics/sejong_commons_mosaic.png", width = 720, height = 360)
 # dev.off()
 ```
