@@ -1,6 +1,6 @@
 # S3 
 ## Data
-load("./Programs.RData")
+load("./R/Programs.RData")
 play()
 one_play <- play()
 one_play
@@ -10,7 +10,7 @@ print(num)
 class(num) <- c("POSIXct", "POSIXt")
 print(num)
 ## Attributes
-load("./Environments.RData")
+load("./R/Environments.RData")
 attributes(DECK)
 row.names(DECK)
 row.names(DECK) <- 101:152
@@ -120,4 +120,4 @@ play2 <- play()
 play2
 c(play1, play2)
 play1[1]
-save.image("./S3.RData")
+save.image("./R/S3.RData")
