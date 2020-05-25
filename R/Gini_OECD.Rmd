@@ -13,10 +13,10 @@ output: html_document
 library(knitr)
 library(magrittr)
 library(printr)
-Gini_b_tax <- read.table(file="../data/Gini_before_tax.txt", 
+Gini_b_tax <- read.table(file = "../data/Gini_before_tax.txt", 
                          header = FALSE, 
                          sep = "\t")
-Gini_a_tax <- read.table(file="../data/Gini_after_tax.txt", 
+Gini_a_tax <- read.table(file = "../data/Gini_after_tax.txt", 
                          header = FALSE, 
                          sep = "\t")
 str(Gini_b_tax)
@@ -55,7 +55,7 @@ Gini_b_a[order(Gini_b_a$Improvement, decreasing = TRUE), ]
 
 ## Graphic representation
 
-* 세전 세후 Gini 계수를 시각적으로 비교하려면 `barplot()`이 적합함. `barplot(height, ...)`에서 `height`가 매트릭스일 때는 막대는 열의 각 요소를 크기대로 쌓아놓은 형태가 되므로, `t()`를 이용하여 transpose시킨 후 `barplot()`을 적용. 또한 transpose를 시켜도 여전히 data frame 이기 때문에 매트릭스로 강제 변환함. 세전, 세후 비교를 위해 쌓아 놓기 보다는 옆에 늘어세우는 게 나으므로  `beside=TRUE`를 적용하고 각 막대의 이름으로 나라이름을 사용. 
+* 세전 세후 Gini 계수를 시각적으로 비교하려면 `barplot()`이 적합함. `barplot(height, ...)`에서 `height`가 매트릭스일 때는 막대는 열의 각 요소를 크기대로 쌓아놓은 형태가 되므로, `t()`를 이용하여 transpose시킨 후 `barplot()`을 적용. 또한 transpose를 시켜도 여전히 data frame 이기 때문에 매트릭스로 강제 변환함. 세전, 세후 비교를 위해 쌓아 놓기 보다는 옆에 늘어세우는 게 나으므로  `beside = TRUE`를 적용하고 각 막대의 이름으로 나라이름을 사용. 
 
 ```{r fig.width = 10, fig.height = 5}
 barplot(as.matrix(t(Gini_b_a[, 2:3])), 
