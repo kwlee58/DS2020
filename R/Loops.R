@@ -1,5 +1,5 @@
 # Loops
-load("./S3.RData")
+load("./R/S3.RData")
 ## Expected Values
 die <- 1:6
 ## expand.grid
@@ -109,4 +109,5 @@ for (i in 1:nrow(combos)) {
 }
 head(combos, 3)
 sum(combos$prize * combos$prob)
-save.image(file = "./Loops.RData")
+save.image(file = "./R/Loops.RData")
+
