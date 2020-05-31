@@ -21,7 +21,6 @@ knitr::include_graphics("../pics/sejong_silok_12-08-10.png")
 knitr::include_graphics("../pics/sejong_ref_data.png")
 ```
 
-
 ```{r, setup, echo = FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(knitr)
