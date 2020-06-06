@@ -7,7 +7,8 @@ output: html_document
 
 오기수 교수의 논문 조선시대 각 도별 인구 및 전답과 조세부담액 분석에 등장하는 __연도별 호수 및 인구와 호당인구__ 를 도표로 제시
 
-```{r, out.width = "80%"}
+
+```{r, out.width = "75%", fig.align = "center"}
 knitr::include_graphics("../pics/chosun_population_households.png")
 ```
 

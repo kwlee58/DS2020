@@ -72,13 +72,13 @@ pie(Vote_total,
     radius = r,
     labels = NA,
     col = rainbow_2)
-title(main = "전체 찬반", 
-      cex.main = 1.5,
-      family = "KoPubWorldDotum Bold")
 text(x = pos_total_x, y = pos_total_y,
      labels = paste(names(Vote_total),
                     format(Vote_total, big.mark = ","),
                     sep = ":"))
+title(main = "전체 찬반", 
+      cex.main = 1.5,
+      family = "KoPubWorldDotum Bold")
 ```
 
 <P style = "page-break-before:always">
@@ -106,26 +106,26 @@ pie(Vote_Class_2[, "관료"],
     radius = r,
     labels = NA,
     col = rainbow_2)
-title(main = "관료", 
-      cex.main = 1.5,
-      family = "KoPubWorldDotum Bold")
 text(x = pos_Class_2_x[, "관료"], 
      y = pos_Class_2_y[, "관료"],
      labels = paste(names(Vote_Class_2[, "관료"]),
                     format(Vote_Class_2[, "관료"], big.mark = ","),
                     sep = ":"))
+title(main = "관료", 
+      cex.main = 1.5,
+      family = "KoPubWorldDotum Bold")
 pie(Vote_Class_2[, "품관촌민"],
     radius = r,
     labels = NA,
     col = rainbow_2)
-title(main = "품관촌민", 
-      cex.main = 1.5,
-      family = "KoPubWorldDotum Bold")
 text(x = pos_Class_2_x[, "품관촌민"], 
      y = pos_Class_2_y[, "품관촌민"],
      labels = paste(names(Vote_Class_2[, "품관촌민"]),
                     format(Vote_Class_2[, "품관촌민"], big.mark = ","),
                     sep = ":"))
+title(main = "품관촌민", 
+      cex.main = 1.5,
+      family = "KoPubWorldDotum Bold")
 par(mfrow = c(1, 1))
 ```
 
