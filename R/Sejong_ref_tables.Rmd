@@ -92,6 +92,7 @@ kable(Vote_Region,
 `prop.table()`을 이용하여 열 단위 백분율을 계산한다. `margin = 2` 로 설정한다.
 
 ```{r}
+options(digits = 1)
 prop.table(Vote_Region, margin = 2) * 100
 ```
 
@@ -135,6 +136,7 @@ kable(Vote_Class_2,
 `prop.table()` 를 이용하여 관료와 품관촌민의 찬반 백분율을 구한다.
 
 ```{r}
+options(digits = 3)
 prop.table(Vote_Class_2, margin = 2) * 100
 ```
 
@@ -183,9 +185,6 @@ prop.table(Vote_Region_bureaus, margin = 2) * 100
 - 품관촌민의 지역별 찬반 집계와 백분율
 
 ```{r}
-# xtabs(Counts ~ Vote + Region, 
-# data = sejong_ref[Class_2 == "Bureaus", ], 
-# drop = TRUE)
 Vote_Region_commons <- xtabs(Counts ~ Vote + Region, 
                              data = sejong_ref, 
                              Class_2 == "품관촌민", ## subset 조건에 해당하는 코드

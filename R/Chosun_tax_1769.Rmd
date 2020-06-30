@@ -26,13 +26,13 @@ Province <- c("경기도", "충청도", "전라도", "경상도", "강원도", "
 Province <- factor(Province, levels = Province)
 Expected <- c(9939, 35476, 69692, 60399, 3229, 29883, 5167, 31996)
 Collected <- c(8620, 31657, 67277, 25283, 3532, 27265, 0, 0)
-tax_df <- data.frame(Province, Expected, Collected, stringsAsFactors = FALSE)
+tax_df <- data.frame(Province, Expected, Collected)
 tax_df
 #> 그래프 상에 0을 표시하게 되는 문제 피하기
-tax_df[, 3] %<>%
-  `[<-`(. == 0, NA)
-# [tax_df[, 3] == 0] <- NA
-tax_df 
+# tax_df[, 3] %<>%
+#   `[<-`(. == 0, NA)
+tax_df[, 3][tax_df[, 3] == 0] <- NA
+tax_df
 ```
 
 <P style = "page-break-before:always">
@@ -53,12 +53,12 @@ b1 <- barplot(t(as.matrix(tax_df[, 2:3])),
 #     at = as.vector(as.matrix(rates.df[, 2:3])), 
 #     labels =  as.vector(as.matrix(rates.df[, 2:3])), las = 1)
 text(x = b1[1, ], 
-     y = Expected + 2000, 
-     labels = format(Expected, big.mark = ","), 
+     y = tax_df[, 2] + 2000, 
+     labels = format(tax_df[, 2], big.mark = ","), 
      col = "black")
 text(x = b1[2, ], 
-     y = Collected + 2000, 
-     labels = format(Collected, big.mark = ","), 
+     y = tax_df[, 3] + 2000, 
+     labels = format(tax_df[, 3], big.mark = ","), 
      col = "black")
 main_title <- "영조 45년 도별 수조 현황"
 sub_title <- "증보문헌비고, 제149권 전부고 9 조세 2 (영조 45년, 1769년)"
@@ -111,7 +111,8 @@ g0 <- ggplot(data = tax_tbl,
                            fill = Tax)) 
 g1 <- g0 + 
   geom_bar(stat = "identity", 
-           position = position_dodge()) 
+           position = position_dodge(),
+           na.rm = TRUE) 
 #> g1
 g2 <- g1 +
   geom_text(mapping = aes(x = Province, 
@@ -119,7 +120,8 @@ g2 <- g1 +
                           label = format(Amount, big.mark = ",")), 
             colour = "black",
             position = position_dodge(width = 1), 
-            size = 4)
+            size = 4,
+            na.rm = TRUE)
 #> g2
 g3 <- g2 +
   theme_bw() 
