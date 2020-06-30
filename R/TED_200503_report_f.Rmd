@@ -1,5 +1,5 @@
 ---
-title: "TED DS200405"
+title: "TED DS200503"
 # author: "coop711"
 # date: "`r Sys.Date()`"
 output: html_document
@@ -25,9 +25,9 @@ options(width = 180)
 
 ```{r, data, echo = FALSE, results = "hide"}
 source("./TED_data.R")
-ted0405<- TED_data(data = "../data/TED200405.xlsx", 
-                   nrow = 110, 
-                   date = "2020-04-06 09:00:00")
+ted0503<- TED_data(data = "../data/TED_DS200503.xlsx", 
+                   nrow = 111, 
+                   date = "2020-05-04 09:00:00")
 ```
 
 # 제출/미제출
@@ -35,8 +35,8 @@ ted0405<- TED_data(data = "../data/TED200405.xlsx",
 제출시간이 기록되지 않은 사람은 미제출.
 
 ```{r, echo = FALSE, results = "markup"}
-pander(table(ted0405$group, ted0405$submit))
-pander(chisq.test(table(ted0405$group, ted0405$submit), 
+pander(table(ted0503$group, ted0503$submit))
+pander(chisq.test(table(ted0503$group, ted0503$submit),
                   simulate.p.value = TRUE))
 ```
 
@@ -47,18 +47,18 @@ pander(chisq.test(table(ted0405$group, ted0405$submit),
 ## 시간 단위 기초통계량
 
 ```{r, echo = FALSE}
-# ted0405$hours
-summary(ted0405$hours)
-stem(ted0405$hours)
-max(ted0405$hours, na.rm = TRUE)
+# ted0503$hours
+summary(ted0503$hours)
+stem(ted0503$hours)
+max(ted0503$hours, na.rm = TRUE)
 ```
 
 ## 일 단위 마감 시간으로부터 제출 시간의 분포
 
 ```{r, echo = FALSE}
 par(family = "HCR Dotum LVT")
-pander(table(cut(ted0405$days, breaks = c(0:14), include.lowest = TRUE)), caption = "일 단위")
-barplot(rev(table(cut(ted0405$days, breaks = c(0:14), include.lowest = TRUE))), 
+pander(table(cut(ted0503$days, breaks = c(0:14), include.lowest = TRUE)), caption = "일 단위")
+barplot(rev(table(cut(ted0503$days, breaks = c(0:14), include.lowest = TRUE))), 
         space = 0,
         names.arg = rep(c("월", "화","수", "목", "금", "토","일"), 2))
 title(main = "일 단위 퀴즈 제출 횟수")
@@ -71,7 +71,7 @@ breaks <- c(seq(0, 48, by = 24), 49:54, seq(72, 168, by = 24))
 breaks2 <- c(seq(0, 48, by = 24), 49:58, seq(72, 168, by = 24))
 breaks3 <- c(0:10, seq(24, 336, by = 24))
 breaks4 <- c(seq(0, 168, by = 24), 169:178, seq(192, 336, by = 24))
-pander(table(cut(ted0405$hours, breaks = breaks3, include.lowest = TRUE)), caption = "시간 단위")
+pander(table(cut(ted0503$hours, breaks = breaks3, include.lowest = TRUE)), caption = "시간 단위")
 ```
 
 ## 시간 당 제출 건수의 분포
@@ -82,10 +82,10 @@ widths <- c(rep(24, 4), 16, rep(1, 10), rep(24, 1), 14, rep(1, 10))
 widths2 <- c(rep(24, 4), 16, rep(1, 10), rep(24, 2))
 widths3 <- c(rep(24, 13), 14, rep(1, 10))
 widths4 <- rev(diff(breaks4))
-# freqs <- table(cut(ted0405$hours, breaks = breaks2, include.lowest = TRUE))
-freqs2 <- table(cut(ted0405$hours, breaks = breaks2, include.lowest = TRUE))
-freqs3 <- table(cut(ted0405$hours, breaks = breaks3, include.lowest = TRUE))
-freqs4 <- table(cut(ted0405$hours, breaks = breaks4, include.lowest = TRUE))
+# freqs <- table(cut(ted0503$hours, breaks = breaks2, include.lowest = TRUE))
+freqs2 <- table(cut(ted0503$hours, breaks = breaks2, include.lowest = TRUE))
+freqs3 <- table(cut(ted0503$hours, breaks = breaks3, include.lowest = TRUE))
+freqs4 <- table(cut(ted0503$hours, breaks = breaks4, include.lowest = TRUE))
 # heights <- freqs / diff(breaks)
 heights2 <- freqs2 / diff(breaks2)
 heights3 <- freqs3 / diff(breaks3)
@@ -121,14 +121,14 @@ text(x = 300, y = 5.6, labels = "오후\n2시", srt = 16, col = "red")
 ## 랜덤화 효과
 
 ```{r, echo = FALSE}
-pander(table(ted0405$group, ted0405$bird))
-pander(chisq.test(table(ted0405$group, ted0405$bird)))
+pander(table(ted0503$group, ted0503$bird))
+pander(chisq.test(table(ted0503$group, ted0503$bird)))
 ```
 
 # 댓글의 양 
 
 ```{r, echo = FALSE}
-stem(ted0405$n_chars, scale = 0.5)
+stem(ted0503$n_chars, scale = 0.5)
 ```
 
 ## 그룹별 댓글 크기 비교
@@ -136,14 +136,14 @@ stem(ted0405$n_chars, scale = 0.5)
 ### 댓글의 양 비교
 
 ```{r, echo = FALSE}
-pander(tapply(ted0405$n_chars, ted0405$group, summary))
+pander(tapply(ted0503$n_chars, ted0503$group, summary))
 ```
 
 ### Box Plot
 
 ```{r, echo = FALSE}
 par(family = "HCR Dotum LVT")
-plot(n_chars ~ group, data = ted0405, 
+plot(n_chars ~ group, data = ted0503, 
      main = "그룹별 댓글의 양 비교", 
      xlab = "제출 시점", ylab = "글자 수")
 ```
@@ -151,20 +151,20 @@ plot(n_chars ~ group, data = ted0405,
 ### t-test
 
 ```{r, echo = FALSE}
-pander(t.test(n_chars ~ group, data = ted0405))
+pander(t.test(n_chars ~ group, data = ted0503))
 ```
 
 ## 마감일 기준 댓글의 양 비교
 
 ```{r, echo = FALSE}
-pander(tapply(ted0405$n_chars, ted0405$bird, summary))
+pander(tapply(ted0503$n_chars, ted0503$bird, summary))
 ```
 
 ### Box Plot
 
 ```{r, echo = FALSE}
 par(family = "HCR Dotum LVT")
-plot(n_chars ~ bird, data = ted0405, 
+plot(n_chars ~ bird, data = ted0503, 
      main = "마감일 이후 제출한 사람과 마감일 전에 낸 사람", 
      xlab = "제출 시점", ylab = "글자 수")
 ```
@@ -172,7 +172,7 @@ plot(n_chars ~ bird, data = ted0405,
 ### t-test
 
 ```{r, echo = FALSE}
-pander(t.test(n_chars ~ bird, data = ted0405))
+pander(t.test(n_chars ~ bird, data = ted0503))
 ```
 
 ## 댓글의 양이 다소 부족한 사례
@@ -180,9 +180,9 @@ pander(t.test(n_chars ~ bird, data = ted0405))
 ### 400자 미만
 
 ```{r, echo = FALSE}
-# na.omit(ted0405)$name[na.omit(ted0405)$n_chars < 400]
-na.omit(ted0405)$n_chars[na.omit(ted0405)$n_chars < 400]
-ted0405 %>% 
+# na.omit(ted0503)$name[na.omit(ted0503)$n_chars < 400]
+na.omit(ted0503)$n_chars[na.omit(ted0503)$n_chars < 400]
+ted0503 %>% 
   na.omit %$%
   table(.$group, .$n_chars < 400) %>%
   `colnames<-`(c(">= 400", "< 400")) %>%
@@ -194,9 +194,9 @@ ted0405 %>%
 ### 300자 미만
 
 ```{r, echo = FALSE, eval = TRUE}
-# na.omit(ted0405)$name[na.omit(ted0405)$n_chars < 300]
-na.omit(ted0405)$n_chars[na.omit(ted0405)$n_chars < 300]
-ted0405 %>% 
+# na.omit(ted0503)$name[na.omit(ted0503)$n_chars < 300]
+na.omit(ted0503)$n_chars[na.omit(ted0503)$n_chars < 300]
+ted0503 %>% 
   na.omit %$%
   table(.$group, .$n_chars < 300) %>%
   `colnames<-`(c(">= 300", "< 300")) %>%
@@ -208,12 +208,12 @@ ted0405 %>%
 ### 200자 미만
 
 ```{r, echo = FALSE}
-# na.omit(ted0405)$name[na.omit(ted0405)$n_chars < 200]
-na.omit(ted0405)$n_chars[na.omit(ted0405)$n_chars < 200]
+# na.omit(ted0503)$name[na.omit(ted0503)$n_chars < 200]
+na.omit(ted0503)$n_chars[na.omit(ted0503)$n_chars < 200]
 ```
 
 ## Save
 
 ```{r, echo = FALSE}
-saveRDS(ted0405, file = "TED200405.RDS")
+saveRDS(ted0503, file = "TED200503.RDS")
 ```
