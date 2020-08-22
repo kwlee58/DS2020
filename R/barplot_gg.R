@@ -37,7 +37,8 @@ n_fill <- length(levels(df[, 1]))
 x <- df[, 2]
 y <- unlist(tapply(df[, 3], 
                    x, 
-                   function(x){x / 2 + c(0, cumsum(head(x, -1)))}))
+#                    function(x){x / 2 + c(0, cumsum(head(x, -1)))}))
+                   function(x){cumsum(x) - x / 2}))
 y_breaks <- unlist(tapply(df[, 3], 
                          x, 
                          cumsum))
@@ -101,9 +102,10 @@ b2 <- b1 +
                     labels = df[, 1])
 #  N <- nrow(df)
 #  index <- as.vector(matrix(1:N, nrow = 2)[2:1, ])
-y_label <- unlist(tapply(df[, 3], 
-                         df[, 2],
-                         rev))
+y_label < df[, 3]
+# y_label <- unlist(tapply(df[, 3], 
+#                          df[, 2],
+#                          rev))
 b3 <- b2 +
   geom_text(aes(y = y_dodge / 2), 
 #            label = format(df[index, "Freq"], big.mark = ","), 
@@ -127,7 +129,6 @@ y_fill <- unlist(tapply(df[, 3],
 p_fill <- unlist(tapply(df[, 3], 
                         x, 
                         function(x){(cumsum(x) - x / 2) / sum(x)}))
-#                         function(x){(x / 2 + c(0, cumsum(head(x, -1))))/sum(x)}))
 b1 <- ggplot(df, 
              aes(x = x, 
                  y = df[, 3], 

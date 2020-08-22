@@ -21,12 +21,11 @@ tbl_p_df$height <- tbl %>%
   `[`(, 3)
 tbl_p_df$label_height <- unlist(tapply(tbl_p_df$height, 
                                        tbl_p_df[, 2], 
-                                       function(x) x / 2 + c(0, cumsum(head(x, -1)))))
+                                       function(x) cumsum(x) - x / 2))
 tbl_p_df$y_breaks <- unlist(tapply(tbl_p_df$height, 
                                    tbl_p_df[, 2], 
                                    cumsum))
-x_center <- tbl_p_m / 2 + c(0, cumsum(head(tbl_p_m, -1)))
-# x_center <- (cumsum(tbl_p_m) + c(0, head(cumsum(tbl_p_m), -1)))/2
+x_center <- cumsum(tbl_p_m) - tbl_p_m / 2
 tbl_p_df$center <- x_center[match(tbl_p_df[, 2], names(x_center))]
 m1 <- ggplot(tbl_p_df, 
              aes(x = center, y = height, width = width)) + 
@@ -38,11 +37,13 @@ m1 <- ggplot(tbl_p_df,
 m2 <- m1 + 
   theme_bw(base_family = base_family)
 m3 <- m2 + 
-  geom_text(aes(x = center, y = 1.05), 
-            label = ifelse(tbl_p_df[, 2] == 0, "", tbl_p_df[, 2]), 
+  geom_text(aes(x = center, 
+                y = 1.05), 
+            label = tbl_p_df[, 2], 
             family = base_family)
 m4 <- m3 + 
-  geom_text(aes(x = center, y = label_height), 
+  geom_text(aes(x = center, 
+                y = label_height), 
             label = format(ifelse(tbl_df[, 3] == 0, "", tbl_df[, 3]), 
                            big.mark = ","), 
             position = position_identity())
