@@ -1,7 +1,7 @@
 ---
 title: "Twin Studies on Smoking"
 author: "coop711"
-date: '2019 5 11 '
+date: '2019-05-11'
 output: html_document
 ---
 
@@ -191,16 +191,16 @@ Nature1_tbl %>%
   geom_bar(stat = "identity", width = 0.5, position = position_stack(reverse = TRUE)) +
   geom_text(aes(y = y1_text), label = Nature1_tbl$Counts, position = "identity") +
   scale_fill_brewer(type = "qual", palette = "Accent", direction = -1) +
-  scale_y_continuous(breaks = apply(t(Nature1), MARGIN = 2, cumsum), 
-                     labels = apply(t(Nature1), MARGIN = 2, cumsum))
+  scale_y_continuous(breaks = c(apply(t(Nature1), MARGIN = 2, cumsum)), 
+                     labels = c(apply(t(Nature1), MARGIN = 2, cumsum)))
 Nature1_tbl %>%
   ggplot(data = ., mapping = aes(x = Twins, y = Counts, fill = Resemblance)) +
   geom_bar(stat = "identity", width = 0.5, position = position_fill(reverse = TRUE)) +
   geom_text(aes(y = y1_fill), label = Nature1_tbl$Counts, position = "identity") +
   scale_fill_brewer(type = "qual", palette = "Accent", direction = -1) +
   scale_y_continuous(name = "Cumulative Percentage", 
-                     breaks = apply(t(Nature1_p), MARGIN = 2, cumsum) / 100, 
-                     labels = format(apply(t(Nature1_p), MARGIN = 2, cumsum), 
+                     breaks = c(apply(t(Nature1_p), MARGIN = 2, cumsum)) / 100, 
+                     labels = format(c(apply(t(Nature1_p), MARGIN = 2, cumsum)), 
                                      digits = 3, nsmall = 1)) +
   labs(title = "Smoking Habits of Twins") +
   theme(plot.title = element_text(hjust = 0.5))
