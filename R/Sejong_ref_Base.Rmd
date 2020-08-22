@@ -295,9 +295,9 @@ labels_Region_commons <- ifelse(is.na(values_Region_commons),
 b4 <- barplot(Vote_Region_commons,
               col = rainbow_2,
               axes = FALSE)
-text(x = rep(b4, 2),
-     y = c(t(pos_Region_commons)),
-     labels = c(t(labels_Region_commons)))
+# text(x = rep(b4, 2),
+#      y = c(t(pos_Region_commons)),
+#      labels = c(t(labels_Region_commons)))
 text(x = rep(b4, each = 2),
      y = c(pos_Region_commons),
      labels = c(labels_Region_commons))
