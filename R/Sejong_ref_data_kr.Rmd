@@ -1,0 +1,222 @@
+---
+title: "Sejong_poll : Data in Korean"
+author: "coop711"
+date: '`r Sys.Date()`'
+output: html_document
+---
+
+```{r, setup, echo = FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+# library(pander)
+library(knitr)
+options(width = 180)
+```
+
+## Data input
+
+```{r, data}
+load("./sejong_poll_data.RData")
+```
+
+### Data 
+
+```{r, dataframe}
+kable(sejong_poll_2[4:1])
+```
+
+### Korean Factor Levels
+
+```{r, labels in Korean}
+sejong_poll_kr <- sejong_poll_2
+sejong_poll_kr$vote <- factor(sejong_poll_kr$vote, 
+                              levels = c("Yes", "No"), 
+                              labels = c("찬성", "반대"))
+class_labels_kr <- c("대신 등", "3품이하현직", "3품이하전직", "수령", "품관촌민") 
+sejong_poll_kr$class <- factor(sejong_poll_kr$class, 
+                               levels = class_labels, 
+                               labels = class_labels_kr)
+region_labels_kr <- c("서울", "유후사", "경기", "평안", "황해", "충청", "강원", "함길", "경상", "전라")
+sejong_poll_kr$region <- factor(sejong_poll_kr$region, 
+                                levels = region_labels, 
+                                labels = region_labels_kr)
+vnames_kr <- c("소계", "찬반", "계급", "지역")
+# names(sejong_poll_kr) <- vnames_kr
+kable(sejong_poll_kr[4:1])
+```
+
+<P style = "page-break-before:always">
+
+```{r, echo = FALSE}
+kable(sejong_poll_kr[4:1], 
+      align = NULL, 
+      col.names = vnames_kr[4:1])
+```
+
+<P style = "page-break-before:always">
+
+### Cross Tables
+
+```{r, cross tables}
+tbl_vote <- xtabs(counts ~ vote, 
+                  data = sejong_poll_kr)
+tbl_class <- xtabs(counts ~ class, 
+                   data = sejong_poll_kr)
+tbl_region <- xtabs(counts ~ region, 
+                    data = sejong_poll_kr)
+tbl_vote_class <- xtabs(counts ~ vote + class, 
+                        data = sejong_poll_kr)
+tbl_vote_region <- xtabs(counts ~ vote + region, 
+                         data = sejong_poll_kr)
+tbl_vote_class_region <- xtabs(counts ~ vote + class + region, 
+                               data = sejong_poll_kr)
+ftbl_vote_class_region <- ftable(xtabs(counts ~ vote + class + region,
+                                       data = sejong_poll_kr))
+```
+
+### Array
+
+We can set up the data as an array
+
+```{r, array structure}
+sejong_poll_array <- xtabs(counts ~ vote + class + region, 
+                           data = sejong_poll_kr,
+                           drop.unused.levels = TRUE)
+str(sejong_poll_array)
+sejong_poll_array
+```
+
+## Votes
+
+### Total
+
+Check the total vote with xtabs()
+
+```{r, total yes or no}
+vote_total <- xtabs(counts ~ vote, 
+                    data = sejong_poll_kr)
+kable(t(as.matrix(vote_total)), 
+      caption = "총계")
+# format(prop.table(vote_total)*100, digits = 3, nsmall = 1)
+kable(t(as.matrix(format(prop.table(vote_total) * 100, 
+                         digits = 3, nsmall = 1))), 
+      caption = "백분율", 
+      align = rep("r", 2))
+vote_total_2 <- apply(sejong_poll_array, 
+                      MARGIN = 1, 
+                      FUN = sum)
+# kable(t(as.matrix(vote_total_2)))
+kable(t(as.matrix(vote_total_2)), 
+      caption = "총계")
+```
+
+### Vote by class
+
+```{r, by class}
+vote_class <- xtabs(counts ~ vote + class, 
+                    data = sejong_poll_kr)
+kable(vote_class, 
+      caption = "계급별")
+vote_class_a <- apply(sejong_poll_array, 
+                      MARGIN = 1:2, 
+                      FUN = sum)
+kable(vote_class_a, 
+      caption = "계급별")
+```
+
+### Commons vs Bureaucrats
+
+We need to analyse Commons separately. 
+
+```{r, commons vs bureaus}
+sejong_poll_kr$class_2 <- 
+  factor(ifelse(sejong_poll_kr$class == "품관촌민", "품관촌민", "관료"),
+         levels = c("관료", "품관촌민"))
+kable(sejong_poll_kr[c(4, 3, 5, 2, 1)])
+str(sejong_poll_kr)
+```
+
+Compare the votes by `class_2`,  (Bureaucrats vs Commons)
+
+```{r, vote by class_2}
+vote_class_2 <- xtabs(counts ~ vote + class_2, 
+                      data = sejong_poll_kr)
+kable(vote_class_2, 
+      caption = "관료와 품관촌민")
+vote_class_2_a <- cbind("관료" = rowSums(vote_class_a[, -5]), 
+                        "품관촌민" =  vote_class_a[, 5])
+kable(vote_class_2_a, 
+      caption = "관료와 품관촌민")
+```
+
+Add subtotals to the margins, 
+
+```{r, subtotals}
+vote_class_2_am <- addmargins(vote_class_2)
+colnames(vote_class_2_am)[3] <- "계"
+rownames(vote_class_2_am)[3] <- "계"
+kable(vote_class_2_am, align = rep("r", 3))
+```
+
+Compute the marginal proportions. Note the use of `digits = 3` and `nsmall = 1`.
+
+```{r, proportions}
+kable(format(prop.table(vote_class_2, margin = 2) * 100, 
+             digits = 3, nsmall = 1), 
+      caption = "관료와 품관촌민", 
+      align = rep("r", 2))
+```
+
+### Votes by region with respect to class_2 
+
+Count the vote by region class_2 wise.
+
+```{r, region w.r.t class_2}
+class_2 <- sejong_poll_kr$class_2
+vote_region_bureaus <- xtabs(counts ~ vote + region, 
+                             data = sejong_poll_kr, 
+                             class_2 == "관료", drop = TRUE)
+kable(vote_region_bureaus, 
+      caption = "집계(관료)")
+# xtabs(counts ~ vote + region, data = sejong_poll_kr[class_2 == "Bureaus", ], drop = TRUE)
+vote_region_commons <- xtabs(counts ~ vote + region, 
+                             data = sejong_poll_kr, 
+                             class_2 == "품관촌민", 
+                             drop.unused.levels = TRUE)
+kable(vote_region_commons, 
+      caption = "집계(품관촌민)", 
+      align = rep("r", 9))
+```
+
+Seoul has three times more Bureaucrats than other regions, so analyse further.
+
+```{r, Seoul}
+region <- sejong_poll_kr$region
+vote_seoul_class <- xtabs(counts ~ vote + class, 
+                          data = sejong_poll_kr, 
+                          region == "서울", 
+                          drop.unused.levels = TRUE)
+kable(vote_seoul_class, caption = "서울")
+kable(format(prop.table(vote_seoul_class, margin = 2) * 100, 
+             digits  = 3, nsmall = 1), 
+      caption = "서울", 
+      align = rep("r", 3))
+```
+
+Chungcheong's case.
+
+```{r, Chungcheong}
+vote_chung_class <- xtabs(counts ~ vote + class, 
+                          data = sejong_poll_kr, 
+                          region == "충청", 
+                          drop.unused.levels = TRUE)
+kable(format(prop.table(vote_chung_class, margin = 2) * 100, 
+             digits = 3, nsmall = 1), 
+      caption = "충청", 
+      align = rep("r", 3))
+```
+
+- Save the working directory image.
+
+```{r, save}
+save.image(file = "sejong_poll_data_kr.RData")
+```

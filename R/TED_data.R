@@ -20,7 +20,9 @@ function(RData = "./red_and_black_200407_data.RData",
   dup_id <- ted_data$id %>% 
   duplicated %>% 
   which
-# ted_data <- ted_data[-dup_id, ]
+  if(length(dup_id) > 0) { 
+    ted_data <- ted_data[-dup_id, ]
+  }
   ted_data$submit <- ifelse(is.na(ted_data$time), "미제출", "제출")
   ted_data$hours_passed <- as.numeric(difftime(Sys.time(), ted_data$time, units = 'days'))
 ## 학교 정보시스템이 GMT로 표기되어 있어서 9시간의 타임갭을 감안하여야 함.

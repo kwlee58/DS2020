@@ -1,0 +1,876 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Sejong\_poll : Data in Korean},
+  pdfauthor={coop711},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{longtable,booktabs}
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+
+\title{Sejong\_poll : Data in Korean}
+\author{coop711}
+\date{2020-05-18}
+
+\begin{document}
+\maketitle
+
+\hypertarget{data-input}{%
+\subsection{Data input}\label{data-input}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{load}\NormalTok{(}\StringTok{"./sejong\_poll\_data.RData"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{data}{%
+\subsubsection{Data}\label{data}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{kable}\NormalTok{(sejong\_poll[}\DecValTok{4}\OperatorTok{:}\DecValTok{1}\NormalTok{])}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}lllr@{}}
+\toprule
+region & class & vote & counts\tabularnewline
+\midrule
+\endhead
+Seoul & high & yes & 21\tabularnewline
+Seoul & high & no & 194\tabularnewline
+Seoul & third.current & yes & 259\tabularnewline
+Seoul & third.current & no & 393\tabularnewline
+Seoul & third.ex & yes & 443\tabularnewline
+Seoul & third.ex & no & 117\tabularnewline
+yuhu & ordinary & yes & 1123\tabularnewline
+yuhu & ordinary & no & 71\tabularnewline
+gyunggi & chief & yes & 29\tabularnewline
+gyunggi & chief & no & 5\tabularnewline
+gyunggi & ordinary & yes & 17076\tabularnewline
+gyunggi & ordinary & no & 236\tabularnewline
+pyungan & high & no & 1\tabularnewline
+pyungan & chief & yes & 6\tabularnewline
+pyungan & chief & no & 35\tabularnewline
+pyungan & ordinary & yes & 1326\tabularnewline
+pyungan & ordinary & no & 28474\tabularnewline
+hwanghae & chief & yes & 17\tabularnewline
+hwanghae & chief & no & 17\tabularnewline
+hwanghae & ordinary & yes & 4454\tabularnewline
+hwanghae & ordinary & no & 15601\tabularnewline
+chungcheong & high & no & 2\tabularnewline
+chungcheong & chief & yes & 35\tabularnewline
+chungcheong & chief & no & 26\tabularnewline
+chungcheong & ordinary & yes & 6982\tabularnewline
+chungcheong & ordinary & no & 14013\tabularnewline
+kangwon & chief & yes & 5\tabularnewline
+kangwon & chief & no & 10\tabularnewline
+kangwon & ordinary & yes & 939\tabularnewline
+kangwon & ordinary & no & 6888\tabularnewline
+hamgil & high & no & 1\tabularnewline
+hamgil & chief & yes & 3\tabularnewline
+hamgil & chief & no & 14\tabularnewline
+hamgil & ordinary & yes & 75\tabularnewline
+hamgil & ordinary & no & 7387\tabularnewline
+gyungsang & chief & yes & 55\tabularnewline
+gyungsang & chief & no & 16\tabularnewline
+gyungsang & ordinary & yes & 36262\tabularnewline
+gyungsang & ordinary & no & 377\tabularnewline
+jeolla & high & no & 2\tabularnewline
+jeolla & chief & yes & 42\tabularnewline
+jeolla & chief & no & 12\tabularnewline
+jeolla & ordinary & yes & 29505\tabularnewline
+jeolla & ordinary & no & 257\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{korean-factor-levels}{%
+\subsubsection{Korean Factor Levels}\label{korean-factor-levels}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sejong\_poll\_kr \textless{}{-}}\StringTok{ }\NormalTok{sejong\_poll}
+\NormalTok{sejong\_poll\_kr}\OperatorTok{$}\NormalTok{vote \textless{}{-}}\StringTok{ }\KeywordTok{factor}\NormalTok{(sejong\_poll\_kr}\OperatorTok{$}\NormalTok{vote, }
+                              \DataTypeTok{levels =} \KeywordTok{c}\NormalTok{(}\StringTok{"Yes"}\NormalTok{, }\StringTok{"No"}\NormalTok{), }
+                              \DataTypeTok{labels =} \KeywordTok{c}\NormalTok{(}\StringTok{"찬성"}\NormalTok{, }\StringTok{"반대"}\NormalTok{))}
+\NormalTok{class\_labels\_kr \textless{}{-}}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"대신 등"}\NormalTok{, }\StringTok{"3품이하현직"}\NormalTok{, }\StringTok{"3품이하전직"}\NormalTok{, }\StringTok{"수령"}\NormalTok{, }\StringTok{"품관촌민"}\NormalTok{) }
+\NormalTok{sejong\_poll\_kr}\OperatorTok{$}\NormalTok{class \textless{}{-}}\StringTok{ }\KeywordTok{factor}\NormalTok{(sejong\_poll\_kr}\OperatorTok{$}\NormalTok{class, }
+                               \DataTypeTok{levels =}\NormalTok{ class\_labels, }
+                               \DataTypeTok{labels =}\NormalTok{ class\_labels\_kr)}
+\NormalTok{region\_labels\_kr \textless{}{-}}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"서울"}\NormalTok{, }\StringTok{"유후사"}\NormalTok{, }\StringTok{"경기"}\NormalTok{, }\StringTok{"평안"}\NormalTok{, }\StringTok{"황해"}\NormalTok{, }\StringTok{"충청"}\NormalTok{, }\StringTok{"강원"}\NormalTok{, }\StringTok{"함길"}\NormalTok{, }\StringTok{"경상"}\NormalTok{, }\StringTok{"전라"}\NormalTok{)}
+\NormalTok{sejong\_poll\_kr}\OperatorTok{$}\NormalTok{region \textless{}{-}}\StringTok{ }\KeywordTok{factor}\NormalTok{(sejong\_poll\_kr}\OperatorTok{$}\NormalTok{region, }
+                                \DataTypeTok{levels =}\NormalTok{ region\_labels, }
+                                \DataTypeTok{labels =}\NormalTok{ region\_labels\_kr)}
+\NormalTok{vnames\_kr \textless{}{-}}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"소계"}\NormalTok{, }\StringTok{"찬반"}\NormalTok{, }\StringTok{"계급"}\NormalTok{, }\StringTok{"지역"}\NormalTok{)}
+\CommentTok{\# names(sejong\_poll\_kr) \textless{}{-} vnames\_kr}
+\KeywordTok{kable}\NormalTok{(sejong\_poll\_kr[}\DecValTok{4}\OperatorTok{:}\DecValTok{1}\NormalTok{])}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}lllr@{}}
+\toprule
+region & class & vote & counts\tabularnewline
+\midrule
+\endhead
+NA & NA & NA & 21\tabularnewline
+NA & NA & NA & 194\tabularnewline
+NA & NA & NA & 259\tabularnewline
+NA & NA & NA & 393\tabularnewline
+NA & NA & NA & 443\tabularnewline
+NA & NA & NA & 117\tabularnewline
+NA & NA & NA & 1123\tabularnewline
+NA & NA & NA & 71\tabularnewline
+NA & NA & NA & 29\tabularnewline
+NA & NA & NA & 5\tabularnewline
+NA & NA & NA & 17076\tabularnewline
+NA & NA & NA & 236\tabularnewline
+NA & NA & NA & 1\tabularnewline
+NA & NA & NA & 6\tabularnewline
+NA & NA & NA & 35\tabularnewline
+NA & NA & NA & 1326\tabularnewline
+NA & NA & NA & 28474\tabularnewline
+NA & NA & NA & 17\tabularnewline
+NA & NA & NA & 17\tabularnewline
+NA & NA & NA & 4454\tabularnewline
+NA & NA & NA & 15601\tabularnewline
+NA & NA & NA & 2\tabularnewline
+NA & NA & NA & 35\tabularnewline
+NA & NA & NA & 26\tabularnewline
+NA & NA & NA & 6982\tabularnewline
+NA & NA & NA & 14013\tabularnewline
+NA & NA & NA & 5\tabularnewline
+NA & NA & NA & 10\tabularnewline
+NA & NA & NA & 939\tabularnewline
+NA & NA & NA & 6888\tabularnewline
+NA & NA & NA & 1\tabularnewline
+NA & NA & NA & 3\tabularnewline
+NA & NA & NA & 14\tabularnewline
+NA & NA & NA & 75\tabularnewline
+NA & NA & NA & 7387\tabularnewline
+NA & NA & NA & 55\tabularnewline
+NA & NA & NA & 16\tabularnewline
+NA & NA & NA & 36262\tabularnewline
+NA & NA & NA & 377\tabularnewline
+NA & NA & NA & 2\tabularnewline
+NA & NA & NA & 42\tabularnewline
+NA & NA & NA & 12\tabularnewline
+NA & NA & NA & 29505\tabularnewline
+NA & NA & NA & 257\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{longtable}[]{@{}cccc@{}}
+\toprule
+지역 & 계급 & 찬반 & 소계\tabularnewline
+\midrule
+\endhead
+NA & NA & NA & 21\tabularnewline
+NA & NA & NA & 194\tabularnewline
+NA & NA & NA & 259\tabularnewline
+NA & NA & NA & 393\tabularnewline
+NA & NA & NA & 443\tabularnewline
+NA & NA & NA & 117\tabularnewline
+NA & NA & NA & 1123\tabularnewline
+NA & NA & NA & 71\tabularnewline
+NA & NA & NA & 29\tabularnewline
+NA & NA & NA & 5\tabularnewline
+NA & NA & NA & 17076\tabularnewline
+NA & NA & NA & 236\tabularnewline
+NA & NA & NA & 1\tabularnewline
+NA & NA & NA & 6\tabularnewline
+NA & NA & NA & 35\tabularnewline
+NA & NA & NA & 1326\tabularnewline
+NA & NA & NA & 28474\tabularnewline
+NA & NA & NA & 17\tabularnewline
+NA & NA & NA & 17\tabularnewline
+NA & NA & NA & 4454\tabularnewline
+NA & NA & NA & 15601\tabularnewline
+NA & NA & NA & 2\tabularnewline
+NA & NA & NA & 35\tabularnewline
+NA & NA & NA & 26\tabularnewline
+NA & NA & NA & 6982\tabularnewline
+NA & NA & NA & 14013\tabularnewline
+NA & NA & NA & 5\tabularnewline
+NA & NA & NA & 10\tabularnewline
+NA & NA & NA & 939\tabularnewline
+NA & NA & NA & 6888\tabularnewline
+NA & NA & NA & 1\tabularnewline
+NA & NA & NA & 3\tabularnewline
+NA & NA & NA & 14\tabularnewline
+NA & NA & NA & 75\tabularnewline
+NA & NA & NA & 7387\tabularnewline
+NA & NA & NA & 55\tabularnewline
+NA & NA & NA & 16\tabularnewline
+NA & NA & NA & 36262\tabularnewline
+NA & NA & NA & 377\tabularnewline
+NA & NA & NA & 2\tabularnewline
+NA & NA & NA & 42\tabularnewline
+NA & NA & NA & 12\tabularnewline
+NA & NA & NA & 29505\tabularnewline
+NA & NA & NA & 257\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{cross-tables}{%
+\subsubsection{Cross Tables}\label{cross-tables}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{tbl\_vote \textless{}{-}}\StringTok{ }\KeywordTok{xtabs}\NormalTok{(counts }\OperatorTok{\textasciitilde{}}\StringTok{ }\NormalTok{vote, }
+                  \DataTypeTok{data =}\NormalTok{ sejong\_poll\_kr)}
+\NormalTok{tbl\_class \textless{}{-}}\StringTok{ }\KeywordTok{xtabs}\NormalTok{(counts }\OperatorTok{\textasciitilde{}}\StringTok{ }\NormalTok{class, }
+                   \DataTypeTok{data =}\NormalTok{ sejong\_poll\_kr)}
+\NormalTok{tbl\_region \textless{}{-}}\StringTok{ }\KeywordTok{xtabs}\NormalTok{(counts }\OperatorTok{\textasciitilde{}}\StringTok{ }\NormalTok{region, }
+                    \DataTypeTok{data =}\NormalTok{ sejong\_poll\_kr)}
+\NormalTok{tbl\_vote\_class \textless{}{-}}\StringTok{ }\KeywordTok{xtabs}\NormalTok{(counts }\OperatorTok{\textasciitilde{}}\StringTok{ }\NormalTok{vote }\OperatorTok{+}\StringTok{ }\NormalTok{class, }
+                        \DataTypeTok{data =}\NormalTok{ sejong\_poll\_kr)}
+\NormalTok{tbl\_vote\_region \textless{}{-}}\StringTok{ }\KeywordTok{xtabs}\NormalTok{(counts }\OperatorTok{\textasciitilde{}}\StringTok{ }\NormalTok{vote }\OperatorTok{+}\StringTok{ }\NormalTok{region, }
+                         \DataTypeTok{data =}\NormalTok{ sejong\_poll\_kr)}
+\NormalTok{tbl\_vote\_class\_region \textless{}{-}}\StringTok{ }\KeywordTok{xtabs}\NormalTok{(counts }\OperatorTok{\textasciitilde{}}\StringTok{ }\NormalTok{vote }\OperatorTok{+}\StringTok{ }\NormalTok{class }\OperatorTok{+}\StringTok{ }\NormalTok{region, }
+                               \DataTypeTok{data =}\NormalTok{ sejong\_poll\_kr)}
+\NormalTok{ftbl\_vote\_class\_region \textless{}{-}}\StringTok{ }\KeywordTok{ftable}\NormalTok{(}\KeywordTok{xtabs}\NormalTok{(counts }\OperatorTok{\textasciitilde{}}\StringTok{ }\NormalTok{vote }\OperatorTok{+}\StringTok{ }\NormalTok{class }\OperatorTok{+}\StringTok{ }\NormalTok{region,}
+                                       \DataTypeTok{data =}\NormalTok{ sejong\_poll\_kr))}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{array}{%
+\subsubsection{Array}\label{array}}
+
+We can set up the data as an array
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sejong\_poll\_array \textless{}{-}}\StringTok{ }\KeywordTok{xtabs}\NormalTok{(counts }\OperatorTok{\textasciitilde{}}\StringTok{ }\NormalTok{vote }\OperatorTok{+}\StringTok{ }\NormalTok{class }\OperatorTok{+}\StringTok{ }\NormalTok{region, }
+                           \DataTypeTok{data =}\NormalTok{ sejong\_poll\_kr)}
+\KeywordTok{str}\NormalTok{(sejong\_poll\_array)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  'xtabs' int [1:2, 1:5, 1:10] 0 0 0 0 0 0 0 0 0 0 ...
+##  - attr(*, "dimnames")=List of 3
+##   ..$ vote  : chr [1:2] "찬성" "반대"
+##   ..$ class : chr [1:5] "대신 등" "3품이하현직" "3품이하전직" "수령" ...
+##   ..$ region: chr [1:10] "서울" "유후사" "경기" "평안" ...
+##  - attr(*, "call")= language xtabs(formula = counts ~ vote + class + region, data = sejong_poll_kr)
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sejong\_poll\_array}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## , , region = 서울
+## 
+##       class
+## vote   대신 등 3품이하현직 3품이하전직 수령 품관촌민
+##   찬성       0           0           0    0        0
+##   반대       0           0           0    0        0
+## 
+## , , region = 유후사
+## 
+##       class
+## vote   대신 등 3품이하현직 3품이하전직 수령 품관촌민
+##   찬성       0           0           0    0        0
+##   반대       0           0           0    0        0
+## 
+## , , region = 경기
+## 
+##       class
+## vote   대신 등 3품이하현직 3품이하전직 수령 품관촌민
+##   찬성       0           0           0    0        0
+##   반대       0           0           0    0        0
+## 
+## , , region = 평안
+## 
+##       class
+## vote   대신 등 3품이하현직 3품이하전직 수령 품관촌민
+##   찬성       0           0           0    0        0
+##   반대       0           0           0    0        0
+## 
+## , , region = 황해
+## 
+##       class
+## vote   대신 등 3품이하현직 3품이하전직 수령 품관촌민
+##   찬성       0           0           0    0        0
+##   반대       0           0           0    0        0
+## 
+## , , region = 충청
+## 
+##       class
+## vote   대신 등 3품이하현직 3품이하전직 수령 품관촌민
+##   찬성       0           0           0    0        0
+##   반대       0           0           0    0        0
+## 
+## , , region = 강원
+## 
+##       class
+## vote   대신 등 3품이하현직 3품이하전직 수령 품관촌민
+##   찬성       0           0           0    0        0
+##   반대       0           0           0    0        0
+## 
+## , , region = 함길
+## 
+##       class
+## vote   대신 등 3품이하현직 3품이하전직 수령 품관촌민
+##   찬성       0           0           0    0        0
+##   반대       0           0           0    0        0
+## 
+## , , region = 경상
+## 
+##       class
+## vote   대신 등 3품이하현직 3품이하전직 수령 품관촌민
+##   찬성       0           0           0    0        0
+##   반대       0           0           0    0        0
+## 
+## , , region = 전라
+## 
+##       class
+## vote   대신 등 3품이하현직 3품이하전직 수령 품관촌민
+##   찬성       0           0           0    0        0
+##   반대       0           0           0    0        0
+\end{verbatim}
+
+\hypertarget{votes}{%
+\subsection{Votes}\label{votes}}
+
+\hypertarget{total}{%
+\subsubsection{Total}\label{total}}
+
+Check the total vote with xtabs()
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{vote\_total \textless{}{-}}\StringTok{ }\KeywordTok{xtabs}\NormalTok{(counts }\OperatorTok{\textasciitilde{}}\StringTok{ }\NormalTok{vote, }
+                    \DataTypeTok{data =}\NormalTok{ sejong\_poll\_kr)}
+\KeywordTok{kable}\NormalTok{(}\KeywordTok{t}\NormalTok{(}\KeywordTok{as.matrix}\NormalTok{(vote\_total)), }
+      \DataTypeTok{caption =} \StringTok{"총계"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}cc@{}}
+\caption{총계}\tabularnewline
+\toprule
+찬성 & 반대\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+찬성 & 반대\tabularnewline
+\midrule
+\endhead
+0 & 0\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# format(prop.table(vote\_total)*100, digits = 3, nsmall = 1)}
+\KeywordTok{kable}\NormalTok{(}\KeywordTok{t}\NormalTok{(}\KeywordTok{as.matrix}\NormalTok{(}\KeywordTok{format}\NormalTok{(}\KeywordTok{prop.table}\NormalTok{(vote\_total) }\OperatorTok{*}\StringTok{ }\DecValTok{100}\NormalTok{, }
+                         \DataTypeTok{digits =} \DecValTok{3}\NormalTok{, }\DataTypeTok{nsmall =} \DecValTok{1}\NormalTok{))), }
+      \DataTypeTok{caption =} \StringTok{"백분률"}\NormalTok{, }
+      \DataTypeTok{align =} \KeywordTok{rep}\NormalTok{(}\StringTok{"r"}\NormalTok{, }\DecValTok{2}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}cc@{}}
+\caption{백분률}\tabularnewline
+\toprule
+찬성 & 반대\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+찬성 & 반대\tabularnewline
+\midrule
+\endhead
+NaN & NaN\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{vote\_total\_}\DecValTok{2}\NormalTok{ \textless{}{-}}\StringTok{ }\KeywordTok{apply}\NormalTok{(sejong\_poll\_array, }
+                      \DataTypeTok{MARGIN =} \DecValTok{1}\NormalTok{, }
+                      \DataTypeTok{FUN =}\NormalTok{ sum)}
+\CommentTok{\# kable(t(as.matrix(vote\_total\_2)))}
+\KeywordTok{kable}\NormalTok{(}\KeywordTok{t}\NormalTok{(}\KeywordTok{as.matrix}\NormalTok{(vote\_total\_}\DecValTok{2}\NormalTok{)), }
+      \DataTypeTok{caption =} \StringTok{"총계"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}cc@{}}
+\caption{총계}\tabularnewline
+\toprule
+찬성 & 반대\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+찬성 & 반대\tabularnewline
+\midrule
+\endhead
+0 & 0\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{vote-by-class}{%
+\subsubsection{Vote by class}\label{vote-by-class}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{vote\_class \textless{}{-}}\StringTok{ }\KeywordTok{xtabs}\NormalTok{(counts }\OperatorTok{\textasciitilde{}}\StringTok{ }\NormalTok{vote }\OperatorTok{+}\StringTok{ }\NormalTok{class, }
+                    \DataTypeTok{data =}\NormalTok{ sejong\_poll\_kr)}
+\KeywordTok{kable}\NormalTok{(vote\_class, }
+      \DataTypeTok{caption =} \StringTok{"계급별"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}lccccc@{}}
+\caption{계급별}\tabularnewline
+\toprule
+& 대신 등 & 3품이하현직 & 3품이하전직 & 수령 & 품관촌민\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+& 대신 등 & 3품이하현직 & 3품이하전직 & 수령 & 품관촌민\tabularnewline
+\midrule
+\endhead
+찬성 & 0 & 0 & 0 & 0 & 0\tabularnewline
+반대 & 0 & 0 & 0 & 0 & 0\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{vote\_class\_a \textless{}{-}}\StringTok{ }\KeywordTok{apply}\NormalTok{(sejong\_poll\_array, }
+                      \DataTypeTok{MARGIN =} \DecValTok{1}\OperatorTok{:}\DecValTok{2}\NormalTok{, }
+                      \DataTypeTok{FUN =}\NormalTok{ sum)}
+\KeywordTok{kable}\NormalTok{(vote\_class\_a, }
+      \DataTypeTok{caption =} \StringTok{"계급별"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}lccccc@{}}
+\caption{계급별}\tabularnewline
+\toprule
+& 대신 등 & 3품이하현직 & 3품이하전직 & 수령 & 품관촌민\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+& 대신 등 & 3품이하현직 & 3품이하전직 & 수령 & 품관촌민\tabularnewline
+\midrule
+\endhead
+찬성 & 0 & 0 & 0 & 0 & 0\tabularnewline
+반대 & 0 & 0 & 0 & 0 & 0\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{commons-vs-bureaucrats}{%
+\subsubsection{Commons vs Bureaucrats}\label{commons-vs-bureaucrats}}
+
+We need to analyse Commons separately.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sejong\_poll\_kr}\OperatorTok{$}\NormalTok{class\_}\DecValTok{2}\NormalTok{ \textless{}{-}}\StringTok{ }
+\StringTok{  }\KeywordTok{factor}\NormalTok{(}\KeywordTok{ifelse}\NormalTok{(sejong\_poll\_kr}\OperatorTok{$}\NormalTok{class }\OperatorTok{==}\StringTok{ "품관촌민"}\NormalTok{, }\StringTok{"품관촌민"}\NormalTok{, }\StringTok{"관료"}\NormalTok{),}
+         \DataTypeTok{levels =} \KeywordTok{c}\NormalTok{(}\StringTok{"관료"}\NormalTok{, }\StringTok{"품관촌민"}\NormalTok{))}
+\KeywordTok{kable}\NormalTok{(sejong\_poll\_kr[}\KeywordTok{c}\NormalTok{(}\DecValTok{4}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{5}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{1}\NormalTok{)])}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}llllr@{}}
+\toprule
+region & class & class\_2 & vote & counts\tabularnewline
+\midrule
+\endhead
+NA & NA & NA & NA & 21\tabularnewline
+NA & NA & NA & NA & 194\tabularnewline
+NA & NA & NA & NA & 259\tabularnewline
+NA & NA & NA & NA & 393\tabularnewline
+NA & NA & NA & NA & 443\tabularnewline
+NA & NA & NA & NA & 117\tabularnewline
+NA & NA & NA & NA & 1123\tabularnewline
+NA & NA & NA & NA & 71\tabularnewline
+NA & NA & NA & NA & 29\tabularnewline
+NA & NA & NA & NA & 5\tabularnewline
+NA & NA & NA & NA & 17076\tabularnewline
+NA & NA & NA & NA & 236\tabularnewline
+NA & NA & NA & NA & 1\tabularnewline
+NA & NA & NA & NA & 6\tabularnewline
+NA & NA & NA & NA & 35\tabularnewline
+NA & NA & NA & NA & 1326\tabularnewline
+NA & NA & NA & NA & 28474\tabularnewline
+NA & NA & NA & NA & 17\tabularnewline
+NA & NA & NA & NA & 17\tabularnewline
+NA & NA & NA & NA & 4454\tabularnewline
+NA & NA & NA & NA & 15601\tabularnewline
+NA & NA & NA & NA & 2\tabularnewline
+NA & NA & NA & NA & 35\tabularnewline
+NA & NA & NA & NA & 26\tabularnewline
+NA & NA & NA & NA & 6982\tabularnewline
+NA & NA & NA & NA & 14013\tabularnewline
+NA & NA & NA & NA & 5\tabularnewline
+NA & NA & NA & NA & 10\tabularnewline
+NA & NA & NA & NA & 939\tabularnewline
+NA & NA & NA & NA & 6888\tabularnewline
+NA & NA & NA & NA & 1\tabularnewline
+NA & NA & NA & NA & 3\tabularnewline
+NA & NA & NA & NA & 14\tabularnewline
+NA & NA & NA & NA & 75\tabularnewline
+NA & NA & NA & NA & 7387\tabularnewline
+NA & NA & NA & NA & 55\tabularnewline
+NA & NA & NA & NA & 16\tabularnewline
+NA & NA & NA & NA & 36262\tabularnewline
+NA & NA & NA & NA & 377\tabularnewline
+NA & NA & NA & NA & 2\tabularnewline
+NA & NA & NA & NA & 42\tabularnewline
+NA & NA & NA & NA & 12\tabularnewline
+NA & NA & NA & NA & 29505\tabularnewline
+NA & NA & NA & NA & 257\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{str}\NormalTok{(sejong\_poll\_kr)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 'data.frame':    44 obs. of  5 variables:
+##  $ counts : int  21 194 259 393 443 117 1123 71 29 5 ...
+##  $ vote   : Factor w/ 2 levels "찬성","반대": NA NA NA NA NA NA NA NA NA NA ...
+##  $ class  : Factor w/ 5 levels "대신 등","3품이하현직",..: NA NA NA NA NA NA NA NA NA NA ...
+##  $ region : Factor w/ 10 levels "서울","유후사",..: NA NA NA NA NA NA NA NA NA NA ...
+##  $ class_2: Factor w/ 2 levels "관료","품관촌민": NA NA NA NA NA NA NA NA NA NA ...
+\end{verbatim}
+
+Compare the votes by \texttt{class\_2}, (Bureaucrats vs Commons)
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{vote\_class\_}\DecValTok{2}\NormalTok{ \textless{}{-}}\StringTok{ }\KeywordTok{xtabs}\NormalTok{(counts }\OperatorTok{\textasciitilde{}}\StringTok{ }\NormalTok{vote }\OperatorTok{+}\StringTok{ }\NormalTok{class\_}\DecValTok{2}\NormalTok{, }
+                      \DataTypeTok{data =}\NormalTok{ sejong\_poll\_kr)}
+\KeywordTok{kable}\NormalTok{(vote\_class\_}\DecValTok{2}\NormalTok{, }
+      \DataTypeTok{caption =} \StringTok{"관료와 품관촌민"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}lcc@{}}
+\caption{관료와 품관촌민}\tabularnewline
+\toprule
+& 관료 & 품관촌민\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+& 관료 & 품관촌민\tabularnewline
+\midrule
+\endhead
+찬성 & 0 & 0\tabularnewline
+반대 & 0 & 0\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{vote\_class\_}\DecValTok{2}\NormalTok{\_a \textless{}{-}}\StringTok{ }\KeywordTok{cbind}\NormalTok{(}\StringTok{"관료"}\NormalTok{ =}\StringTok{ }\KeywordTok{rowSums}\NormalTok{(vote\_class\_a[, }\DecValTok{{-}5}\NormalTok{]), }
+                        \StringTok{"품관촌민"}\NormalTok{ =}\StringTok{  }\NormalTok{vote\_class\_a[, }\DecValTok{5}\NormalTok{])}
+\KeywordTok{kable}\NormalTok{(vote\_class\_}\DecValTok{2}\NormalTok{\_a, }
+      \DataTypeTok{caption =} \StringTok{"관료와 품관촌민"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}lcc@{}}
+\caption{관료와 품관촌민}\tabularnewline
+\toprule
+& 관료 & 품관촌민\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+& 관료 & 품관촌민\tabularnewline
+\midrule
+\endhead
+찬성 & 0 & 0\tabularnewline
+반대 & 0 & 0\tabularnewline
+\bottomrule
+\end{longtable}
+
+Add subtotals to the margins,
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{vote\_class\_}\DecValTok{2}\NormalTok{\_am \textless{}{-}}\StringTok{ }\KeywordTok{addmargins}\NormalTok{(vote\_class\_}\DecValTok{2}\NormalTok{)}
+\KeywordTok{colnames}\NormalTok{(vote\_class\_}\DecValTok{2}\NormalTok{\_am)[}\DecValTok{3}\NormalTok{] \textless{}{-}}\StringTok{ "계"}
+\KeywordTok{rownames}\NormalTok{(vote\_class\_}\DecValTok{2}\NormalTok{\_am)[}\DecValTok{3}\NormalTok{] \textless{}{-}}\StringTok{ "계"}
+\KeywordTok{kable}\NormalTok{(vote\_class\_}\DecValTok{2}\NormalTok{\_am, }\DataTypeTok{align =} \KeywordTok{rep}\NormalTok{(}\StringTok{"r"}\NormalTok{, }\DecValTok{3}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}lccc@{}}
+\toprule
+& 관료 & 품관촌민 & 계\tabularnewline
+\midrule
+\endhead
+찬성 & 0 & 0 & 0\tabularnewline
+반대 & 0 & 0 & 0\tabularnewline
+계 & 0 & 0 & 0\tabularnewline
+\bottomrule
+\end{longtable}
+
+Compute the marginal proportions. Note the use of \texttt{digits\ =\ 3}
+and \texttt{nsmall\ =\ 1}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{kable}\NormalTok{(}\KeywordTok{format}\NormalTok{(}\KeywordTok{prop.table}\NormalTok{(vote\_class\_}\DecValTok{2}\NormalTok{, }\DataTypeTok{margin =} \DecValTok{2}\NormalTok{) }\OperatorTok{*}\StringTok{ }\DecValTok{100}\NormalTok{, }
+             \DataTypeTok{digits =} \DecValTok{3}\NormalTok{, }\DataTypeTok{nsmall =} \DecValTok{1}\NormalTok{), }
+      \DataTypeTok{caption =} \StringTok{"관료와 품관촌민"}\NormalTok{, }
+      \DataTypeTok{align =} \KeywordTok{rep}\NormalTok{(}\StringTok{"r"}\NormalTok{, }\DecValTok{2}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}lcc@{}}
+\caption{관료와 품관촌민}\tabularnewline
+\toprule
+& 관료 & 품관촌민\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+& 관료 & 품관촌민\tabularnewline
+\midrule
+\endhead
+찬성 & NaN & NaN\tabularnewline
+반대 & NaN & NaN\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{votes-by-region-with-respect-to-class_2}{%
+\subsubsection{Votes by region with respect to
+class\_2}\label{votes-by-region-with-respect-to-class_2}}
+
+Count the vote by region class\_2 wise.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{class\_}\DecValTok{2}\NormalTok{ \textless{}{-}}\StringTok{ }\NormalTok{sejong\_poll\_kr}\OperatorTok{$}\NormalTok{class\_}\DecValTok{2}
+\NormalTok{vote\_region\_bureaus \textless{}{-}}\StringTok{ }\KeywordTok{xtabs}\NormalTok{(counts }\OperatorTok{\textasciitilde{}}\StringTok{ }\NormalTok{vote }\OperatorTok{+}\StringTok{ }\NormalTok{region, }
+                             \DataTypeTok{data =}\NormalTok{ sejong\_poll\_kr, }
+\NormalTok{                             class\_}\DecValTok{2} \OperatorTok{==}\StringTok{ "관료"}\NormalTok{, }\DataTypeTok{drop =} \OtherTok{TRUE}\NormalTok{)}
+\KeywordTok{kable}\NormalTok{(vote\_region\_bureaus, }
+      \DataTypeTok{caption =} \StringTok{"집계(관료)"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in kable_markdown(x, padding = padding, ...): The table should have a header (column names)
+\end{verbatim}
+
+Table: 집계(관료)
+
+\textbar\textbar{} \textbar\textbar{} \textbar\textbar{}
+\textbar\textbar{}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# xtabs(counts \textasciitilde{} vote + region, data = sejong\_poll\_kr[class\_2 == "Bureaus", ], drop = TRUE)}
+\NormalTok{vote\_region\_commons \textless{}{-}}\StringTok{ }\KeywordTok{xtabs}\NormalTok{(counts }\OperatorTok{\textasciitilde{}}\StringTok{ }\NormalTok{vote }\OperatorTok{+}\StringTok{ }\NormalTok{region, }
+                             \DataTypeTok{data =}\NormalTok{ sejong\_poll\_kr, }
+\NormalTok{                             class\_}\DecValTok{2} \OperatorTok{==}\StringTok{ "품관촌민"}\NormalTok{, }
+                             \DataTypeTok{drop.unused.levels =} \OtherTok{TRUE}\NormalTok{)}
+\KeywordTok{kable}\NormalTok{(vote\_region\_commons, }
+      \DataTypeTok{caption =} \StringTok{"집계(품관촌민)"}\NormalTok{, }
+      \DataTypeTok{align =} \KeywordTok{rep}\NormalTok{(}\StringTok{"r"}\NormalTok{, }\DecValTok{9}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in kable_markdown(x, padding = padding, ...): The table should have a header (column names)
+\end{verbatim}
+
+Table: 집계(품관촌민)
+
+\textbar\textbar{} \textbar\textbar{} \textbar\textbar{}
+\textbar\textbar{}
+
+Seoul has three times more Bureaucrats than other regions, so analyse
+further.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{region \textless{}{-}}\StringTok{ }\NormalTok{sejong\_poll\_kr}\OperatorTok{$}\NormalTok{region}
+\NormalTok{vote\_seoul\_class \textless{}{-}}\StringTok{ }\KeywordTok{xtabs}\NormalTok{(counts }\OperatorTok{\textasciitilde{}}\StringTok{ }\NormalTok{vote }\OperatorTok{+}\StringTok{ }\NormalTok{class, }
+                          \DataTypeTok{data =}\NormalTok{ sejong\_poll\_kr, }
+\NormalTok{                          region }\OperatorTok{==}\StringTok{ "서울"}\NormalTok{, }
+                          \DataTypeTok{drop.unused.levels =} \OtherTok{TRUE}\NormalTok{)}
+\KeywordTok{kable}\NormalTok{(vote\_seoul\_class, }\DataTypeTok{caption =} \StringTok{"서울"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in kable_markdown(x, padding = padding, ...): The table should have a header (column names)
+\end{verbatim}
+
+Table: 서울
+
+\textbar\textbar{} \textbar\textbar{} \textbar\textbar{}
+\textbar\textbar{}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{kable}\NormalTok{(}\KeywordTok{format}\NormalTok{(}\KeywordTok{prop.table}\NormalTok{(vote\_seoul\_class, }\DataTypeTok{margin =} \DecValTok{2}\NormalTok{) }\OperatorTok{*}\StringTok{ }\DecValTok{100}\NormalTok{, }
+             \DataTypeTok{digits  =} \DecValTok{3}\NormalTok{, }\DataTypeTok{nsmall =} \DecValTok{1}\NormalTok{), }
+      \DataTypeTok{caption =} \StringTok{"서울"}\NormalTok{, }
+      \DataTypeTok{align =} \KeywordTok{rep}\NormalTok{(}\StringTok{"r"}\NormalTok{, }\DecValTok{3}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in kable_markdown(x, padding = padding, ...): The table should have a header (column names)
+\end{verbatim}
+
+Table: 서울
+
+\textbar\textbar{} \textbar\textbar{} \textbar\textbar{}
+\textbar\textbar{}
+
+Chungcheong's case.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{vote\_chung\_class \textless{}{-}}\StringTok{ }\KeywordTok{xtabs}\NormalTok{(counts }\OperatorTok{\textasciitilde{}}\StringTok{ }\NormalTok{vote }\OperatorTok{+}\StringTok{ }\NormalTok{class, }
+                          \DataTypeTok{data =}\NormalTok{ sejong\_poll\_kr, }
+\NormalTok{                          region }\OperatorTok{==}\StringTok{ "충청"}\NormalTok{, }
+                          \DataTypeTok{drop.unused.levels =} \OtherTok{TRUE}\NormalTok{)}
+\KeywordTok{kable}\NormalTok{(}\KeywordTok{format}\NormalTok{(}\KeywordTok{prop.table}\NormalTok{(vote\_chung\_class, }\DataTypeTok{margin =} \DecValTok{2}\NormalTok{) }\OperatorTok{*}\StringTok{ }\DecValTok{100}\NormalTok{, }
+             \DataTypeTok{digits =} \DecValTok{3}\NormalTok{, }\DataTypeTok{nsmall =} \DecValTok{1}\NormalTok{), }
+      \DataTypeTok{caption =} \StringTok{"충청"}\NormalTok{, }
+      \DataTypeTok{align =} \KeywordTok{rep}\NormalTok{(}\StringTok{"r"}\NormalTok{, }\DecValTok{3}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in kable_markdown(x, padding = padding, ...): The table should have a header (column names)
+\end{verbatim}
+
+Table: 충청
+
+\textbar\textbar{} \textbar\textbar{} \textbar\textbar{}
+\textbar\textbar{}
+
+\begin{itemize}
+\tightlist
+\item
+  Save the working directory image.
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{save.image}\NormalTok{(}\DataTypeTok{file =} \StringTok{"sejong\_poll\_data\_kr.RData"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+
+\end{document}
