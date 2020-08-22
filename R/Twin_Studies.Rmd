@@ -199,7 +199,7 @@ Nature1_tbl %>%
   geom_text(aes(y = y1_fill), label = Nature1_tbl$Counts, position = "identity") +
   scale_fill_brewer(type = "qual", palette = "Accent", direction = -1) +
   scale_y_continuous(name = "Cumulative Percentage", 
-                     breaks = c(apply(t(Nature1_p), MARGIN = 2, cumsum)) / 100, 
+                     breaks = c(apply(t(Nature1_p), MARGIN = 2, cumsum) / 100), 
                      labels = format(c(apply(t(Nature1_p), MARGIN = 2, cumsum)), 
                                      digits = 3, nsmall = 1)) +
   labs(title = "Smoking Habits of Twins") +
