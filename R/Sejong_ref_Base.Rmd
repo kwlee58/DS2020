@@ -75,7 +75,7 @@ pie(Vote_total,
 text(x = pos_total_x, y = pos_total_y,
      labels = paste(names(Vote_total),
                     format(Vote_total, big.mark = ","),
-                    sep = ":"))
+                    sep = "\n"))
 title(main = "전체 찬반", 
       cex.main = 1.5,
       family = "KoPubWorldDotum Bold")
@@ -110,7 +110,7 @@ text(x = pos_Class_2_x[, "관료"],
      y = pos_Class_2_y[, "관료"],
      labels = paste(names(Vote_Class_2[, "관료"]),
                     format(Vote_Class_2[, "관료"], big.mark = ","),
-                    sep = ":"))
+                    sep = "\n"))
 title(main = "관료", 
       cex.main = 1.5,
       family = "KoPubWorldDotum Bold")
@@ -122,7 +122,7 @@ text(x = pos_Class_2_x[, "품관촌민"],
      y = pos_Class_2_y[, "품관촌민"],
      labels = paste(names(Vote_Class_2[, "품관촌민"]),
                     format(Vote_Class_2[, "품관촌민"], big.mark = ","),
-                    sep = ":"))
+                    sep = "\n"))
 title(main = "품관촌민", 
       cex.main = 1.5,
       family = "KoPubWorldDotum Bold")
@@ -146,9 +146,12 @@ labels_Region <- ifelse(is.na(values_Region),
 b1 <- barplot(Vote_Region,
               col = rainbow_2,
               axes = FALSE)
-text(x = rep(b1, 2),
-     y = c(t(pos_Region)),
-     labels = c(t(labels_Region)))
+# text(x = rep(b1, 2),
+#      y = c(t(pos_Region)),
+#      labels = c(t(labels_Region)))
+text(x = rep(b1, each = 2),
+     y = c(pos_Region),
+     labels = c(labels_Region))
 legend("topleft", 
        inset = 0.05, 
        fill = rainbow_2, 
@@ -194,9 +197,12 @@ labels_seoul_Class <- ifelse(is.na(values_seoul_Class),
 b2 <- barplot(Vote_seoul_Class,
               col = rainbow_2,
               axes = FALSE)
-text(x = rep(b2, 2),
-     y = c(t(pos_seoul_Class)),
-     labels = c(t(labels_seoul_Class)))
+# text(x = rep(b2, 2),
+#      y = c(t(pos_seoul_Class)),
+#      labels = c(t(labels_seoul_Class)))
+text(x = rep(b2, each = 2),
+     y = c(pos_seoul_Class),
+     labels = c(labels_seoul_Class))
 legend("topleft", 
        inset = 0.05, 
        fill = rainbow_2, 
@@ -240,9 +246,12 @@ labels_Region_bureaus <- ifelse(is.na(values_Region_bureaus),
 b3 <- barplot(Vote_Region_bureaus[, -1],
               col = rainbow_2,
               axes = FALSE)
-text(x = rep(b3, 2),
-     y = c(t(pos_Region_bureaus)),
-     labels = c(t(labels_Region_bureaus)))
+# text(x = rep(b3, 2),
+#      y = c(t(pos_Region_bureaus)),
+#      labels = c(t(labels_Region_bureaus)))
+text(x = rep(b3, each = 2),
+     y = c(pos_Region_bureaus),
+     labels = c(labels_Region_bureaus))
 legend("topleft", 
        inset = 0.05, 
        fill = rainbow_2, 
@@ -289,6 +298,9 @@ b4 <- barplot(Vote_Region_commons,
 text(x = rep(b4, 2),
      y = c(t(pos_Region_commons)),
      labels = c(t(labels_Region_commons)))
+text(x = rep(b4, each = 2),
+     y = c(pos_Region_commons),
+     labels = c(labels_Region_commons))
 legend("topleft", 
        inset = 0.05, 
        fill = rainbow_2, 
@@ -337,9 +349,12 @@ labels_chung_Class <- ifelse(is.na(values_chung_Class),
 b5 <- barplot(prop.table(Vote_chung_Class, margin = 2) * 100,
               col = rainbow_2,
               axes = FALSE)
-text(x = rep(b5, 2),
-     y = c(t(pos_chung_Class)),
-     labels = c(t(labels_chung_Class)))
+# text(x = rep(b5, 2),
+#      y = c(t(pos_chung_Class)),
+#      labels = c(t(labels_chung_Class)))
+text(x = rep(b5, each = 2),
+     y = c(pos_chung_Class),
+     labels = c(labels_chung_Class))
 legend("topleft", 
        inset = 0.05, 
        fill = rainbow_2, 

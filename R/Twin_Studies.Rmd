@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Nature 1958 version 1
 
-```{r, fig.width = 8, fig.height = 6}
+```{r, message = FALSE, fig.width = 8, fig.height = 6}
 library(magrittr)
 library(tidyverse)
 Nature1 <- matrix(c(33, 11, 6, 6, 12, 16), nrow = 2)
