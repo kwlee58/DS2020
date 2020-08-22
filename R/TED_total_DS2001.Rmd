@@ -1,0 +1,100 @@
+---
+title: "TED Total DS2001"
+# author: "coop711"
+# date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+# install.packages("pander", repos = "https://cran.rstudio.com")
+# install.packages("xlsx", repos = "https://cran.rstudio.com")
+# install.packages("readr", repos = "https://cran/rstudio.com")
+library(xlsx)
+library(pander)
+library(knitr)
+library(dplyr)
+library(magrittr)
+panderOptions('table.split.table', Inf)
+options(width = 180, digits = 3)
+```
+
+# Data and Score
+
+```{r}
+options(digits = 3)
+load("./red_and_black_200407_data.RData")
+ted01 <- readRDS("./TED200329.RDS")
+ted02 <- readRDS("./TED200405.RDS")
+ted03 <- readRDS("./TED200412.RDS")
+ted04 <- readRDS("./TED200419.RDS")
+ted05 <- readRDS("./TED200426.RDS")
+ted06 <- readRDS("./TED200503.RDS")
+ted07 <- readRDS("./TED200510.RDS")
+ted08 <- readRDS("./TED200517.RDS")
+ted09 <- readRDS("./TED200524.RDS")
+ted10 <- readRDS("./TED200531.RDS")
+ted11 <- readRDS("./TED200607.RDS")
+ted12 <- readRDS("./TED200614.RDS")
+
+ted01 <- subset(ted01, ted01$id %in% class_roll$id)
+ted02 <- subset(ted02, ted02$id %in% class_roll$id)
+ted03 <- subset(ted03, ted03$id %in% class_roll$id)
+
+all(ted01$id == ted12$id)
+all(ted02$id == ted12$id)
+all(ted03$id == ted12$id)
+
+ted <- data.frame(ted12[c("id", "name")],
+                  days01 = ted01$days, 
+                  days02 = ted02$days,
+                  days03 = ted03$days, 
+                  days04 = ted04$days, 
+                  days05 = ted05$days, 
+                  days06 = ted06$days, 
+                  days07 = ted07$days, 
+                  days08 = ted08$days, 
+                  days09 = ted09$days, 
+                  days10 = ted10$days, 
+                  days11 = ted11$days, 
+                  days12 = ted12$days, 
+                  n_chars_01 = ted01$n_chars,
+                  n_chars_02 = ted02$n_chars,
+                  n_chars_03 = ted03$n_chars,
+                  n_chars_04 = ted04$n_chars,
+                  n_chars_05 = ted05$n_chars,
+                  n_chars_06 = ted06$n_chars,
+                  n_chars_07 = ted07$n_chars,
+                  n_chars_08 = ted08$n_chars,
+                  n_chars_09 = ted09$n_chars,
+                  n_chars_10 = ted10$n_chars,
+                  n_chars_11 = ted11$n_chars,
+                  n_chars_12 = ted12$n_chars)
+str(ted)                  
+submit <- sapply(ted[, 3:14], function(x) ifelse(is.na(x) | x < 0, 0, 1)) 
+# submit[, 6:7] <- submit[, 6:7] * 3 / 4
+quantity <- sapply(ted[, 15:26], 
+                   function(x) ifelse(is.na(x), 0,
+                                      ifelse(x < 200, 0.3,
+                                             ifelse(x < 400, 0.7, 1))))
+
+# quantity[, 6:7] <- quantity[, 6:7] * 3 / 4
+score <- pmin(submit, quantity)
+# score <- submit
+# score[submit > quantity] <- quantity[submit > quantity]
+total <- rowSums(score) * 10 / 12
+colnames(score) <- c(paste0("s0", 1:9), 
+                     paste0("s", 10:12))
+ted <- cbind(ted, score, total)
+ted <- ted[order(ted$name, ted$id), ]
+options(digits = 3)
+pander(ted, digits = 3, row.names = FALSE)
+pander(ted[c("name", "id", "total")], row.names = FALSE)
+```
+
+## Save
+
+```{r, echo = FALSE}
+write.csv(ted, file = "../data/ted1902.csv", fileEncoding = "CP949")
+saveRDS(ted, file = "ted1902.RDS")
+```

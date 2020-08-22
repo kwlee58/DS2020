@@ -1,7 +1,7 @@
 ---
 title: "Chosun Field"
 author: "coop711"
-# date: "`r Sys.Date()`"
+date: "`r Sys.Date()`"
 output: html_document
 ---
 
@@ -28,7 +28,6 @@ include_graphics("../pics/chosun_field_history.png")
 ## Data
 
 ```{r, data}
-library(knitr)
 Year <- c(1404, 1414, 1432, 1592, 1603, 1634, 1719, 1784, 1786, 1807, 1864)
 Province <- c("경기도", "충청도", "전라도", "경상도", "황해도", "강원도", "함경도", "평안도")
 field <- matrix(c(NA, 223090, 173990, 224625, 90922, 59989, 3271, 6648,
@@ -107,7 +106,7 @@ g2
 <P style = "page-break-before:always">
 
 ```{r, warning = FALSE, message = FALSE, fig.width = 9, fig.height = 5}
-g3<- g2 + 
+g3 <- g2 + 
   scale_x_continuous(name = "연도", 
                      breaks = as.numeric(row.names(field)[-9]),
                      labels = row.names(field)[-9])

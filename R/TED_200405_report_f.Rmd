@@ -26,7 +26,7 @@ options(width = 180)
 ```{r, data, echo = FALSE, results = "hide"}
 source("./TED_data.R")
 ted0405<- TED_data(data = "../data/TED200405.xlsx", 
-                   nrow = 114, 
+                   nrow = 110, 
                    date = "2020-04-06 09:00:00")
 ```
 
