@@ -1,7 +1,7 @@
 ---
 title: "Twin Studies on Smoking"
 author: "coop711"
-date: '2019-05-11'
+date: '2019 5 11 '
 output: html_document
 ---
 
@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Nature 1958 version 1
 
-```{r, message = FALSE, fig.width = 8, fig.height = 6}
+```{r, fig.width = 8, fig.height = 6}
 library(magrittr)
 library(tidyverse)
 Nature1 <- matrix(c(33, 11, 6, 6, 12, 16), nrow = 2)
@@ -148,6 +148,14 @@ title(main = "Percentage of Inhalers")
 ## tidyverse
 
 ```{r}
+Na_tbl <- Nature1 %>% 
+  t %>%
+  as_tibble %>%
+  mutate(Resemblence = row.names(Nature1 %>% t)) %>%
+  gather(key = "Twins", value = "Counts", -Resemblence) %>%
+  mutate(Resemblence = factor(Resemblence, levels = c("Alike", "Somewhat_Alike", "Not_Alike")),
+         Twins = factor(Twins, levels = c("Identical", "Fraternal")))
+Na_tbl
 Nature1_tbl <- Nature1 %>%
   as_tibble %>%
   mutate(Twins = row.names(Nature1)) %>%
@@ -191,16 +199,16 @@ Nature1_tbl %>%
   geom_bar(stat = "identity", width = 0.5, position = position_stack(reverse = TRUE)) +
   geom_text(aes(y = y1_text), label = Nature1_tbl$Counts, position = "identity") +
   scale_fill_brewer(type = "qual", palette = "Accent", direction = -1) +
-  scale_y_continuous(breaks = c(apply(t(Nature1), MARGIN = 2, cumsum)), 
-                     labels = c(apply(t(Nature1), MARGIN = 2, cumsum)))
+  scale_y_continuous(breaks = apply(t(Nature1), MARGIN = 2, cumsum), 
+                     labels = apply(t(Nature1), MARGIN = 2, cumsum))
 Nature1_tbl %>%
   ggplot(data = ., mapping = aes(x = Twins, y = Counts, fill = Resemblance)) +
   geom_bar(stat = "identity", width = 0.5, position = position_fill(reverse = TRUE)) +
   geom_text(aes(y = y1_fill), label = Nature1_tbl$Counts, position = "identity") +
   scale_fill_brewer(type = "qual", palette = "Accent", direction = -1) +
   scale_y_continuous(name = "Cumulative Percentage", 
-                     breaks = c(apply(t(Nature1_p), MARGIN = 2, cumsum) / 100), 
-                     labels = format(c(apply(t(Nature1_p), MARGIN = 2, cumsum)), 
+                     breaks = apply(t(Nature1_p), MARGIN = 2, cumsum) / 100, 
+                     labels = format(apply(t(Nature1_p), MARGIN = 2, cumsum), 
                                      digits = 3, nsmall = 1)) +
   labs(title = "Smoking Habits of Twins") +
   theme(plot.title = element_text(hjust = 0.5))
