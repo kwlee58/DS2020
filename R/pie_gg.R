@@ -14,6 +14,7 @@ function(df){
     geom_text(aes(y = y_coord), 
               label = pie_label, 
               size = 5,
+              family = "KoPubWorldDotum Medium",
               position = position_identity()) +
     guides(fill = "none") +
     theme_void() +

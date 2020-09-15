@@ -1,21 +1,28 @@
 mosaic_gg <-
-function(tbl){
-  tbl_df <- tbl %>%
-  as.data.frame
-  N <- length(levels(tbl_df[, 1]))
+function(tbl_df){
+#  tbl_df <- tbl %>%
+#  as.data.frame
+#  N <- length(levels(tbl_df[, 1]))
 #> data for mosaic coordinates
-  tbl_p_df <- tbl %>%
-    prop.table %>%
-    as.data.frame
+  tbl_p_df <- tbl_df %>%
+  `[`(, 3) %>%
+  proportions %>%
+  data.frame(tbl_df[1:2], "Prop" = .)
+#  tbl_p_df <- tbl %>%
+#    prop.table %>%
+#    as.data.frame
   tbl_p_m <- tbl_df %>%
     `[`(, 3) %>%
     tapply(tbl_df[, 2], sum) %>%
     prop.table
   tbl_p_df$width <- tbl_p_m[match(tbl_p_df[, 2], names(tbl_p_m))]
-  tbl_p_df$height <- tbl %>%
-    prop.table(margin = 2) %>%
-    as.data.frame %>%
-    `[`(, 3)
+#  tbl_p_df$height <- tbl %>%
+#    prop.table(margin = 2) %>%
+#    as.data.frame %>%
+#    `[`(, 3)
+  tbl_p_df$height <- unlist(tapply(tbl_p_df[, 3], 
+                                   tbl_p_df[, 2], 
+                                   proportions))
   tbl_p_df$label_height <- unlist(tapply(tbl_p_df$height, 
                                          tbl_p_df[, 2], 
                                          function(x) cumsum(x) - x / 2))
@@ -51,6 +58,7 @@ function(tbl){
              position = position_stack(reverse = TRUE)) +
     geom_text(aes(x = center, 
                   y = 1.05), 
+              family = "KoPubWorldDotum Medium",
               label = tbl_p_df[, 2]) +
     geom_text(aes(x = center, 
                   y = label_height), 
