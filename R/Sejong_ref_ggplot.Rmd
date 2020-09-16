@@ -59,7 +59,7 @@ y_coord <- Vote_df$Counts %>%
 pie_label <- Vote_df %>% 
   .$Vote %>% 
   levels %>% 
-  paste(., Vote_df %>% 
+  paste(Vote_df %>% 
           .$Counts %>% 
           format(big.mark = ","), sep = "\n") 
 pie_label
@@ -246,49 +246,8 @@ ggsave("../pics/sejong_total_pie_ggplot.png", pie_total_7, dpi = 72)
 
 #### `pie_gg()`
 
-```{r, ech = FALSE, eval = FALSE}
-pie_gg <- function(df, ggtitle = "", font_family = "KoPubWorldDotum Medium"){
-  n <- length(names(df))
-  y_coord <- cumsum(df[, 2]) - df[, 2] / 2
-  pie_label <- paste(levels(df[, 1]), 
-                     format(df[, 2], big.mark = ","), 
-                     sep = "\n") 
-  p1 <- ggplot(df, aes(x = "", 
-                       y = df[, 2], 
-                       fill = df[, 1])) 
-  p2 <- p1 + 
-    geom_bar(width = 1, 
-             stat = "identity", 
-             position = position_stack(reverse = TRUE))
-  pie_1 <- p2 + 
-    coord_polar(theta = "y", 
-                start = 3 * pi / 2, 
-                direction = -1)
-  pie_2 <- pie_1 + 
-    scale_y_continuous(name = "", 
-                       breaks = NULL) +
-    scale_x_discrete(name = "") 
-  pie_3 <- pie_2 +
-    scale_fill_manual(name = "", 
-                      values = rainbow(n)[n:1])
-  pie_4 <- pie_3 +
-    theme_void(base_family = font_family)
-  pie_5 <- pie_4 +
-    guides(fill = "none")
-  pie_6 <- pie_5 +
-    geom_text(aes(y = y_coord), 
-              label = pie_label, 
-              family = font_family, 
-              position = position_identity())
-  pie_7 <- pie_6 +
-    ggtitle(ggtitle) + 
-    theme(plot.margin = unit(c(0, 0, 0, 0), "lines"), 
-          plot.title = element_text(hjust = 0.5, size = 20))
-  return(pie_7)
-}
-```
 
-```{r, pie_gg2}
+```{r, pie_gg2, eval = FALSE}
 pie_gg <- function(df){
   n <- length(names(df))
   y_coord <- cumsum(df[, 2]) - df[, 2] / 2
@@ -316,10 +275,53 @@ dump("pie_gg",
      file = "./pie_gg.R")
 ```
 
+```{r, pie_gg_new}
+pie_gg_new <-
+function(df){
+  n <- length(names(df))
+  y_coord <- cumsum(df[, 2]) - df[, 2] / 2
+  pie_label <- paste(levels(df[, 1]), 
+                     format(df[, 2], big.mark = ","), 
+                     sep = "\n") 
+  pie <- ggplot(df, aes(x = "", 
+                        y = df[, 2], 
+                        fill = df[, 1])) + 
+    geom_bar(width = 1, 
+             stat = "identity", 
+             position = position_stack(reverse = TRUE)) +
+  #  geom_text(aes(y = y_coord), 
+  #            label = pie_label, 
+  #            size = 5,
+  #            family = "KoPubWorldDotum Medium",
+  #            position = position_identity()) +
+    guides(fill = "none") +
+    theme_void() +
+    coord_polar(theta = "y", 
+                start = 3 * pi / 2, 
+                direction = -1)
+  list(pie = pie, df = df, pie_label = pie_label, y_coord = y_coord)
+}
+dump("pie_gg_new", 
+     file = "./pie_gg_new.R")
+```
+
+
 <P style = "page-break-before:always">
 
 ```{r, message = FALSE, fig.width = 4, fig_height = 4}
-pie_gg(Vote_df) +
+source("pie_gg_new.R")
+pie_list <- pie_gg_new(Vote_df)
+pie_list$pie
+pie_list$df
+pie_list$pie_label
+pie_list$y_coord
+# pie_gg_new(Vote_df) +
+pie_list$pie +
+  geom_text(aes(y = pie_list$y_coord), 
+            label = pie_list$pie_label, 
+            size = 5,
+            family = "KoPubWorldDotum Medium",
+            position = position_identity()) +
   scale_fill_manual(values = rainbow(2)[2:1]) +
   ggtitle("전체 찬반") +
   theme(plot.margin = unit(c(1, 1, 1, 1), "line"),
@@ -447,14 +449,26 @@ Vote_commons_df %>%
 ### 원형그래프
 
 ```{r, coord_polar_2, message = FALSE, fig.width = 8, fig.height = 4}
-pie_bureaus <- pie_gg(Vote_bureaus_df) +
+pie_list2 <- pie_gg_new(Vote_bureaus_df)
+pie_bureaus <- pie_list2$pie +  
+  geom_text(aes(y = pie_list2$y_coord), 
+            label = pie_list2$pie_label, 
+            size = 5,
+            family = "KoPubWorldDotum Medium",
+            position = position_identity()) +
   scale_fill_manual(values = rainbow(2)[2:1]) +
   ggtitle("관료의 찬반") +
   theme(plot.margin = unit(c(1, 1, 1, 1), "line"),
         plot.title = element_text(hjust = 0.5, 
                                   size = 20,
                                   family = "KoPubWorldDotum Bold"))
-pie_commons <- pie_gg(Vote_commons_df) +
+pie_list3 <- pie_gg_new(Vote_commons_df)
+pie_commons <- pie_list3$pie +  
+  geom_text(aes(y = pie_list3$y_coord), 
+            label = pie_list3$pie_label, 
+            size = 5,
+            family = "KoPubWorldDotum Medium",
+            position = position_identity()) +
   scale_fill_manual(values = rainbow(2)[2:1]) +
   ggtitle("품관촌민의 찬반") +
   theme(plot.margin = unit(c(1, 1, 1, 1), "line"),
@@ -672,55 +686,6 @@ b3_seoul_fill
 
 #### Stack 
 
-```{r, echo = FALSE, eval = FALSE}
-barplot_gg_stack <- function(df, 
-                             base_family = "KoPubWorldDotum Medium", 
-                             ggtitle = "", 
-                             xlab = "", 
-                             ylab = "", 
-                             fill_name = ""){
-n_fill <- length(levels(df[, 1]))
-x <- df[, 2]
-y <- unlist(tapply(df[, 3], 
-                   x, 
-                   function(x){cumsum(x) - x / 2}))
-y_breaks <- unlist(tapply(df[, 3], 
-                          x, 
-                          cumsum))
-y_label <- format(y_breaks, big.mark = ",")
-delta <- (max(y_breaks) - min(y_breaks)) / 20
-y_breaks_sort <- sort(y_breaks)
-diff(y_breaks_sort) < delta 
-index <- which(diff(y_breaks_sort)  > delta)
-y_breaks <- c(0, y_breaks_sort[c(index, length(y_breaks_sort))])
-y_label <- format(y_breaks, big.mark = ",")
-b1 <- ggplot(df, 
-             aes(x = x, 
-                 y = df[, 3], 
-                 fill = df[, 1])) +
-  geom_bar(stat = "identity", 
-           position = position_stack(reverse = TRUE))
-b2 <- b1 +
-  theme_bw(base_family = base_family) +
-#  theme_kr +
-  scale_x_discrete(name = xlab) +
-  scale_y_continuous(name = ylab, 
-                     breaks = y_breaks,
-                     labels = y_label) +
-  scale_fill_manual(name = fill_name, 
-                    values = rainbow(n_fill)[n_fill:1], 
-                    labels = df[, 1], 
-                    guide = guide_legend())
-b3 <- b2 +
-  geom_text(aes(y = y), 
-            label = format(ifelse(df[, 3] == 0, "", df[, 3]), 
-                           big.mark = ","), 
-            position = "identity") +
-  ggtitle(ggtitle)
-return(b3)
-}
-```
-
 ```{r, stack}
 barplot_gg_stack <- function(df){
 n_fill <- length(levels(df[, 1]))
@@ -894,31 +859,13 @@ dump(c("barplot_gg","barplot_gg_stack", "barplot_gg_dodge", "barplot_gg_fill"),
 ```{r, message = FALSE}
 Vote_seoul_Class_df <- Vote_seoul_Class %>%
   as.data.frame 
+N <- length(levels(Vote_seoul_Class_df[, 1]))
 Vote_seoul_Class_p_df <- Vote_seoul_Class_df %>%
   `[`(, 3) %>%
   proportions %>%
   data.frame(Vote_seoul_Class_df[1:2], "Prop" = .)
-Vote_seoul_Class_p_m <- Vote_seoul_Class_df %>%
-  `[`(, 3) %>%
-  tapply(Vote_seoul_Class_df[, 2], sum) %>%
-  prop.table
-# Vote_seoul_Class_df <- as.data.frame(Vote_seoul_Class)
-# Vote_seoul_Class_sum <- tapply(Vote_seoul_Class_df[, 3], 
-#                                Vote_seoul_Class_df[, 2], 
-#                                sum)
-# Vote_seoul_Class_p_m <- prop.table(Vote_seoul_Class_sum)
-# Vote_seoul_Class_p <- prop.table(Vote_seoul_Class)
-# Vote_seoul_Class_p_2 <- prop.table(Vote_seoul_Class, 
-#                                    margin = 2)
-# Vote_seoul_Class_p_df <- as.data.frame(Vote_seoul_Class_p)
-Vote_seoul_Class_p_df$width <- Vote_seoul_Class_p_m[match(Vote_seoul_Class_p_df[, 2], 
-                                                          names(Vote_seoul_Class_p_m))]
-# Vote_seoul_Class_p_2_df <- as.data.frame(Vote_seoul_Class_p_2)
-# Vote_seoul_Class_p_df$height <- Vote_seoul_Class %>%
-#   prop.table(margin = 2) %>%
-#   as.data.frame %>%
-#   `[`(, 3)
-# Vote_seoul_Class_p_df$height <- Vote_seoul_Class_p_2_df[, 3]
+Vote_seoul_Class_p_df$width <- tapply(Vote_seoul_Class_p_df[, 3], Vote_seoul_Class_p_df[, 2], sum) %>%
+  rep(each = N)
 Vote_seoul_Class_p_df$height <- unlist(tapply(Vote_seoul_Class_p_df$Prop,
                                               Vote_seoul_Class_p_df[, 2],
                                               proportions)) 
@@ -928,14 +875,13 @@ Vote_seoul_Class_p_df$label_height <- unlist(tapply(Vote_seoul_Class_p_df$height
 Vote_seoul_Class_p_df$y_breaks <- unlist(tapply(Vote_seoul_Class_p_df$height,
                                                 Vote_seoul_Class_p_df[, 2], 
                                                 cumsum))
-x_center <- cumsum(Vote_seoul_Class_p_m) - Vote_seoul_Class_p_m / 2
-Vote_seoul_Class_p_df$center <- x_center[match(Vote_seoul_Class_p_df[, 2], 
-                                               names(x_center))]
+Vote_seoul_Class_p_df$center <- tapply(Vote_seoul_Class_p_df[, 3], Vote_seoul_Class_p_df[, 2], sum) %>%  pos %>% rep(each = N)
 ```
 
 
 ```{r}
 #> y축에 너무 눈금이 많이 설정되지 않도록 조치
+Vote_seoul_Class_p_m <- tapply(Vote_seoul_Class_p_df[, 3], Vote_seoul_Class_p_df[, 2], sum)
 x_breaks <- c(0, ifelse(cumsum(Vote_seoul_Class_p_m) < 0.1, 0.0, cumsum(Vote_seoul_Class_p_m)))
 x_label <- format(x_breaks * 100, 
                   digits = 3, 
@@ -1018,110 +964,23 @@ m5
 <P style = "page-break-before:always">
 -->
 
-#### mosaic_gg
+#### mosaic_gg_new
 
-```{r, echo = FALSE, eval = FALSE, fig.width = 6, fig_height = 4.5}
-mosaic_gg <- function(tbl, base_family = "KoPubWorldDotum Medium", 
-                      ggtitle = "", 
-                      xlab = "", 
-                      ylab = "", 
-                      fill_name = ""){
-tbl_df <- tbl %>%
-  as.data.frame
-N <- length(levels(tbl_df[, 1]))
-tbl_p_df <- tbl %>%
-  prop.table %>%
-  as.data.frame
-tbl_p_m <- tbl_df %>%
-  `[`(, 3) %>%
-  tapply(tbl_df[, 2], sum) %>%
-  prop.table
-tbl_p_df$width <- tbl_p_m[match(tbl_p_df[, 2], names(tbl_p_m))]
-tbl_p_df$height <- tbl %>%
-  prop.table(margin = 2) %>%
-  as.data.frame %>%
-  `[`(, 3)
-tbl_p_df$label_height <- unlist(tapply(tbl_p_df$height, 
-                                       tbl_p_df[, 2], 
-                                       function(x) cumsum(x) - x / 2))
-tbl_p_df$y_breaks <- unlist(tapply(tbl_p_df$height, 
-                                   tbl_p_df[, 2], 
-                                   cumsum))
-x_center <- cumsum(tbl_p_m) - tbl_p_m / 2
-tbl_p_df$center <- x_center[match(tbl_p_df[, 2], names(x_center))]
-m1 <- ggplot(tbl_p_df, 
-             aes(x = center, y = height, width = width)) + 
-  geom_bar(aes(fill = tbl_df[, 1]), 
-           stat = "identity", 
-           col = "white", 
-           size = 1, 
-           position = position_stack(reverse = TRUE)) 
-m2 <- m1 + 
-  theme_bw(base_family = base_family)
-m3 <- m2 + 
-  geom_text(aes(x = center, 
-                y = 1.05), 
-            label = tbl_p_df[, 2], 
-            family = base_family)
-m4 <- m3 + 
-  geom_text(aes(x = center, 
-                y = label_height), 
-            label = format(ifelse(tbl_df[, 3] == 0, "", tbl_df[, 3]), 
-                           big.mark = ","), 
-            position = position_identity())
-x_breaks <- c(0, ifelse(cumsum(tbl_p_m) < 0.1, 0.0, cumsum(tbl_p_m)))
-x_label <- format(x_breaks * 100, 
-                  digits = 3, 
-                  nsmall = 1)
-y_breaks <- tbl_p_df$y_breaks
-delta <- (max(y_breaks) - min(y_breaks)) / 20
-y_breaks_sort <- sort(y_breaks)
-diff(y_breaks_sort) < delta 
-index <- which(diff(y_breaks_sort)  > delta)
-y_breaks <- c(0, y_breaks_sort[c(index, length(y_breaks_sort))])
-y_label <- format(y_breaks * 100,
-                  digits = 2,
-                  nsmall = 1)
-m5 <- m4 + 
-  scale_x_continuous(name = xlab, 
-                     breaks = x_breaks, 
-                     label = x_label) + 
-  scale_y_continuous(name = ylab,
-                     breaks = y_breaks,
-                     label = y_label) + 
-  scale_fill_manual(name = fill_name, 
-                    values = rainbow(N)[N:1], 
-                    labels = tbl_df[, 1], 
-                    guide = guide_legend()) +
-  ggtitle(ggtitle) +
-  theme(plot.margin = unit(c(1, 2, 1, 1), "lines"))
-return(m5)
-}
-dump(list = "mosaic_gg", file = "./mosaic_gg.R")
-```
-
-```{r mosaic_gg, fig.width = 6, fig_height = 4.5}
-mosaic_gg <- function(tbl_df){
+```{r mosaic_gg_new, fig.width = 6, fig_height = 4.5}
+mosaic_gg_new <- function(tbl_df){
 #  tbl_df <- tbl %>%
 #  as.data.frame
 #  N <- length(levels(tbl_df[, 1]))
 #> data for mosaic coordinates
+  pos <- function(x){
+    cumsum(x) - x / 2
+  }
   tbl_p_df <- tbl_df %>%
   `[`(, 3) %>%
   proportions %>%
   data.frame(tbl_df[1:2], "Prop" = .)
-#  tbl_p_df <- tbl %>%
-#    prop.table %>%
-#    as.data.frame
-  tbl_p_m <- tbl_df %>%
-    `[`(, 3) %>%
-    tapply(tbl_df[, 2], sum) %>%
-    prop.table
-  tbl_p_df$width <- tbl_p_m[match(tbl_p_df[, 2], names(tbl_p_m))]
-#  tbl_p_df$height <- tbl %>%
-#    prop.table(margin = 2) %>%
-#    as.data.frame %>%
-#    `[`(, 3)
+  tbl_p_df$width <- tapply(tbl_p_df[, 3], tbl_p_df[, 2], sum) %>% 
+    rep(each = N)
   tbl_p_df$height <- unlist(tapply(tbl_p_df[, 3], 
                                    tbl_p_df[, 2], 
                                    proportions))
@@ -1131,10 +990,12 @@ mosaic_gg <- function(tbl_df){
   tbl_p_df$y_breaks <- unlist(tapply(tbl_p_df$height, 
                                      tbl_p_df[, 2], 
                                      cumsum))
-  x_center <- cumsum(tbl_p_m) - tbl_p_m / 2
-  tbl_p_df$center <- x_center[match(tbl_p_df[, 2], names(x_center))]
-#> 
+  tbl_p_df$center <- tapply(tbl_p_df[, 3], tbl_p_df[, 2], sum) %>%
+    pos %>%
+    rep(each = N)
+########## 
 #> breaks and labels
+  tbl_p_m <- tapply(tbl_p_df[, 3], tbl_p_df[, 2], sum)
   x_breaks <- c(0, ifelse(cumsum(tbl_p_m) < 0.1, 0.0, cumsum(tbl_p_m)))
   x_label <- format(x_breaks * 100, 
                     digits = 3, 
@@ -1149,31 +1010,34 @@ mosaic_gg <- function(tbl_df){
                     digits = 2,
                     nsmall = 1)
 #> 
+##########
+m <- 
   ggplot(tbl_p_df, 
          aes(x = center, 
              y = height, 
              width = width)) + 
-    geom_bar(aes(fill = tbl_df[, 1]), 
-             stat = "identity", 
-             col = "white", 
-             size = 1, 
-             position = position_stack(reverse = TRUE)) +
-    geom_text(aes(x = center, 
-                  y = 1.05), 
-              family = "KoPubWorldDotum Medium",
-              label = tbl_p_df[, 2]) +
-    geom_text(aes(x = center, 
-                  y = label_height), 
-              label = format(ifelse(tbl_df[, 3] == 0, "", tbl_df[, 3]), 
-                             big.mark = ","), 
-              position = position_identity()) +
-    scale_x_continuous(breaks = x_breaks, 
-                       label = x_label) + 
-    scale_y_continuous(breaks = y_breaks,
-                       label = y_label) + 
-    theme(plot.margin = unit(c(1, 2, 1, 1), "lines"))
+  geom_bar(aes(fill = tbl_df[, 1]), 
+           stat = "identity", 
+           col = "white", 
+           size = 1, 
+           position = position_stack(reverse = TRUE)) +
+#  geom_text(aes(x = center, 
+#                y = 1.05), 
+#            family = "KoPubWorldDotum Medium",
+#            label = tbl_p_df[, 2]) +
+  geom_text(aes(x = center, 
+                y = label_height), 
+            label = format(ifelse(tbl_df[, 3] == 0, "", tbl_df[, 3]), 
+                           big.mark = ","), 
+            position = position_identity()) +
+  scale_x_continuous(breaks = x_breaks, 
+                     label = x_label) + 
+  scale_y_continuous(breaks = y_breaks,
+                     label = y_label) + 
+  theme(plot.margin = unit(c(1, 2, 1, 1), "lines"))
+list(m = m, df = tbl_df, p_df = tbl_p_df)
 }
-dump(list = "mosaic_gg", file = "./mosaic_gg.R")
+dump(list = "mosaic_gg_new", file = "./mosaic_gg_new.R")
 ```
 
 <!--
@@ -1181,12 +1045,18 @@ dump(list = "mosaic_gg", file = "./mosaic_gg.R")
 -->
 
 ```{r, message = FALSE, fig.width = 6, fig_height = 4.5}
-source("./mosaic_gg.R")
-mosaic_gg(Vote_seoul_Class_df) +
+source("mosaic_gg_new.R")
+m_seoul_list <- mosaic_gg_new(Vote_seoul_Class_df) 
+m <- m_seoul_list$m 
+df <- m_seoul_list$df
+p_df <- m_seoul_list$p_df
+m + 
+  geom_text(aes(x = center, y = 1.05), 
+            family = "KoPubWorldDotum Medium",
+            label = p_df[, 2]) +
   theme_bw(base_family = "KoPubWorldDotum Medium") +
-  labs(x = "계급(누적 %)", y = "찬반(%)") +
-  scale_fill_manual(name = "찬반", values = rainbow(2)[2:1]) +
-  ggtitle("서울의 찬반") +
+  labs(title = "서울의 찬반", x = "계급(누적 %)", y = "찬반(%)") +
+  scale_fill_manual(name = "찬반", values = rainbow(2)[2:1]) 
   theme(plot.title = element_text(hjust = 0.5, 
                                   size = 18, 
                                   family = "KoPubWorldDotum Bold")) 
@@ -1249,11 +1119,18 @@ Vote_Region_bureaus_df %>%
 Vote_Region_bureaus_df$Region %<>%
    factor
 # mosaic_gg(as.data.frame(Vote_Region_bureaus[, -1])) +
-mosaic_gg(Vote_Region_bureaus_df) +
+m_Rb_list <- 
+  mosaic_gg_new(Vote_Region_bureaus_df)
+m_Rb <- m_Rb_list$m 
+df_Rb <- m_Rb_list$df
+p_df_Rb <- m_Rb_list$p_df
+m_Rb + 
+  geom_text(aes(x = center, y = 1.05), 
+            family = "KoPubWorldDotum Medium",
+            label = p_df_Rb[, 2]) +
   theme_bw(base_family = "KoPubWorldDotum Medium") +
-  labs(x = "지역별 관료들의 비중(누적 %)", y = "찬반(%)") +
+  labs(title = "지방관료의 찬반", x = "지역별 관료들의 비중(누적 %)", y = "찬반(%)") +
   scale_fill_manual(name = "찬반", values = rainbow(2)[2:1]) +
-  ggtitle("지방관료의 찬반") +
   theme(plot.title = element_text(hjust = 0.5, 
                                   size = 18, 
                                   family = "KoPubWorldDotum Bold"))
@@ -1293,11 +1170,18 @@ Vote_Region_commons_df %>%
   str
 Vote_Region_commons_df$Region %<>%
    factor
-mosaic_gg(Vote_Region_commons_df) +
+m_Rc_list <- 
+  mosaic_gg_new(Vote_Region_commons_df)
+m_Rc <- m_Rc_list$m 
+df_Rc <- m_Rc_list$df
+p_df_Rc <- m_Rc_list$p_df
+m_Rc + 
+  geom_text(aes(x = center, y = 1.05), 
+            family = "KoPubWorldDotum Medium",
+            label = p_df_Rc[, 2]) +
   theme_bw(base_family = "KoPubWorldDotum Medium") +
-  labs(x = "지역별 품관촌민의 비중(누적%)", y = "찬반(%)") +
+  labs(title = "품관촌민의 찬반", x = "지역별 품관촌민의 비중(누적%)", y = "찬반(%)") +
   scale_fill_manual(name = "찬반", values = rainbow(2)[2:1]) +
-  ggtitle("품관촌민의 찬반") +
   theme(plot.title = element_text(hjust = 0.5, 
                                   size = 18, 
                                   family = "KoPubWorldDotum Bold"))
@@ -1355,7 +1239,15 @@ ggsave("../pics/sejong_chungcheong_barplot_fill_ggplot.png", width = 6, height =
 ### mosaic plot
 
 ```{r, mosaic plot for chungcheong ggplot, fig.width = 12, fig_height = 4.5}
-mosaic_gg(as.data.frame(Vote_chung_Class[, -1])) +
+m_chung_list <- 
+  mosaic_gg_new(as.data.frame(Vote_chung_Class[, -1]))
+m_chung <- m_chung_list$m 
+df_chung <- m_chung_list$df
+p_df_chung <- m_chung_list$p_df
+m_chung + 
+  geom_text(aes(x = center, y = 1.05), 
+            family = "KoPubWorldDotum Medium",
+            label = p_df_chung[, 2]) +
   theme_bw(base_family = "KoPubWorldDotum Medium") +
   labs(title = "충청도의 찬반", x = "계급(누적%)", y = "찬반(%)") +
   scale_fill_manual(name = "찬반", values = rainbow(2)[2:1]) +

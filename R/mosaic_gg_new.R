@@ -1,4 +1,4 @@
-mosaic_gg <-
+mosaic_gg_new <-
 function(tbl_df){
 #  tbl_df <- tbl %>%
 #  as.data.frame
@@ -11,18 +11,6 @@ function(tbl_df){
   `[`(, 3) %>%
   proportions %>%
   data.frame(tbl_df[1:2], "Prop" = .)
-#  tbl_p_df <- tbl %>%
-#    prop.table %>%
-#    as.data.frame
-#  tbl_p_m <- tbl_df %>%
-#    `[`(, 3) %>%
-#    tapply(tbl_df[, 2], sum) %>%
-#    prop.table
-#  tbl_p_df$width <- tbl_p_m[match(tbl_p_df[, 2], names(tbl_p_m))]
-#  tbl_p_df$height <- tbl %>%
-#    prop.table(margin = 2) %>%
-#    as.data.frame %>%
-#    `[`(, 3)
   tbl_p_df$width <- tapply(tbl_p_df[, 3], tbl_p_df[, 2], sum) %>% 
     rep(each = N)
   tbl_p_df$height <- unlist(tapply(tbl_p_df[, 3], 
@@ -37,9 +25,7 @@ function(tbl_df){
   tbl_p_df$center <- tapply(tbl_p_df[, 3], tbl_p_df[, 2], sum) %>%
     pos %>%
     rep(each = N)
-#  x_center <- cumsum(tbl_p_m) - tbl_p_m / 2
-#  tbl_p_df$center <- x_center[match(tbl_p_df[, 2], names(x_center))]
-#> 
+########## 
 #> breaks and labels
   tbl_p_m <- tapply(tbl_p_df[, 3], tbl_p_df[, 2], sum)
   x_breaks <- c(0, ifelse(cumsum(tbl_p_m) < 0.1, 0.0, cumsum(tbl_p_m)))
@@ -56,6 +42,7 @@ function(tbl_df){
                     digits = 2,
                     nsmall = 1)
 #> 
+##########
 m <- 
   ggplot(tbl_p_df, 
          aes(x = center, 
