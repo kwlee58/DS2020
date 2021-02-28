@@ -1,6 +1,6 @@
 ---
 title: "Weighted Dice Very Basics"
-author: "Kee-Won Lee"
+author: "Dept, ID, Your Name"
 output: html_document
 ---
 
@@ -140,3 +140,6 @@ source("./roll.R")
 ls()
 ```
 
+## Comments
+
+Tell me what you have learned.
