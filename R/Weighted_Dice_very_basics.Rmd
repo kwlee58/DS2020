@@ -71,6 +71,7 @@ args(round)
 round(3.1415, digits = 2)
 sample(die, 1)
 sample(size = 1, x = die)
+sample(die)
 # ?sample
 ```
 
