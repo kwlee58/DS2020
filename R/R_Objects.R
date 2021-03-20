@@ -32,7 +32,7 @@ logic <- c(TRUE, FALSE, TRUE)
 logic
 typeof(logic)
 typeof(F)
-## Complex a]nd Raw
+## Complex and Raw
 comp <- c(1 + 1i, 1 + 2i, 1 + 3i)
 comp
 typeof(comp)

@@ -15,7 +15,9 @@ knitr::opts_chunk$set(echo = TRUE)
 read.csv("../data/cards.csv")
 deck <- read.csv("../data/cards.csv")
 str(deck)
-deck <- read.csv("../data/cards.csv", stringsAsFactors = FALSE)
+deck <- read.csv("../data/cards.csv", stringsAsFactors = TRUE)
+str(deck)
+deck <- read.csv("../data/cards.csv")
 str(deck)
 head(deck)
 ```
@@ -102,3 +104,7 @@ lst[["numbers"]]
 dump(list = c("deal", "shuffle"), file = "shuffle.R")
 save.image(file = "./r_notation.RData")
 ```
+
+## Comments
+
+What you have learned ...
