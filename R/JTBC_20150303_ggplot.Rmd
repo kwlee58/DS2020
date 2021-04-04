@@ -8,7 +8,7 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(knitr)
-getwd()
+library(showtext)
 ```
 
 # Problem,
@@ -66,7 +66,10 @@ kable(t(as.matrix(poll)), caption = "김영란법 국회 통과")
 ## `pie()`
 
 ```{r, fig.width = 6, fig.height = 6}
-par(family = "")
+showtext_auto()
+font_add(family = "KoPubWorld Dotum Medium", regular = "KoPubWorld/KoPubWorld Dotum Medium.ttf")
+font_add(family = "KoPubWorld Dotum Bold", regular = "KoPubWorld/KoPubWorld Dotum Bold.ttf")
+par(family = "KoPubWorld Dotum Medium")
 pie(poll, 
     labels = names(poll), 
     radius = 1,
@@ -109,19 +112,22 @@ ggplot(data = poll_tbl,
   geom_text(aes(y = pos2, label = poll), 
             size = 8, 
             colour = "white") +
+  annotate("text", x = 0.5, y = 0, label = "%",size = 20) +
   xlim(0.5, 2.5) +
   labs(x = NULL, y = NULL) +
   scale_fill_manual(values = c("gray", "red", "blue")) +
 #  scale_y_continuous(breaks = NULL) +
   guides(fill = guide_legend(title = "", reverse = TRUE)) +
-  theme_void() +
+  theme_void(base_family = "KoPubWorld Dotum Medium") +
   theme(axis.ticks = element_blank(),
         axis.text = element_blank(),
-        legend.text = element_text(family = ""),
+        legend.text = element_text(),
         plot.background = element_rect(colour = "black"),
-        plot.title = element_text(family = "", size = 20, hjust = 0.5 )) +
+        plot.title = element_text(family = "KoPubWorld Dotum Bold", 
+                                  size = 40, 
+                                  hjust = 0.5 )) +
   ggtitle("김영란법\n국회통과") + 
-  coord_polar(theta = "y")
+  coord_polar(theta = "y") 
 ```
 
 ## Comments

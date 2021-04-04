@@ -24,6 +24,7 @@ knitr::include_graphics("../pics/poll_2017_JTBC.jpg")
 
 ```{r, data}
 library(extrafont)
+library(showtext)
 candidates <- c("문재인", "안희정", "황교안", "안철수", "이재명", "유승민") 
 rates <- c(33, 22, 9, 9, 5, 2)
 party <- c("더불어민주당", "자유한국당", "국민의당", "바른정당")
@@ -45,7 +46,10 @@ barplot(rates)
 <P style = "page-break-before:always">
 
 ```{r, fig.width = 8, fig.height = 4}
-par(family = "KoPubWorldDotum Medium")
+showtext_auto()
+font_add(family = "KoPubWorld Dotum Medium", regular = "KoPubWorld/KoPubWorld Dotum Medium.ttf")
+font_add(family = "KoPubWorld Dotum Bold", regular = "KoPubWorld/KoPubWorld Dotum Bold.ttf")
+par(family = "KoPubWorld Dotum Medium")
 b1 <- barplot(rates, 
               axes = FALSE, 
               col = candidates_colour, 
@@ -89,7 +93,7 @@ g0 <- ggplot(data = rates_df,
   geom_bar(stat = "identity", 
            fill = candidates_colour))
 (g3 <- g2 +
-  theme_bw(base_family = "KoPubWorldDotum Medium"))
+  theme_bw(base_family = "KoPubWorld Dotum Medium"))
 (g4 <- g3 +
   geom_text(mapping = aes(x = candidates, 
                           y = rates + c(rep(-3, 4), rep(2, 2)), 
@@ -104,7 +108,7 @@ g0 <- ggplot(data = rates_df,
 
 ```{r, fig.height = 4, fig.width = 8}
 (g6 <- g5 +
-  theme(plot.title = element_text(family = "KoPubWorldDotum Medium", 
+  theme(plot.title = element_text(family = "KoPubWorld Dotum Medium", 
                                   size = 15, 
                                   hjust = 0.5)))
 (g7 <- g6 +
@@ -129,7 +133,7 @@ g0 <- ggplot(data = rates_df,
                             y = -1,
                             label = candidates),
               size = 5,
-              family = "KoPubWorldDotum Medium"))
+              family = "KoPubWorld Dotum Medium"))
 ```
 <P style = "page-break-before:always">
 
@@ -142,7 +146,7 @@ g0 <- ggplot(data = rates_df,
              label = main_title, 
              vjust = 1.5, 
              size = 6,
-             family = "KoPubWorldDotum Medium"))
+             family = "KoPubWorld Dotum Medium"))
 ```
 
 ```{r, fig.height = 16, fig.width = 10}

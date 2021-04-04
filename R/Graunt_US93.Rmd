@@ -1,8 +1,10 @@
 ---
 title: "Graunt and US 1993 Life Table"
 author: "coop711"
-date: '`r Sys.Date()`'
-output: html_document
+date: "`r Sys.Date()`"
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 # Source of Data
@@ -19,7 +21,7 @@ knitr::include_graphics("../pics/graunt_table.png")
       
 * Graunt's Life Table
 
-```{r, graunt data input}
+```{r}
 graunt <- data.frame(x = c(0, seq(6, 76, by = 10)), 
                      xPo_g = c(100, 64, 40, 25, 16, 10, 6, 3, 1))
 ```
@@ -39,7 +41,7 @@ us93 <- data.frame(x = graunt$x,
 
 There are many ways to extract part of `us93` data frame. 
 
-```{r, extraction}
+```{r}
 us93["xPo_us"]
 us93["xPo_us"][[1]]
 us93["xPo_us"]$xPo_us
@@ -59,7 +61,7 @@ us93$xPo
 
 Combine two data frames into one single data frame, compare the results.
 
-```{r one data frmae}
+```{r}
 (graunt_us <- data.frame(graunt, xPo_us = us93$xPo))
 (graunt_us_2 <- data.frame(graunt, us93[2]))
 (graunt_us_3 <- data.frame(graunt, us93[, 2]))
@@ -79,7 +81,7 @@ $E(X) = E\{F^{-1}(U)\} = \int_{0}^{1} F^{-1}(u)du = \int_0^{\infty} 1-F(x) dx = 
 
 1. Basic plot with points and lines, compare the following threes methods
 
-```{r, first plot, fig.width = 9, fig.height = 9}
+```{r, fig.width = 9, fig.height = 9}
 par(mfrow = c(2, 2))
 plot(x = graunt$x, y = graunt$xPo)
 plot(xPo_g ~ x, data = graunt)
@@ -91,7 +93,7 @@ plot(graunt, ann = FALSE, xaxt = "n", yaxt = "n", type = "b")
 
 2. Denote the ages and observed survival rates on the axes
 
-```{r, axes labels,  fig.width = 6, fig.height = 6}
+```{r, fig.width = 6, fig.height = 6}
 plot(graunt, ann = FALSE, xaxt = "n", yaxt = "n", type = "b")
 axis(side = 1, at = graunt$x, labels = graunt$x)
 axis(side = 2, at = graunt$xPo_g, labels = graunt$xPo_g)
@@ -101,7 +103,7 @@ axis(side = 2, at = graunt$xPo_g, labels = graunt$xPo_g)
 
 3. Denote the age 0 and 76 by dotted lines
 
-```{r, age 0 and 76, fig.width = 6, fig.height = 6}
+```{r, fig.width = 6, fig.height = 6}
 plot(graunt, ann = FALSE, xaxt = "n", yaxt = "n", type = "b")
 axis(side = 1, at = graunt$x, labels = graunt$x)
 axis(side = 2, at = graunt$xPo_g, labels = graunt$xPo_g)
@@ -112,7 +114,7 @@ abline(v = c(0, 76), lty = 2)
 
 ### Setting up coordinates for `polygon()` (Clockwise)
 
-```{r, polygon coordinates}
+```{r}
 graunt_x <- c(graunt$x, 0)
 graunt_y <- c(graunt$xPo_g, 0)
 graunt_poly <- data.frame(x = graunt_x, y = graunt_y)
@@ -126,7 +128,7 @@ graunt_poly <- data.frame(x = graunt_x, y = graunt_y)
 
 Note the effect of the last line of code.
 
-```{r, shading polygon, fig.width = 6, fig.height = 6}
+```{r, fig.width = 6, fig.height = 6}
 plot(graunt, ann = FALSE, xaxt = "n", yaxt = "n", type = "b")
 axis(side = 1, at = graunt$x, labels = graunt$x)
 axis(side = 2, at = graunt$xPo_g, labels = graunt$xPo_g)
@@ -139,7 +141,7 @@ points(graunt, pch = 21, col = "black", bg = "white")
 
 5. Grids
 
-```{r, grids, fig.width = 6, fig.height = 6}
+```{r, fig.width = 6, fig.height = 6}
 plot(graunt, ann = FALSE, xaxt = "n", yaxt = "n", type = "b")
 axis(side = 1, at = graunt$x, labels = graunt$x)
 axis(side = 2, at = graunt$xPo_g, labels = graunt$xPo_g)
@@ -153,7 +155,7 @@ points(graunt, pch = 21, col = "black", bg = "white")
 
 6. Title, x-axis label, and y-axis label
 
-```{r, title axis labels, fig.width = 6, fig.height = 6}
+```{r, fig.width = 6, fig.height = 6}
 plot(graunt, ann = FALSE, xaxt = "n", yaxt = "n", type = "b")
 axis(side = 1, at = graunt$x, labels = graunt$x)
 axis(side = 2, at = graunt$xPo_g, labels = graunt$xPo_g)
@@ -175,7 +177,7 @@ The area under the curve can be approximated by the sum of the areas of trapezoi
 
 *  `diff()`, `head()`, and `tail()` can be used to write a function to compute the area easily.  
 
-```{r, area function}
+```{r}
 area.R <- function(x, y) {
   sum(diff(x) * (head(y, -1) + tail(y, -1))/2)
   }
@@ -190,7 +192,7 @@ The shaded area between the survival function of Graunt and that of US 1993 repr
 
 1. Draw Graunt's first with axes, lower and upper limits. Check what happens if you place `abline(...)` right after `plot(...)`.
     
-```{r, Graunt first, fig.width = 6, fig.height = 6}
+```{r, fig.width = 6, fig.height = 6}
 plot(graunt, ann = FALSE, xaxt = "n", yaxt = "n", type = "b")
 axis(side = 1, at = graunt$x, labels = graunt$x)
 axis(side = 2, at = graunt$xPo, labels = graunt$xPo_g)
@@ -201,7 +203,7 @@ abline(v = c(0, 76), lty = 2)
 
 2. Add US 1993 survival function
 
-```{r, us93 added, fig.width = 6, fig.height = 6}
+```{r, fig.width = 6, fig.height = 6}
 plot(graunt, ann = FALSE, xaxt = "n", yaxt = "n", type = "b")
 axis(side = 1, at = graunt$x, labels = graunt$x)
 axis(side = 2, at = graunt$xPo, labels = graunt$xPo_g)
@@ -213,7 +215,7 @@ lines(us93, type = "b")
 
 3. Actually, US 1993 life table is truncated at the age 76. Specify that point.
 
-```{r, rate 70 at age 76,  fig.width = 6, fig.height = 6}
+```{r, fig.width = 6, fig.height = 6}
 plot(graunt, ann = FALSE, xaxt = "n", yaxt = "n", type = "b")
 axis(side = 1, at = graunt$x, labels = graunt$x)
 axis(side = 2, at = graunt$xPo, labels = graunt$xPo_g)
@@ -226,7 +228,7 @@ abline(h = 70, lty = 2)
 
 4. Using `las = 1` to specify 70%.
 
-```{r, las, fig.width = 6, fig.height = 6}
+```{r, fig.width = 6, fig.height = 6}
 plot(graunt, ann = FALSE, xaxt = "n", yaxt = "n", type = "b")
 axis(side = 1, at = graunt$x, labels = graunt$x)
 axis(side = 2, at = graunt$xPo, labels = graunt$xPo_g)
@@ -240,7 +242,7 @@ axis(side = 2, at = 70, labels = 70, las = 1)
 
 ### Setting coordinates for `polygon()`
 
-```{r, polygon coordinates us 93 added}
+```{r}
 us_graunt_x <- c(us93$x, rev(graunt$x))
 us_graunt_y <- c(us93$xPo_us, rev(graunt$xPo_g))
 us_graunt <- data.frame(x = us_graunt_x, y = us_graunt_y)
@@ -250,7 +252,7 @@ us_graunt <- data.frame(x = us_graunt_x, y = us_graunt_y)
 
 What is the effect of `border = NA`, the last line of code?
 
-```{r, shading between, fig.width = 6, fig.height = 6}
+```{r, fig.width = 6, fig.height = 6}
 plot(graunt, ann = FALSE, xaxt = "n", yaxt = "n", type = "b")
 axis(side = 1, at = graunt$x, labels = graunt$x)
 axis(side = 2, at = graunt$xPo, labels = graunt$xPo_g)
@@ -266,7 +268,7 @@ points(us_graunt, pch = 21, col = "black", bg = "white")
 
 6. Grids
 
-```{r, grids for clarity, fig.width = 6, fig.height = 6}
+```{r, fig.width = 6, fig.height = 6}
 plot(graunt, ann = FALSE, xaxt = "n", yaxt = "n", type = "b")
 axis(side = 1, at = graunt$x, labels = graunt$x)
 axis(side = 2, at = graunt$xPo, labels = graunt$xPo_g)
@@ -283,7 +285,7 @@ points(us_graunt, pch = 21, col = "black", bg = "white")
 
 7. Title, x-axis and y-axis labels
 
-```{r, title-axis-labels, fig.width = 6, fig.height = 6}
+```{r, fig.width = 6, fig.height = 6}
 plot(graunt, ann = FALSE, xaxt = "n", yaxt = "n", type = "b")
 axis(side = 1, at = graunt$x, labels = graunt$x)
 axis(side = 2, at = graunt$xPo, labels = graunt$xPo_g)
@@ -306,13 +308,13 @@ dev.off()
 
 The area under the US 1993 survival function is
 
-```{r, area us 93} 
+```{r} 
 area.R(us93$x, us93$xPo_us)/100
 ``` 
 
 The area of shaded region is
 
-```{r, difference in area}
+```{r}
 area.R(us93$x, us93$xPo_us)/100 - area.R(graunt$x, graunt$xPo_g)/100
 ```
 
@@ -320,7 +322,7 @@ area.R(us93$x, us93$xPo_us)/100 - area.R(graunt$x, graunt$xPo_g)/100
 
 ## ggplot 
 
-```{r, library ggplot2}
+```{r}
 library(ggplot2)
 ```
 
@@ -328,13 +330,13 @@ library(ggplot2)
 
 Attach `reshape2` package to change wide format to long format
 
-```{r, reshape2}
+```{r}
 library(reshape2)
 ```
 
 How `melt()` works
 
-```{r, format of melt}
+```{r}
 graunt_us_melt <- melt(graunt_us, 
                        id.vars = "x", 
                        measure.vars = c("xPo_g", "xPo_us"), 
@@ -346,7 +348,7 @@ str(graunt_us_melt)
 
 * Change factor levels of `times`
 
-```{r, factor level}
+```{r}
 levels(graunt_us_melt$times) <- c("Graunt", "US1993")
 graunt_us_melt
 ```
@@ -357,7 +359,7 @@ graunt_us_melt
 
 ## Structure of ggplot
 
-```{r, geom aes, fig.width = 4, fig.height = 4}
+```{r, fig.width = 4, fig.height = 4}
 (g1 <- ggplot(data = graunt,
               mapping = aes(x = x, y = xPo_g)) + 
    geom_line())
@@ -422,7 +424,7 @@ Step by step approach to understand the grammar of ggplot
 
 * We set `ggplot()` to accept varying `data.frame()` and `aes()`in `geom_polygon`
 
-```{r, geom_point geom_line, fig.width = 6, fig.height = 6}
+```{r, fig.width = 6, fig.height = 6}
 (gu1 <- ggplot() + 
   geom_line(data = graunt_us_melt, 
             mapping = aes(x = x, y = xPo, colour = times)))
@@ -450,7 +452,7 @@ Step by step approach to understand the grammar of ggplot
 
 Reuse `us_graunt` which contains `x = us_graunt_x` and `y = us_graunt_y` for `polygon()`. Note that we start with `gu3`, and also note how to remove default legends.
 
-```{r, polygon, fig.width = 6, fig.height = 6}
+```{r, fig.width = 6, fig.height = 6}
 (gup3 <- gu3 + 
   geom_polygon(data = us_graunt, 
                mapping = aes(x = x, y = y), 
@@ -472,7 +474,7 @@ Reuse `us_graunt` which contains `x = us_graunt_x` and `y = us_graunt_y` for `po
 
 1. Change the x-axis and y-axis labels
     
-```{r, axis labels, fig.width = 6, fig.height = 6}
+```{r, fig.width = 6, fig.height = 6}
 (gu4 <- gu3 + 
    xlab(x_lab) + 
    ylab(y_lab))
@@ -482,7 +484,7 @@ Reuse `us_graunt` which contains `x = us_graunt_x` and `y = us_graunt_y` for `po
 
 2. Add main title
 
-```{r, ggtitle, fig.width = 6, fig.height = 6}
+```{r, fig.width = 6, fig.height = 6}
 (gu4 <- gu3 + 
    xlab(x_lab) + 
    ylab(y_lab) + 
@@ -493,7 +495,7 @@ Reuse `us_graunt` which contains `x = us_graunt_x` and `y = us_graunt_y` for `po
 
 3. Change legend title
     
-```{r, legends title, fig.width = 6, fig.height = 6}
+```{r, fig.width = 6, fig.height = 6}
 (gu4 <- gu3 + 
    xlab(x_lab) + 
    ylab(y_lab) + 
@@ -505,7 +507,7 @@ Reuse `us_graunt` which contains `x = us_graunt_x` and `y = us_graunt_y` for `po
 
 4. Change legends.
     
-```{r, change legends, fig.width = 6, fig.height = 6}
+```{r, fig.width = 6, fig.height = 6}
 (gu4 <- gu3 + 
    xlab(x_lab) + 
    ylab(y_lab) +
@@ -518,7 +520,7 @@ Reuse `us_graunt` which contains `x = us_graunt_x` and `y = us_graunt_y` for `po
 
 5. Place legends inside the plot
 
-```{r, legends inside, fig.width = 6, fig.height = 6}
+```{r, fig.width = 6, fig.height = 6}
 (gu5 <- gu4 + 
    theme(legend.position = c(0.8, 0.5)))
 ```
@@ -527,7 +529,7 @@ Reuse `us_graunt` which contains `x = us_graunt_x` and `y = us_graunt_y` for `po
 
 6. Change x-axis and y-axis tick marks
 
-```{r, axis tick marks, fig.width = 6, fig.height = 6}
+```{r, fig.width = 6, fig.height = 6}
 (gu6 <- gu5 + 
    scale_x_continuous(breaks = graunt$x) + 
    scale_y_continuous(breaks = graunt$xPo_g))
@@ -542,7 +544,7 @@ Add information to the plot drawn with `polygon()`
 
 1. Start with `gup4`
 
-```{r, start with p4, fig.width = 6, fig.height = 6}
+```{r, fig.width = 6, fig.height = 6}
 gup4
 ```
 
@@ -550,7 +552,7 @@ gup4
 
 2. Main title, x-axis and y-axis labels
 
-```{r, title and axis labels,  fig.width = 6, fig.height = 6}
+```{r, fig.width = 6, fig.height = 6}
 (gup5 <- gup4 + 
    xlab(x_lab) + 
    ylab(y_lab) +
@@ -561,7 +563,7 @@ gup4
 
 3. `"Graunt Era"`, `"US 1993"`, `"Difference of Life Expectancies"` at proper positions
     
-```{r, text polygon,  fig.width = 6, fig.height = 6}
+```{r, fig.width = 6, fig.height = 6}
 (gup6 <- gup5 + 
    annotate("text", 
             x = c(20, 40, 70), y = c(20, 60, 90), 
@@ -573,7 +575,7 @@ gup4
 
 4. x-axis and y-axis tick marks
 
-```{r, familiar axis labels, fig.width = 6, fig.height = 6}
+```{r, fig.width = 6, fig.height = 6}
 (gup7 <- gup6 + 
    scale_x_continuous(breaks = graunt$x) + 
    scale_y_continuous(breaks = graunt$xPo_g))
@@ -586,7 +588,7 @@ gup4
 
 * Check out how to save and retrieve. Use `source()` and `load()` for retrieval.
 
-```{r, dump and save}
+```{rsys}
 dump("area.R", file = "area.R")
 save.image("./graunt_halley.RData")
 ```
