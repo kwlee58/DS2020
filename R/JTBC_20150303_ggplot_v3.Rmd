@@ -10,6 +10,13 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(knitr)
+library(showtext)
+# system(command = "wget http://cdn.naver.com/naver/NanumFont/fontfiles/NanumFont_TTF_ALL.zip")
+# system(command = "unzip NanumFont_TTF_ALL.zip -d NanumFont")
+# system(command = "rm -f NanumFont_TTF_ALL.zip")
+# system(command = "wget http://www.kopus.org/download/KOPUBWORLD_TTF_FONTS.zip")
+# system(command = "unzip KOPUBWORLD_TTF_FONTS.zip -d KoPubWorld")
+# system(command = "rm -f KOPUBWORLD_TTF_FONTS.zip")
 ```
 
 # Problem,
@@ -69,7 +76,13 @@ kable(t(as.matrix(poll)), caption = "김영란법 국회 통과")
 ## `pie()`
 
 ```{r, out.width = "67%", fig.align = "center", fig.showtext = TRUE}
-par(family = "")
+# font_add(family = "NanumGothic", regular = "NanumFont/NanumGothic.ttf")
+showtext_auto()
+# par(family = "NanumGothic")
+font_add(family = "KoPubWorld Dotum Medium", regular = "KoPubWorld/KoPubWorld Dotum Medium.ttf")
+font_add(family = "KoPubWorld Dotum Bold", regular = "KoPubWorld/KoPubWorld Dotum Bold.ttf")
+# showtext_auto()
+par(family = "KoPubWorld Dotum Medium")
 pie(poll, 
     labels = "", 
     radius = 1,
@@ -98,7 +111,7 @@ text(x = 2.1 * x_text0, y = 2.1 * y_text0,
      labels = names(poll), 
      col = "white", 
      cex = 1.5)
-title(main = "김영란법\n국회 통과", cex.main = 2, family = "")
+title(main = "김영란법\n국회 통과", cex.main = 2, family = "KoPubWorld Dotum Bold")
 box(which = "figure", lwd = 3)
 dev.copy(png, "../pics/jtbc150303.png", width = 480, height = 480)
 dev.off()
@@ -132,9 +145,9 @@ ggplot(data = poll_tbl,
   theme_void() +
   theme(axis.ticks = element_blank(),
         axis.text = element_blank(),
-        legend.text = element_text(family = ""),
+        legend.text = element_text(family = "KoPubWorld Dotum Medium"),
         panel.background = element_rect(colour = "black"),
-        plot.title = element_text(family = "", 
+        plot.title = element_text(family = "KoPubWorld Dotum Bold", 
                                   size = 20, 
                                   vjust = -10,
                                   hjust = 0.5)) +

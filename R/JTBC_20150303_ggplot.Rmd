@@ -8,7 +8,6 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(knitr)
-library(showtext)
 ```
 
 # Problem,
@@ -66,10 +65,7 @@ kable(t(as.matrix(poll)), caption = "김영란법 국회 통과")
 ## `pie()`
 
 ```{r, fig.width = 6, fig.height = 6}
-showtext_auto()
-font_add(family = "KoPubWorld Dotum Medium", regular = "KoPubWorld/KoPubWorld Dotum Medium.ttf")
-font_add(family = "KoPubWorld Dotum Bold", regular = "KoPubWorld/KoPubWorld Dotum Bold.ttf")
-par(family = "KoPubWorld Dotum Medium")
+par(family = "")
 pie(poll, 
     labels = names(poll), 
     radius = 1,
@@ -118,12 +114,12 @@ ggplot(data = poll_tbl,
   scale_fill_manual(values = c("gray", "red", "blue")) +
 #  scale_y_continuous(breaks = NULL) +
   guides(fill = guide_legend(title = "", reverse = TRUE)) +
-  theme_void(base_family = "KoPubWorld Dotum Medium") +
+  theme_void(base_family = "") +
   theme(axis.ticks = element_blank(),
         axis.text = element_blank(),
         legend.text = element_text(),
         plot.background = element_rect(colour = "black"),
-        plot.title = element_text(family = "KoPubWorld Dotum Bold", 
+        plot.title = element_text(family = "", 
                                   size = 40, 
                                   hjust = 0.5 )) +
   ggtitle("김영란법\n국회통과") + 

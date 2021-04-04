@@ -2,8 +2,8 @@
 title: "Chosun Field"
 author: "coop711"
 output:
-  html_document: default
   pdf_document: default
+  html_document: default
 ---
 
 ## Problem
