@@ -68,7 +68,7 @@ kable(t(as.matrix(poll)), caption = "김영란법 국회 통과")
 
 ## `pie()`
 
-```{r, out.width = "67%", fig.align = "center", fig.showtext = TRUE}
+```{r, out.width = "67%", fig.align = "center", fig.showtext = FALSE}
 par(family = "")
 pie(poll, 
     labels = "", 
