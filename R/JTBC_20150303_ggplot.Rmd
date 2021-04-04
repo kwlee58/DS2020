@@ -8,7 +8,6 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(knitr)
-getwd()
 ```
 
 # Problem,
@@ -109,19 +108,22 @@ ggplot(data = poll_tbl,
   geom_text(aes(y = pos2, label = poll), 
             size = 8, 
             colour = "white") +
+  annotate("text", x = 0.5, y = 0, label = "%",size = 20) +
   xlim(0.5, 2.5) +
   labs(x = NULL, y = NULL) +
   scale_fill_manual(values = c("gray", "red", "blue")) +
 #  scale_y_continuous(breaks = NULL) +
   guides(fill = guide_legend(title = "", reverse = TRUE)) +
-  theme_void() +
+  theme_void(base_family = "") +
   theme(axis.ticks = element_blank(),
         axis.text = element_blank(),
-        legend.text = element_text(family = ""),
+        legend.text = element_text(),
         plot.background = element_rect(colour = "black"),
-        plot.title = element_text(family = "", size = 20, hjust = 0.5 )) +
+        plot.title = element_text(family = "", 
+                                  size = 40, 
+                                  hjust = 0.5 )) +
   ggtitle("김영란법\n국회통과") + 
-  coord_polar(theta = "y")
+  coord_polar(theta = "y") 
 ```
 
 ## Comments
