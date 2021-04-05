@@ -108,7 +108,7 @@ ggplot(data = poll_tbl,
   geom_text(aes(y = pos2, label = poll), 
             size = 8, 
             colour = "white") +
-  annotate("text", x = 0.5, y = 0, label = "%",size = 20) +
+  annotate("text", x = 0.5, y = 0, label = "%",size = 10) +
   xlim(0.5, 2.5) +
   labs(x = NULL, y = NULL) +
   scale_fill_manual(values = c("gray", "red", "blue")) +
@@ -120,7 +120,7 @@ ggplot(data = poll_tbl,
         legend.text = element_text(),
         plot.background = element_rect(colour = "black"),
         plot.title = element_text(family = "", 
-                                  size = 40, 
+                                  size = 20, 
                                   hjust = 0.5 )) +
   ggtitle("김영란법\n국회통과") + 
   coord_polar(theta = "y") 
