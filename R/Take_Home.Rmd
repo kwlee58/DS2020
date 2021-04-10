@@ -1,0 +1,34 @@
+---
+title: "Take Home"
+author: "Coop711"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Load
+
+```{r }
+```
+
+## Shuffle_Deal
+
+```{r}
+```
+
+## Suits
+
+```{r}
+```
+
+## Qplot
+
+```{r}
+```
+
+## Comments
+
+이 Take Home 과제를 수행하면서 ...
