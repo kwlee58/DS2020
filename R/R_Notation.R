@@ -1,9 +1,12 @@
 ## read.csv
 read.csv("./data/cards.csv")
+## 아래 코드를 실행하면 R 4.0.0 버전 이후로 달라진 것을 파악할 수 있습니다. 
 deck <- read.csv("./data/cards.csv")
 str(deck)
-deck <- read.csv("./data/cards.csv", stringsAsFactors = FALSE)
+deck <- read.csv("./data/cards.csv", stringsAsFactors = TRUE)
 str(deck)
+deck <- read.csv("./data/cards.csv")
+## character 로 다시 읽었습니다.
 head(deck)
 ## Positive Integers
 deck[1, 1]

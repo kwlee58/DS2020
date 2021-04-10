@@ -32,7 +32,7 @@ logic <- c(TRUE, FALSE, TRUE)
 logic
 typeof(logic)
 typeof(F)
-## Complex a]nd Raw
+## Complex and Raw
 comp <- c(1 + 1i, 1 + 2i, 1 + 3i)
 comp
 typeof(comp)
@@ -146,9 +146,9 @@ write.csv(deck, file = "./data/cards.csv")
 write.csv(deck, file = "./data/cards.csv", 
           row.names = FALSE)
 ls()
-save(list = ls(), file = "../R/r_objects.RData")
+save(list = ls(), file = "./R/r_objects.RData")
 rm(list = ls())
 ls()
-load("../R/r_objects.RData")
+load("./R/r_objects.RData")
 ls()
 rm(list = ls())

@@ -1,5 +1,5 @@
 # Simulation
-source("./roll.R")
+source("./R/roll.R")
 ls()
 replicate(20, roll())
 N <- 10000
@@ -34,4 +34,4 @@ table(rolls_w)/N * 64
 # histogram
 qplot(rolls_w, binwidth = 1)
 # dump
-dump(list = "roll_w", file = "./roll_w.R")
+dump(list = "roll_w", file = "./R/roll_w.R")
