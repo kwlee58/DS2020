@@ -70,6 +70,7 @@ email 주소는 `@`를 사이에 두고 나뉘어진다.
 ```{r, e_mail}
 class_roll$email <- sub("^.+@", "user_name@", class_roll$email)
 kable(class_roll[sample(1:nrow(class_roll), size = 25), ])
+str(class_roll)
 ```
 
 <!--
