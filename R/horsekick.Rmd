@@ -48,7 +48,7 @@ cbind(horsekick_p, horsekick_cum)
 #> 누적백분율을 점으로 표시. `yaxt = "n"` 의 효과 확인
 plot(x = n_deaths, y = horsekick_cum, 
      xlim = c(-0.5, 4.5), ylim = c(50, 100), 
-     xlab = "사망자 수", ylab = "누적 백분률(%)", 
+     xlab = "Number of Deaths", ylab = "Cumulative Percentages(%)", 
      yaxt = "n")
 #> `axis()` 함수를 이용하여 `y`축 설정. `las = 2`의 역할에 유의
 axis(side = 2,
@@ -73,7 +73,7 @@ options(digits = 3)
 par(family = "")
 plot(x = n_deaths, y = horsekick_cum, 
      xlim = c(-0.5, 4.5), ylim = c(50, 100), 
-     xlab = "사망자 수", ylab = "누적 백분률(%)", 
+     xlab = "Number of Deaths", ylab = "Cumulative Percentages(%)", 
      yaxt = "n")
 axis(side = 2,
      at = c(50, horsekick_cum), 

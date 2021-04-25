@@ -1,6 +1,6 @@
 plot(x = n_deaths, y = horsekick_cum, 
      xlim = c(-0.5,4.5), ylim = c(50, 100), 
-     xlab = "사망자 수", ylab = "누적 백분률(%)", 
+     xlab = "Number of Deaths", ylab = "Cumulative Percentages(%)", 
      yaxt = "n")
 axis(side = 2,
      at = c(50, horsekick_cum), 

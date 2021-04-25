@@ -63,6 +63,7 @@ kable(head(class_roll))
 ```{r, dept}
 class_roll$dept <- sub("^.+$", "ㅇㅇ학과", class_roll$dept)
 kable(head(class_roll))
+str(class_roll)
 ```
 
 ### e-mail 가리기
