@@ -2,9 +2,7 @@
 title: "Korea Income Distribution 2010"
 author: "coop711"
 date: "`r Sys.Date()`"
-output:
-  pdf_document: default
-  html_document: default
+output: html_document
 ---
 
 ```{r include = FALSE}
