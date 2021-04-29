@@ -2,9 +2,7 @@
 title: "R Notations"
 author: "Your ID and Name"
 date: "Submission Date"
-output:
-  pdf_document: default
-  html_document: default
+output: html_document
 ---
 
 ```{r setup, include=FALSE}
