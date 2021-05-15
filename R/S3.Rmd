@@ -1,7 +1,7 @@
 ---
 title: "S3"
 author: "coop711"
-date: "`r Sys.Date()`"
+date: "2020-05-25"
 output: html_document
 ---
 
