@@ -2,14 +2,7 @@
 title: "Nightingale_Coxcomb"
 author: "coop711"
 date: "`r Sys.Date()`"
-<<<<<<< HEAD
 output: html_document
-=======
-output:
-  html_document: default
-  pdf_document: default
-  word_document: default
->>>>>>> afe8bf21ab300119b20796d5ab2ae7f5c8daa744
 ---
 
 ```{r setup, include=FALSE}
