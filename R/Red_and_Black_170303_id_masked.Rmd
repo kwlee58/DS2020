@@ -169,3 +169,7 @@ sample(1:6, size = 2)
 save.image("../R/red_and_black_170303_data_masked.RData")
 ```
 -->
+
+## Comments
+
+Tell me what you learned in detail.

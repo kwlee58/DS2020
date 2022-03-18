@@ -79,3 +79,7 @@ write.table(class_roll, file ="../data/class_roll_masked.txt")
 save.image("../R/class_roll_170303_data_masked.RData")
 ```
 -->
+
+## Comments
+
+Tell me what you learned in detail.
