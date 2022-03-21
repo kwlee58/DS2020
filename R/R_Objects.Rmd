@@ -258,6 +258,7 @@ write.csv(deck, file = "../data/cards.csv",
           row.names = FALSE)
 ls()
 save(list = ls(), file = "./r_objects.RData")
+# save.image(file = "./r_objects.RData")
 rm(list = ls())
 ls()
 load("./r_objects.RData")
@@ -267,4 +268,4 @@ rm(list = ls())
 
 ## Comments
 
-Tell me waht you have learned.
+Tell me what you have learned.
