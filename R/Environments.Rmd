@@ -1,0 +1,224 @@
+---
+title: "Environments"
+author: "coop711"
+date: "2020-05-11"
+output: html_document
+---
+
+## Data
+
+```{r}
+load("./r_modifying_values.RData")
+ls()
+head(deck)
+deal
+deal(deck)
+deal(deck)
+deal(deck)
+head(shuffle(deck))
+head(deck)
+```
+
+## Environments
+
+```{r}
+# install.packages("pryr", repos = "https://cran.rstudio.com")
+library(pryr)
+parenvs()
+parenvs(all = TRUE)
+search()
+```
+
+## Working with Environments
+
+```{r}
+as.environment("package:stats")
+globalenv()
+baseenv()
+emptyenv()
+parent.env(globalenv())
+# parent.env(emptyenv())
+ls(emptyenv())
+ls(globalenv())
+head(globalenv()$deck, 3)
+assign("new", "Hello Global", envir = globalenv())
+ls()
+globalenv()$new
+```
+
+## The Active Environment
+
+Read pp. 97
+
+```{r}
+environment()
+```
+
+## Scoping Rules 
+
+Read pp.98
+
+## Assignment
+
+```{r}
+new
+new <- "Hello Active"
+new
+roll <- function(){
+  die <- 1:6
+  dice <- sample(die, size = 2, replace = TRUE)
+  sum(dice)
+}
+```
+
+## Evaluation
+
+```{r}
+show_env <- function(){
+  list(ran.in = environment(),
+       parent = parent.env(environment()),
+       objects = ls.str(environment()))
+}
+show_env()
+show_env()
+#> origin environment (pp. 101)
+environment(show_env)
+environment(parenvs)
+show_env <- function(){
+  a <- 1
+  b <- 2
+  c <- 3
+  list(ran.in = environment(),
+       parent = parent.env(environment()),
+       objects = ls.str(environment()))
+}
+show_env()
+#> R will copy over each argument to the runtime environment
+foo <- "take me to your runtime"
+show_env <- function(x = foo) {
+  list(ran.in = environment(),
+       parent = parent.env(environment()),
+       objects = ls.str(environment()))  
+}
+show_env()
+#> Calling environment : R calls the function from
+rm("foo")
+# fix(show_env)
+show_env <- function() {
+  list(ran.in = environment(),
+       parent = parent.env(environment()),
+       objects = ls.str(environment()))  
+}
+show_env()
+```
+
+## Fix `deal()` and `shuffle()`
+
+```{r}
+deal <- function(){
+  deck[1, ]
+}
+deal()
+environment(deal)
+deal()
+DECK <- deck
+deck <- deck[-1, ]
+nrow(deck)
+head(deck, n = 3)
+deck <- DECK
+deal <- function(){
+  card <- deck[1, ]
+  deck <- deck[-1, ]
+  card
+}
+deal()
+#> `deal` will just create a slighthly altered copy of `deck` in the runtime environment
+head(deck, n = 6)
+deal <- function(){
+  card <- deck[1, ]
+  assign("deck", deck[-1, ], envir = globalenv())
+  card
+}
+deal()
+head(deck, 6)
+deal()
+head(deck, 6)
+#> Fix `shuffle()`
+shuffle <- function(cards) {
+  random <- sample(1:52)
+  cards[random, ]
+}
+deck <- DECK
+head(deck, 3)
+a <- shuffle(deck)
+head(deck, 3)
+head(a, 3)
+shuffle <- function(){
+  random <- sample(1:52)
+  assign("deck", DECK[random, ], envir = globalenv())
+}
+shuffle()
+head(deck, 6)
+```
+
+## Closures
+
+```{r}
+shuffle()
+deal()
+deal()
+setup <- function(deck) {
+  DECK <- deck
+  
+  DEAL <- function(){
+    card <- deck[1, ]
+    assign("deck", deck[-1, ], envir = globalenv())
+    card
+  }
+  
+  SHUFFLE <- function(){
+    random <- sample(1:52)
+    assign("deck", DECK[random, ], envir = globalenv())
+  }
+  list(deal = DEAL, shuffle = SHUFFLE)
+}
+cards <- setup(deck)
+ls()
+head(deck)
+str(cards)
+deal <- cards$deal
+shuffle <- cards$shuffle
+deal
+shuffle
+environment(deal)
+environment(shuffle)
+setup <- function(deck) {
+  DECK <- deck
+  
+  DEAL <- function() {
+    card <- deck[1, ]
+    assign("deck", deck[-1, ], envir = parent.env(environment()))
+    card
+  }
+  
+  SHUFFLE <- function() {
+    random <- sample(1:52, size = 52)
+    assign("deck", DECK[random, ], envir = parent.env(environment()))
+  }
+  
+  list(deal = DEAL, shuffle = SHUFFLE)
+}
+cards <- setup(deck)
+deal <- cards$deal
+shuffle <- cards$shuffle
+deal()
+shuffle()
+rm(deck)
+shuffle()
+deal()
+deal()
+environment(deal)
+environment(shuffle)
+```
+
+## Comments

@@ -12,7 +12,10 @@ library(xlsx)
 library(knitr)
 ```
 
+<<<<<<< HEAD
 <!--
+=======
+>>>>>>> 17793f482325e9dd87c9aeb9062a143a3dc80977
 ### Data
 
 ```{r, data}
@@ -35,7 +38,11 @@ N <- nrow(class_roll)
 group <- sample(1:N) %% 29
 class_roll$group <- factor(group, 
                            levels = 0:28, 
+<<<<<<< HEAD
                            labels = paste("Team", 1:29, sep = "_"))
+=======
+                           labels = paste("Team", 1:29))
+>>>>>>> 17793f482325e9dd87c9aeb9062a143a3dc80977
 kable(class_roll)
 ```
 
@@ -83,6 +90,7 @@ f_name_f <- factor(ifelse(f_name %in% c("김", "이", "박", "최"),
                    levels = c("김", "이", "박", "최", "기타"))
 kable(table("팀" = class_roll$group, "Family Name" = f_name_f))
 ```
+<<<<<<< HEAD
 -->
 
 ### Team 별로 모으기
@@ -100,6 +108,17 @@ kable(names_by_gr[-3], row.names = FALSE)
 ```{r}
 write.table(names_by_gr[, c(1, 3:7, 2)], 
             file ="../data/team_roll.txt", row.names = FALSE)
+=======
+
+### Team 별로 모으기
+
+```{r, list, echo = TRUE, results = 'markup'}
+gr_names_o <- order(class_roll$group, class_roll$name)
+gr_names_o
+names_by_gr <- class_roll[gr_names_o, 
+                          c("group", "dept", "id", "name", "year", "email", "cell_no")]
+kable(names_by_gr, row.names = FALSE)
+>>>>>>> 17793f482325e9dd87c9aeb9062a143a3dc80977
 ```
 
 <!--

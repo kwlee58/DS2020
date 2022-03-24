@@ -1,0 +1,319 @@
+install.packages(c("BH", "curl", "devtools", "digest", "evaluate", "formatR", "gapminder", "ggplot2", "git2r", "gridExtra", "gtable", "Hmisc", "htmltools", "httr", "kernlab", "knitr", "latticeExtra", "memoise", "mnormt", "multcomp", "munsell", "mvtnorm", "nlme", "NLP", "packrat", "R6", "Rcpp", "RCurl", "rJava", "rsconnect", "rstudioapi", "scales", "shiny", "TH.data", "XML", "xtable"))
+?rexp
+x <- rexp(1000)
+?log
+x2 <- -log(runif(1000))
+hist(x)
+hist(x2)
+par(mfrow=c(1,2))
+hist(x)
+hist(x2)
+x3 <- -log(1-runif(1000))
+par(mfrow=c(2,2))
+hist(x2)
+hist(x)
+hist(x3)
+x3 <- -log(1-runif(1000))
+hist(x3)
+set.seed(1)
+x1 <- rexp(1000)
+x2 <- -log(runif(1000))
+x3 <- -log(1-runif(1000))
+hist(x1)
+hist(x2)
+hist(x3)
+hist(x1, prob = TRUE)
+hist(x2, prob = TRUE)
+hist(x3, prob = TRUE)
+hist(x3, prob = TRUE, ylim = c(0,1))
+hist(x1, prob = TRUE, ylim = c(0, 1))
+hist(x2, prob = TRUE, ylim = c(0, 1))
+hist(x3, prob = TRUE, ylim = c(0, 1))
+u1 <- runif(1000)
+u2 <- 1 - u1
+hist(u1)
+hist(u2)
+hist(u1)
+hist(runif(10000), prob = TRUE)
+hist(-log(runif(10000)), prob = TRUE)
+hist(-log(1 - runif(10000)), prob = TRUE)
+hist(rexp(10000), prob = TRUE)
+hist(-log(runif(10000)), prob = TRUE)
+hist(-log(runif(10000)), prob = TRUE, ylim = c(0, 1))
+hist(-log(1 - runif(10000)), prob = TRUE, ylim = c(0, 1))
+hist(rexp(10000), prob = TRUE, ylim = c(0, 1))
+qqplot(x1, x3)
+qqplot(x2, x3)
+qqplot(x3, x2)
+qqplot(x1, x2)
+library(xlsx)
+read.xlsx("./midterm.xlsx", 1)
+read.xlsx("./midterm.xlsx", 1, startRow = 2)
+?read.xlsx
+read.xlsx("./midterm.xlsx", 1, startRow = 3)
+midterm <- read.xlsx("./midterm.xlsx", 1, startRow = 3)
+summary(midterm)
+summary(midterm$"최종점수")
+49825000+169619000
+32348/9
+(49825000+169619000)/9
+49825000+169619000
+(49825000+169619000)/32348
+?read.spss
+?read.svc
+install.packages("foreign")
+getwd()
+read.spss("./teacher_0713.sav")
+library(foreign)
+read.spss("./teacher_0713.sav")
+read.spss("./teacher_0713.sav", encoding = "CP949")
+makeplot_mosaic <- function(data, x, y, ...){#
+  xvar <- deparse(substitute(x))#
+  yvar <- deparse(substitute(y))#
+  mydata <- data[c(xvar, yvar)];#
+  mytable <- table(mydata);#
+  widths <- c(0, cumsum(apply(mytable, 1, sum)));#
+  heights <- apply(mytable, 1, function(x){c(0, cumsum(x/sum(x)))});#
+#
+  alldata <- data.frame();#
+  allnames <- data.frame();#
+  for(i in 1:nrow(mytable)){#
+    for(j in 1:ncol(mytable)){#
+      alldata <- rbind(alldata, c(widths[i], widths[i+1], heights[j, i], heights[j+1, i]));#
+    }#
+  }#
+  colnames(alldata) <- c("xmin", "xmax", "ymin", "ymax")#
+#
+  alldata[[xvar]] <- rep(dimnames(mytable)[[1]],rep(ncol(mytable), nrow(mytable)));#
+  alldata[[yvar]] <- rep(dimnames(mytable)[[2]],nrow(mytable));#
+#
+  ggplot(alldata, aes(xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax)) + #
+    geom_rect(color="black", aes_string(fill=yvar)) +#
+    xlab(paste(xvar, "(count)")) + ylab(paste(yvar, "(proportion)"));#
+}
+makeplot(mosaic(mtcars, vs gear))
+makeplot_mosaic(mtcars, vs gear)
+makeplot_mosaic <- function(data, x, y, ...){#
+  xvar <- deparse(substitute(x))#
+  yvar <- deparse(substitute(y))#
+  mydata <- data[c(xvar, yvar)];#
+  mytable <- table(mydata);#
+  widths <- c(0, cumsum(apply(mytable, 1, sum)));#
+  heights <- apply(mytable, 1, function(x){c(0, cumsum(x/sum(x)))});#
+#
+  alldata <- data.frame();#
+  allnames <- data.frame();#
+  for(i in 1:nrow(mytable)){#
+    for(j in 1:ncol(mytable)){#
+      alldata <- rbind(alldata, c(widths[i], widths[i+1], heights[j, i], heights[j+1, i]));#
+    }#
+  }#
+  colnames(alldata) <- c("xmin", "xmax", "ymin", "ymax")#
+#
+  alldata[[xvar]] <- rep(dimnames(mytable)[[1]],rep(ncol(mytable), nrow(mytable)));#
+  alldata[[yvar]] <- rep(dimnames(mytable)[[2]],nrow(mytable));#
+#
+  ggplot(alldata, aes(xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax)) + #
+    geom_rect(color="black", aes_string(fill=yvar)) +#
+    xlab(paste(xvar, "(count)")) + ylab(paste(yvar, "(proportion)"));#
+}
+makeplot_mosaic(mtcars, vs gear)
+makeplot_mosaic <- function(data, x, y, ...){#
+  xvar <- deparse(substitute(x))#
+  yvar <- deparse(substitute(y))#
+  mydata <- data[c(xvar, yvar)];#
+  mytable <- table(mydata);#
+  widths <- c(0, cumsum(apply(mytable, 1, sum)));#
+  heights <- apply(mytable, 1, function(x){c(0, cumsum(x/sum(x)))});#
+#
+  alldata <- data.frame();#
+  allnames <- data.frame();#
+  for(i in 1:nrow(mytable)){#
+    for(j in 1:ncol(mytable)){#
+      alldata <- rbind(alldata, c(widths[i], widths[i+1], heights[j, i], heights[j+1, i]));#
+    }#
+  }#
+  colnames(alldata) <- c("xmin", "xmax", "ymin", "ymax")#
+#
+  alldata[[xvar]] <- rep(dimnames(mytable)[[1]],rep(ncol(mytable), nrow(mytable)));#
+  alldata[[yvar]] <- rep(dimnames(mytable)[[2]],nrow(mytable));#
+#
+  ggplot(alldata, aes(xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax)) + #
+    geom_rect(color="black", aes_string(fill=yvar)) +#
+    xlab(paste(xvar, "(count)")) + ylab(paste(yvar, "(proportion)"));#
+}
+makeplot_mosaic(mtcars, vs gear)
+makeplot_mosaic
+makeplot_mosaic(mtcars, vs, gear)
+library(ggplot2)
+makeplot_mosaic(mtcars, vs, gear)
+"한글"
+center <- function(x, type){}
+center
+center <- function(x, type){
+switch(type,
+mean = mean(x),
+median = median(x),
+trimmed = mean(x, trim = .1))
+}
+x < rcauchy(10)
+x <- rcauchy(10)
+x
+center(x, "mean")
+center(x, "median")
+center(x, "trimmed")
+ccc <- c("b", "QQ", "a", "A", "bb")
+ccc
+for (ch in ccc)
+cat(ch, ":", switch(EXPR = ch, a = 1, b = 2:3), "\n")
+cat(ch, ":", switch(EXPR = ch, a = , A = 1, b = 2:3, "Otherwise: last"), "\n")
+ch
+ccc
+for (ch in ccc)
+cat(ch, ":", switch(EXPR = ch, a = , A = 1, b = 2:3, "Otherwise: last"), "\n")
+ccc
+for (ch in ccc)
+cat(ch, ":", switch(EXPR = ch, a = 2, A = 1, b = 2:3, "Otherwise: last"), "\n")
+for (ch in ccc)
+cat(ch, ":", switch(EXPR = ch, a = "", A = 1, b = 2:3, "Otherwise: last"), "\n")
+for (ch in ccc)
+cat(ch, ":", switch(EXPR = ch, a = , A = 1, b = 2:3, "Otherwise: last"), "\n")
+ff <- gl(3, 1, labels = LETTERS[3:1])
+ff
+ff[1]
+switch(ff[1], A = "I am A", B = "Bb..", C = "is C")
+switch(as.character(ff[1]), A = "I am A", B = "Bb..", C = "is C")
+for(i in c(-1:3, 9)) print(switch(i, 1, 2 , 3, 4))
+-1:3
+switch(1, invisible(pi), pi)
+switch(2, invisible(pi), pi)
+install.packages("maps")
+install.packages("mapdata")
+library(ggplot2)
+df <- data.frame(g = 1:2, x = 1:2)
+df
+df <- data.frame(g = factor(1:2), x = 1:2)
+df
+str(df)
+ggplot(data = df, mapping = aes(x = x, fill = g))
+ggplot(data = df, mapping = aes(x = x, fill = g)) + geom_bar()
+ggplot(data = df, mapping = aes(x = x, fill = g)) + geom_bar(stat = "identity")
+ggplot(data = df, mapping = aes(x = "", y = x, fill = g)) + geom_bar(stat = "identity")
+ggplot(data = df, mapping = aes(x = "", y = x, fill = rev(g))) + geom_bar(stat = "identity")
+ggplot(data = df, mapping = aes(x = "", y = x, fill = g)) + geom_bar(stat = "identity")
+ggplot(data = df, mapping = aes(x = "", y = x, fill = rev(g))) + geom_bar(stat = "identity")
+ggplot(data = df, mapping = aes(x = "", y = x, fill = rev(g))) + geom_bar(stat = "identity", position = position_stack(reverse = TRUE))
+ggplot(data = df, mapping = aes(x = "", y = rev(x), fill = g)) + geom_bar(stat = "identity", position = position_stack())
+quartz(dpi = 72)
+ggplot(data = df, mapping = aes(x = "", y = x, fill = g)) + geom_bar(stat = "identity")
+quartz(dpi = 72)
+ggplot(data = df, mapping = aes(x = "", y = x, fill = rev(g))) + geom_bar(stat = "identity")
+str(rev(g))
+str(rev(df$g))
+quartz(dpi = 72)
+ggplot(data = df, mapping = aes(x = "", y = x, fill = g)) + geom_bar(stat = "identity", position = position_stack(reverse = TRUE))
+quartz(dpi = 72)
+ggplot(data = df, mapping = aes(x = "", y = rev(x), fill = g)) + geom_bar(stat = "identity", position = position_stack(reverse = TRUE))
+ls(globalenv())
+ls()
+makeplot_mosaic
+midterm
+?`<-`
+environment()
+search()
+library(pryr)
+parernvs(all = TRUE)
+parenvs(all = TRUE)
+as.environment("package:stats")
+library(rmarkdown)
+library(knitr)
+help(package = "rmarkdown")
+getwd()
+setwd("./Google 드라이브/Works/Class/Case_Studies_in_Stat/R.WD/Sejong_v2/R/")
+render("./Sejong_poll_ggplot.Rmd", output_file = "test.html")
+getwd()
+setwd("../../../../Data_Science/R.WD/r_programming/")
+setwd("./R")
+library(prur)
+library(pryr)
+parenvs(all = TRUE)
+as.environment("package:knitr")
+globalenv()
+baseenv()
+emptyenv()
+parent.env(glovalenv())
+parent.env(globalenv())
+ls(emptyenv())
+ls(globalenv())
+rm(list = ls())
+load("./r_modifying_values.RData")
+ls(globalenv()
+)
+deck
+deal
+deal()
+deal(deck)
+fix(deal)
+deal()
+fix(deal)
+cards
+read.csv("../data/cards.csv", stringsAsFactors = FALSE)
+cards <- read.csv("../data/cards.csv", stringsAsFactors = FALSE)
+head(cards)
+deal()
+deal()
+DECK <- deck
+deck <- deck[-1, ]
+head(deck)
+deal <- function(){}
+deal <- function(){
+card <- deck[1, ]
+deck <- deck[-1, ]
+card
+}
+deal()
+deal()
+deck
+deck <- DECK
+fix(deal)
+deal
+deal()
+deal()
+deal()
+deal()
+deck
+DECK
+fix(deal)
+deck <- DECK
+head(deck)
+deal()
+deal()
+deal()
+show_env <- function() {}
+show_env <- function() {
+list(ran.in = environment(),)
+objects = ls.str()))
+fix(show_env)
+show_env()
+deal()
+show_env()
+show_env(deal)
+show_env(deal())
+show_env
+show_env()
+fix(show_env)
+show_env()
+deal()
+show_env(deal)
+show_env(deal())
+deal()
+show_env(deal)
+fix(show_env)
+show_env(deal)
+show_env(deal())
+deal()
+fix(deal)
+fix(deal)
+fix(deal)
+deal()
+deal()
