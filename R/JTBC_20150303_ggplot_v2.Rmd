@@ -122,7 +122,7 @@ ggplot(data = poll_tbl,
             size = 5, 
             colour = "white") +
   geom_label(aes(x = 3.0, y = pos, label = key), 
-             colour = "white", family = "08SeoulNamsan EB") +
+             colour = "white", family = "KoPubWorldDotum Medium") +
   xlim(0.5, 3.5) +
   annotate("text", x = 0.5, y = 0, label = "%", size = 6) +
   labs(title = "김영란법\n국회통과", x = NULL, y = NULL) +
@@ -135,7 +135,7 @@ ggplot(data = poll_tbl,
         axis.text = element_blank(),
         legend.text = element_text(family = "KoPubWorldDotum Medium"),
         panel.background = element_rect(colour = "black"),
-        plot.title = element_text(family = "NanumSquare ExtraBold", 
+        plot.title = element_text(family = "KoPubWorldDotum Bold", 
                                   size = 20, 
                                   vjust = -10,
                                   hjust = 0.5)) +

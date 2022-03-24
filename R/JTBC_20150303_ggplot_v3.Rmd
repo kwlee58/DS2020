@@ -2,9 +2,7 @@
 title: 'Cheating Charts : JTBC 20150303'
 author: "coop711"
 date: "`r Sys.Date()`"
-output:
-  html_document: default
-  pdf_document: default
+output: html_document
 ---
 
 ```{r setup, include=FALSE}
@@ -79,8 +77,10 @@ kable(t(as.matrix(poll)), caption = "김영란법 국회 통과")
 # font_add(family = "NanumGothic", regular = "NanumFont/NanumGothic.ttf")
 showtext_auto()
 # par(family = "NanumGothic")
-font_add(family = "KoPubWorld Dotum Medium", regular = "KoPubWorld/KoPubWorld Dotum Medium.ttf")
-font_add(family = "KoPubWorld Dotum Bold", regular = "KoPubWorld/KoPubWorld Dotum Bold.ttf")
+font_add(family = "KoPubWorld Dotum Medium", 
+         regular = "C:/Users/kwlee/AppData/Local/Microsoft/Windows/Fonts/KoPubWorld Dotum Medium.ttf")
+font_add(family = "KoPubWorld Dotum Bold", 
+         regular = "C:/Users/kwlee/AppData/Local/Microsoft/Windows/Fonts/KoPubWorld Dotum Medium.ttf")
 # showtext_auto()
 par(family = "KoPubWorld Dotum Medium")
 pie(poll, 

@@ -1,0 +1,1258 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Graunt and US 1993 Life Table},
+  pdfauthor={coop711},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+
+\title{Graunt and US 1993 Life Table}
+\author{coop711}
+\date{2022-02-27}
+
+\begin{document}
+\maketitle
+
+\hypertarget{source-of-data}{%
+\section{Source of Data}\label{source-of-data}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{knitr}\SpecialCharTok{::}\FunctionTok{include\_graphics}\NormalTok{(}\StringTok{"../pics/graunt\_table.png"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{flushleft}\includegraphics[width=0.25\linewidth]{../pics/graunt_table} \end{flushleft}
+
+\hypertarget{data-input}{%
+\subsection{Data Input}\label{data-input}}
+
+\begin{itemize}
+\tightlist
+\item
+  Graunt's Life Table
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{graunt }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{x =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\FunctionTok{seq}\NormalTok{(}\DecValTok{6}\NormalTok{, }\DecValTok{76}\NormalTok{, }\AttributeTok{by =} \DecValTok{10}\NormalTok{)), }
+                     \AttributeTok{xPo\_g =} \FunctionTok{c}\NormalTok{(}\DecValTok{100}\NormalTok{, }\DecValTok{64}\NormalTok{, }\DecValTok{40}\NormalTok{, }\DecValTok{25}\NormalTok{, }\DecValTok{16}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{6}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{1}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{more-data}{%
+\subsubsection{More data}\label{more-data}}
+
+\begin{itemize}
+\tightlist
+\item
+  US 1993 life table for the same age group
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{us93 }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{x =}\NormalTok{ graunt}\SpecialCharTok{$}\NormalTok{x, }
+                   \AttributeTok{xPo\_us =} \FunctionTok{c}\NormalTok{(}\DecValTok{100}\NormalTok{, }\DecValTok{99}\NormalTok{, }\DecValTok{99}\NormalTok{, }\DecValTok{98}\NormalTok{, }\DecValTok{97}\NormalTok{, }\DecValTok{95}\NormalTok{, }\DecValTok{92}\NormalTok{, }\DecValTok{84}\NormalTok{, }\DecValTok{70}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{data-extraction}{%
+\subsection{Data Extraction}\label{data-extraction}}
+
+There are many ways to extract part of \texttt{us93} data frame.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{us93[}\StringTok{"xPo\_us"}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   xPo_us
+## 1    100
+## 2     99
+## 3     99
+## 4     98
+## 5     97
+## 6     95
+## 7     92
+## 8     84
+## 9     70
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{us93[}\StringTok{"xPo\_us"}\NormalTok{][[}\DecValTok{1}\NormalTok{]]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 100  99  99  98  97  95  92  84  70
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{us93[}\StringTok{"xPo\_us"}\NormalTok{]}\SpecialCharTok{$}\NormalTok{xPo\_us}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 100  99  99  98  97  95  92  84  70
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{us93[}\StringTok{"xPo\_us"}\NormalTok{]}\SpecialCharTok{$}\NormalTok{xPo}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 100  99  99  98  97  95  92  84  70
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{us93[}\DecValTok{2}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   xPo_us
+## 1    100
+## 2     99
+## 3     99
+## 4     98
+## 5     97
+## 6     95
+## 7     92
+## 8     84
+## 9     70
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{us93[}\DecValTok{2}\NormalTok{][[}\DecValTok{1}\NormalTok{]]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 100  99  99  98  97  95  92  84  70
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{us93[}\DecValTok{2}\NormalTok{]}\SpecialCharTok{$}\NormalTok{xPo\_us}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 100  99  99  98  97  95  92  84  70
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{us93[ , }\StringTok{"xPo\_us"}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 100  99  99  98  97  95  92  84  70
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{us93[ , }\DecValTok{2}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 100  99  99  98  97  95  92  84  70
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{us93}\SpecialCharTok{$}\NormalTok{xPo\_us}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 100  99  99  98  97  95  92  84  70
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{us93}\SpecialCharTok{$}\NormalTok{xPo}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 100  99  99  98  97  95  92  84  70
+\end{verbatim}
+
+\hypertarget{into-one-single-data-frame}{%
+\subsubsection{Into one single data
+frame}\label{into-one-single-data-frame}}
+
+Combine two data frames into one single data frame, compare the results.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{(graunt\_us }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(graunt, }\AttributeTok{xPo\_us =}\NormalTok{ us93}\SpecialCharTok{$}\NormalTok{xPo))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    x xPo_g xPo_us
+## 1  0   100    100
+## 2  6    64     99
+## 3 16    40     99
+## 4 26    25     98
+## 5 36    16     97
+## 6 46    10     95
+## 7 56     6     92
+## 8 66     3     84
+## 9 76     1     70
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{(graunt\_us\_2 }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(graunt, us93[}\DecValTok{2}\NormalTok{]))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    x xPo_g xPo_us
+## 1  0   100    100
+## 2  6    64     99
+## 3 16    40     99
+## 4 26    25     98
+## 5 36    16     97
+## 6 46    10     95
+## 7 56     6     92
+## 8 66     3     84
+## 9 76     1     70
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{(graunt\_us\_3 }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(graunt, us93[, }\DecValTok{2}\NormalTok{]))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    x xPo_g us93...2.
+## 1  0   100       100
+## 2  6    64        99
+## 3 16    40        99
+## 4 26    25        98
+## 5 36    16        97
+## 6 46    10        95
+## 7 56     6        92
+## 8 66     3        84
+## 9 76     1        70
+\end{verbatim}
+
+\hypertarget{life-expectancy}{%
+\subsubsection{Life Expectancy}\label{life-expectancy}}
+
+The basic principle is that the area under the survival function is the
+life expectancy.
+
+\(X \ge 0\), \(X \sim F(x)\) =\textgreater{}
+\(X \equiv F^{-1}(U), U \sim U(0,1)\), therefore,
+
+\(E(X) = E\{F^{-1}(U)\} = \int_{0}^{1} F^{-1}(u)du = \int_0^{\infty} 1-F(x) dx = \int_{0}^{\infty} S(x) dx\)
+
+\hypertarget{step-by-step-approach-to-draw-survival-function-plot}{%
+\section{Step by step approach to draw survival function
+plot}\label{step-by-step-approach-to-draw-survival-function-plot}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Basic plot with points and lines, compare the following threes methods
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{par}\NormalTok{(}\AttributeTok{mfrow =} \FunctionTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{, }\DecValTok{2}\NormalTok{))}
+\FunctionTok{plot}\NormalTok{(}\AttributeTok{x =}\NormalTok{ graunt}\SpecialCharTok{$}\NormalTok{x, }\AttributeTok{y =}\NormalTok{ graunt}\SpecialCharTok{$}\NormalTok{xPo)}
+\FunctionTok{plot}\NormalTok{(xPo\_g }\SpecialCharTok{\textasciitilde{}}\NormalTok{ x, }\AttributeTok{data =}\NormalTok{ graunt)}
+\FunctionTok{plot}\NormalTok{(graunt)}
+\FunctionTok{plot}\NormalTok{(graunt, }\AttributeTok{ann =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{xaxt =} \StringTok{"n"}\NormalTok{, }\AttributeTok{yaxt =} \StringTok{"n"}\NormalTok{, }\AttributeTok{type =} \StringTok{"b"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Graunt_US93_files/figure-latex/unnamed-chunk-5-1.pdf}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  Denote the ages and observed survival rates on the axes
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{plot}\NormalTok{(graunt, }\AttributeTok{ann =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{xaxt =} \StringTok{"n"}\NormalTok{, }\AttributeTok{yaxt =} \StringTok{"n"}\NormalTok{, }\AttributeTok{type =} \StringTok{"b"}\NormalTok{)}
+\FunctionTok{axis}\NormalTok{(}\AttributeTok{side =} \DecValTok{1}\NormalTok{, }\AttributeTok{at =}\NormalTok{ graunt}\SpecialCharTok{$}\NormalTok{x, }\AttributeTok{labels =}\NormalTok{ graunt}\SpecialCharTok{$}\NormalTok{x)}
+\FunctionTok{axis}\NormalTok{(}\AttributeTok{side =} \DecValTok{2}\NormalTok{, }\AttributeTok{at =}\NormalTok{ graunt}\SpecialCharTok{$}\NormalTok{xPo\_g, }\AttributeTok{labels =}\NormalTok{ graunt}\SpecialCharTok{$}\NormalTok{xPo\_g)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Graunt_US93_files/figure-latex/unnamed-chunk-6-1.pdf}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  Denote the age 0 and 76 by dotted lines
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{plot}\NormalTok{(graunt, }\AttributeTok{ann =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{xaxt =} \StringTok{"n"}\NormalTok{, }\AttributeTok{yaxt =} \StringTok{"n"}\NormalTok{, }\AttributeTok{type =} \StringTok{"b"}\NormalTok{)}
+\FunctionTok{axis}\NormalTok{(}\AttributeTok{side =} \DecValTok{1}\NormalTok{, }\AttributeTok{at =}\NormalTok{ graunt}\SpecialCharTok{$}\NormalTok{x, }\AttributeTok{labels =}\NormalTok{ graunt}\SpecialCharTok{$}\NormalTok{x)}
+\FunctionTok{axis}\NormalTok{(}\AttributeTok{side =} \DecValTok{2}\NormalTok{, }\AttributeTok{at =}\NormalTok{ graunt}\SpecialCharTok{$}\NormalTok{xPo\_g, }\AttributeTok{labels =}\NormalTok{ graunt}\SpecialCharTok{$}\NormalTok{xPo\_g)}
+\FunctionTok{abline}\NormalTok{(}\AttributeTok{v =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{76}\NormalTok{), }\AttributeTok{lty =} \DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Graunt_US93_files/figure-latex/unnamed-chunk-7-1.pdf}
+
+\hypertarget{setting-up-coordinates-for-polygon-clockwise}{%
+\subsubsection{\texorpdfstring{Setting up coordinates for
+\texttt{polygon()}
+(Clockwise)}{Setting up coordinates for polygon() (Clockwise)}}\label{setting-up-coordinates-for-polygon-clockwise}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{graunt\_x }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(graunt}\SpecialCharTok{$}\NormalTok{x, }\DecValTok{0}\NormalTok{)}
+\NormalTok{graunt\_y }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(graunt}\SpecialCharTok{$}\NormalTok{xPo\_g, }\DecValTok{0}\NormalTok{)}
+\NormalTok{graunt\_poly }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{x =}\NormalTok{ graunt\_x, }\AttributeTok{y =}\NormalTok{ graunt\_y)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{3}
+\tightlist
+\item
+  Shading
+\end{enumerate}
+
+Note the effect of the last line of code.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{plot}\NormalTok{(graunt, }\AttributeTok{ann =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{xaxt =} \StringTok{"n"}\NormalTok{, }\AttributeTok{yaxt =} \StringTok{"n"}\NormalTok{, }\AttributeTok{type =} \StringTok{"b"}\NormalTok{)}
+\FunctionTok{axis}\NormalTok{(}\AttributeTok{side =} \DecValTok{1}\NormalTok{, }\AttributeTok{at =}\NormalTok{ graunt}\SpecialCharTok{$}\NormalTok{x, }\AttributeTok{labels =}\NormalTok{ graunt}\SpecialCharTok{$}\NormalTok{x)}
+\FunctionTok{axis}\NormalTok{(}\AttributeTok{side =} \DecValTok{2}\NormalTok{, }\AttributeTok{at =}\NormalTok{ graunt}\SpecialCharTok{$}\NormalTok{xPo\_g, }\AttributeTok{labels =}\NormalTok{ graunt}\SpecialCharTok{$}\NormalTok{xPo\_g)}
+\FunctionTok{abline}\NormalTok{(}\AttributeTok{v =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{76}\NormalTok{), }\AttributeTok{lty =} \DecValTok{4}\NormalTok{)}
+\FunctionTok{polygon}\NormalTok{(graunt\_poly, }\AttributeTok{density =} \DecValTok{15}\NormalTok{, }\AttributeTok{angle =} \DecValTok{135}\NormalTok{)}
+\FunctionTok{points}\NormalTok{(graunt, }\AttributeTok{pch =} \DecValTok{21}\NormalTok{, }\AttributeTok{col =} \StringTok{"black"}\NormalTok{, }\AttributeTok{bg =} \StringTok{"white"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Graunt_US93_files/figure-latex/unnamed-chunk-9-1.pdf}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{4}
+\tightlist
+\item
+  Grids
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{plot}\NormalTok{(graunt, }\AttributeTok{ann =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{xaxt =} \StringTok{"n"}\NormalTok{, }\AttributeTok{yaxt =} \StringTok{"n"}\NormalTok{, }\AttributeTok{type =} \StringTok{"b"}\NormalTok{)}
+\FunctionTok{axis}\NormalTok{(}\AttributeTok{side =} \DecValTok{1}\NormalTok{, }\AttributeTok{at =}\NormalTok{ graunt}\SpecialCharTok{$}\NormalTok{x, }\AttributeTok{labels =}\NormalTok{ graunt}\SpecialCharTok{$}\NormalTok{x)}
+\FunctionTok{axis}\NormalTok{(}\AttributeTok{side =} \DecValTok{2}\NormalTok{, }\AttributeTok{at =}\NormalTok{ graunt}\SpecialCharTok{$}\NormalTok{xPo\_g, }\AttributeTok{labels =}\NormalTok{ graunt}\SpecialCharTok{$}\NormalTok{xPo\_g)}
+\FunctionTok{abline}\NormalTok{(}\AttributeTok{v =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{76}\NormalTok{), }\AttributeTok{lty =} \DecValTok{2}\NormalTok{)}
+\FunctionTok{polygon}\NormalTok{(graunt\_poly, }\AttributeTok{density =} \DecValTok{15}\NormalTok{)}
+\FunctionTok{abline}\NormalTok{(}\AttributeTok{v =}\NormalTok{ graunt}\SpecialCharTok{$}\NormalTok{x, }\AttributeTok{lty =} \DecValTok{2}\NormalTok{)}
+\FunctionTok{points}\NormalTok{(graunt, }\AttributeTok{pch =} \DecValTok{21}\NormalTok{, }\AttributeTok{col =} \StringTok{"black"}\NormalTok{, }\AttributeTok{bg =} \StringTok{"white"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Graunt_US93_files/figure-latex/unnamed-chunk-10-1.pdf}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{5}
+\tightlist
+\item
+  Title, x-axis label, and y-axis label
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{plot}\NormalTok{(graunt, }\AttributeTok{ann =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{xaxt =} \StringTok{"n"}\NormalTok{, }\AttributeTok{yaxt =} \StringTok{"n"}\NormalTok{, }\AttributeTok{type =} \StringTok{"b"}\NormalTok{)}
+\FunctionTok{axis}\NormalTok{(}\AttributeTok{side =} \DecValTok{1}\NormalTok{, }\AttributeTok{at =}\NormalTok{ graunt}\SpecialCharTok{$}\NormalTok{x, }\AttributeTok{labels =}\NormalTok{ graunt}\SpecialCharTok{$}\NormalTok{x)}
+\FunctionTok{axis}\NormalTok{(}\AttributeTok{side =} \DecValTok{2}\NormalTok{, }\AttributeTok{at =}\NormalTok{ graunt}\SpecialCharTok{$}\NormalTok{xPo\_g, }\AttributeTok{labels =}\NormalTok{ graunt}\SpecialCharTok{$}\NormalTok{xPo\_g)}
+\FunctionTok{abline}\NormalTok{(}\AttributeTok{v =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{76}\NormalTok{), }\AttributeTok{lty =} \DecValTok{2}\NormalTok{)}
+\FunctionTok{polygon}\NormalTok{(graunt\_poly, }\AttributeTok{density =} \DecValTok{15}\NormalTok{)}
+\FunctionTok{abline}\NormalTok{(}\AttributeTok{v =}\NormalTok{ graunt}\SpecialCharTok{$}\NormalTok{x, }\AttributeTok{lty =} \DecValTok{2}\NormalTok{)}
+\FunctionTok{points}\NormalTok{(graunt, }\AttributeTok{pch =} \DecValTok{21}\NormalTok{, }\AttributeTok{col =} \StringTok{"black"}\NormalTok{, }\AttributeTok{bg =} \StringTok{"white"}\NormalTok{)}
+\NormalTok{main\_title }\OtherTok{\textless{}{-}} \StringTok{"Graunt\textquotesingle{}s Survival Function"}
+\NormalTok{x\_lab }\OtherTok{\textless{}{-}} \StringTok{"Age (years)"}
+\NormalTok{y\_lab }\OtherTok{\textless{}{-}} \StringTok{"Proportion of Survival (\%)"}
+\FunctionTok{title}\NormalTok{(}\AttributeTok{main =}\NormalTok{ main\_title, }\AttributeTok{xlab =}\NormalTok{ x\_lab, }\AttributeTok{ylab =}\NormalTok{ y\_lab)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Graunt_US93_files/figure-latex/unnamed-chunk-11-1.pdf}
+
+\hypertarget{area-under-the-curve}{%
+\subsubsection{Area under the curve}\label{area-under-the-curve}}
+
+The area under the curve can be approximated by the sum of the areas of
+trapezoids, therefore the area is
+\(\sum_{i=1}^{n-1} (x_{i+1}-x_i)\times\frac{1}{2}(y_i + y_{i+1})\).
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{diff()}, \texttt{head()}, and \texttt{tail()} can be used to
+  write a function to compute the area easily.
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{area.R }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x, y) \{}
+  \FunctionTok{sum}\NormalTok{(}\FunctionTok{diff}\NormalTok{(x) }\SpecialCharTok{*}\NormalTok{ (}\FunctionTok{head}\NormalTok{(y, }\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{) }\SpecialCharTok{+} \FunctionTok{tail}\NormalTok{(y, }\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{))}\SpecialCharTok{/}\DecValTok{2}\NormalTok{)}
+\NormalTok{  \}}
+\FunctionTok{area.R}\NormalTok{(graunt}\SpecialCharTok{$}\NormalTok{x, graunt}\SpecialCharTok{$}\NormalTok{xPo\_g)}\SpecialCharTok{/}\DecValTok{100}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 18.17
+\end{verbatim}
+
+\hypertarget{comparison-with-us-1993-life-table}{%
+\subsection{Comparison with US 1993 life
+table}\label{comparison-with-us-1993-life-table}}
+
+The shaded area between the survival function of Graunt and that of US
+1993 represents the difference of life expectancies.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Draw Graunt's first with axes, lower and upper limits. Check what
+  happens if you place \texttt{abline(...)} right after
+  \texttt{plot(...)}.
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{plot}\NormalTok{(graunt, }\AttributeTok{ann =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{xaxt =} \StringTok{"n"}\NormalTok{, }\AttributeTok{yaxt =} \StringTok{"n"}\NormalTok{, }\AttributeTok{type =} \StringTok{"b"}\NormalTok{)}
+\FunctionTok{axis}\NormalTok{(}\AttributeTok{side =} \DecValTok{1}\NormalTok{, }\AttributeTok{at =}\NormalTok{ graunt}\SpecialCharTok{$}\NormalTok{x, }\AttributeTok{labels =}\NormalTok{ graunt}\SpecialCharTok{$}\NormalTok{x)}
+\FunctionTok{axis}\NormalTok{(}\AttributeTok{side =} \DecValTok{2}\NormalTok{, }\AttributeTok{at =}\NormalTok{ graunt}\SpecialCharTok{$}\NormalTok{xPo, }\AttributeTok{labels =}\NormalTok{ graunt}\SpecialCharTok{$}\NormalTok{xPo\_g)}
+\FunctionTok{abline}\NormalTok{(}\AttributeTok{v =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{76}\NormalTok{), }\AttributeTok{lty =} \DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Graunt_US93_files/figure-latex/unnamed-chunk-13-1.pdf}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  Add US 1993 survival function
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{plot}\NormalTok{(graunt, }\AttributeTok{ann =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{xaxt =} \StringTok{"n"}\NormalTok{, }\AttributeTok{yaxt =} \StringTok{"n"}\NormalTok{, }\AttributeTok{type =} \StringTok{"b"}\NormalTok{)}
+\FunctionTok{axis}\NormalTok{(}\AttributeTok{side =} \DecValTok{1}\NormalTok{, }\AttributeTok{at =}\NormalTok{ graunt}\SpecialCharTok{$}\NormalTok{x, }\AttributeTok{labels =}\NormalTok{ graunt}\SpecialCharTok{$}\NormalTok{x)}
+\FunctionTok{axis}\NormalTok{(}\AttributeTok{side =} \DecValTok{2}\NormalTok{, }\AttributeTok{at =}\NormalTok{ graunt}\SpecialCharTok{$}\NormalTok{xPo, }\AttributeTok{labels =}\NormalTok{ graunt}\SpecialCharTok{$}\NormalTok{xPo\_g)}
+\FunctionTok{abline}\NormalTok{(}\AttributeTok{v =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{76}\NormalTok{), }\AttributeTok{lty =} \DecValTok{2}\NormalTok{)}
+\FunctionTok{lines}\NormalTok{(us93, }\AttributeTok{type =} \StringTok{"b"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Graunt_US93_files/figure-latex/unnamed-chunk-14-1.pdf}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  Actually, US 1993 life table is truncated at the age 76. Specify that
+  point.
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{plot}\NormalTok{(graunt, }\AttributeTok{ann =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{xaxt =} \StringTok{"n"}\NormalTok{, }\AttributeTok{yaxt =} \StringTok{"n"}\NormalTok{, }\AttributeTok{type =} \StringTok{"b"}\NormalTok{)}
+\FunctionTok{axis}\NormalTok{(}\AttributeTok{side =} \DecValTok{1}\NormalTok{, }\AttributeTok{at =}\NormalTok{ graunt}\SpecialCharTok{$}\NormalTok{x, }\AttributeTok{labels =}\NormalTok{ graunt}\SpecialCharTok{$}\NormalTok{x)}
+\FunctionTok{axis}\NormalTok{(}\AttributeTok{side =} \DecValTok{2}\NormalTok{, }\AttributeTok{at =}\NormalTok{ graunt}\SpecialCharTok{$}\NormalTok{xPo, }\AttributeTok{labels =}\NormalTok{ graunt}\SpecialCharTok{$}\NormalTok{xPo\_g)}
+\FunctionTok{abline}\NormalTok{(}\AttributeTok{v =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{76}\NormalTok{), }\AttributeTok{lty =} \DecValTok{2}\NormalTok{)}
+\FunctionTok{lines}\NormalTok{(us93, }\AttributeTok{type =} \StringTok{"b"}\NormalTok{)}
+\FunctionTok{abline}\NormalTok{(}\AttributeTok{h =} \DecValTok{70}\NormalTok{, }\AttributeTok{lty =} \DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Graunt_US93_files/figure-latex/unnamed-chunk-15-1.pdf}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{3}
+\tightlist
+\item
+  Using \texttt{las\ =\ 1} to specify 70\%.
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{plot}\NormalTok{(graunt, }\AttributeTok{ann =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{xaxt =} \StringTok{"n"}\NormalTok{, }\AttributeTok{yaxt =} \StringTok{"n"}\NormalTok{, }\AttributeTok{type =} \StringTok{"b"}\NormalTok{)}
+\FunctionTok{axis}\NormalTok{(}\AttributeTok{side =} \DecValTok{1}\NormalTok{, }\AttributeTok{at =}\NormalTok{ graunt}\SpecialCharTok{$}\NormalTok{x, }\AttributeTok{labels =}\NormalTok{ graunt}\SpecialCharTok{$}\NormalTok{x)}
+\FunctionTok{axis}\NormalTok{(}\AttributeTok{side =} \DecValTok{2}\NormalTok{, }\AttributeTok{at =}\NormalTok{ graunt}\SpecialCharTok{$}\NormalTok{xPo, }\AttributeTok{labels =}\NormalTok{ graunt}\SpecialCharTok{$}\NormalTok{xPo\_g)}
+\FunctionTok{abline}\NormalTok{(}\AttributeTok{v =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{76}\NormalTok{), }\AttributeTok{lty =} \DecValTok{2}\NormalTok{)}
+\FunctionTok{lines}\NormalTok{(us93, }\AttributeTok{type =} \StringTok{"b"}\NormalTok{)}
+\FunctionTok{abline}\NormalTok{(}\AttributeTok{h =} \DecValTok{70}\NormalTok{, }\AttributeTok{lty =} \DecValTok{2}\NormalTok{)}
+\FunctionTok{axis}\NormalTok{(}\AttributeTok{side =} \DecValTok{2}\NormalTok{, }\AttributeTok{at =} \DecValTok{70}\NormalTok{, }\AttributeTok{labels =} \DecValTok{70}\NormalTok{, }\AttributeTok{las =} \DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Graunt_US93_files/figure-latex/unnamed-chunk-16-1.pdf}
+
+\hypertarget{setting-coordinates-for-polygon}{%
+\subsubsection{\texorpdfstring{Setting coordinates for
+\texttt{polygon()}}{Setting coordinates for polygon()}}\label{setting-coordinates-for-polygon}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{us\_graunt\_x }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(us93}\SpecialCharTok{$}\NormalTok{x, }\FunctionTok{rev}\NormalTok{(graunt}\SpecialCharTok{$}\NormalTok{x))}
+\NormalTok{us\_graunt\_y }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(us93}\SpecialCharTok{$}\NormalTok{xPo\_us, }\FunctionTok{rev}\NormalTok{(graunt}\SpecialCharTok{$}\NormalTok{xPo\_g))}
+\NormalTok{us\_graunt }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{x =}\NormalTok{ us\_graunt\_x, }\AttributeTok{y =}\NormalTok{ us\_graunt\_y)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{4}
+\tightlist
+\item
+  Shading
+\end{enumerate}
+
+What is the effect of \texttt{border\ =\ NA}, the last line of code?
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{plot}\NormalTok{(graunt, }\AttributeTok{ann =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{xaxt =} \StringTok{"n"}\NormalTok{, }\AttributeTok{yaxt =} \StringTok{"n"}\NormalTok{, }\AttributeTok{type =} \StringTok{"b"}\NormalTok{)}
+\FunctionTok{axis}\NormalTok{(}\AttributeTok{side =} \DecValTok{1}\NormalTok{, }\AttributeTok{at =}\NormalTok{ graunt}\SpecialCharTok{$}\NormalTok{x, }\AttributeTok{labels =}\NormalTok{ graunt}\SpecialCharTok{$}\NormalTok{x)}
+\FunctionTok{axis}\NormalTok{(}\AttributeTok{side =} \DecValTok{2}\NormalTok{, }\AttributeTok{at =}\NormalTok{ graunt}\SpecialCharTok{$}\NormalTok{xPo, }\AttributeTok{labels =}\NormalTok{ graunt}\SpecialCharTok{$}\NormalTok{xPo\_g)}
+\FunctionTok{abline}\NormalTok{(}\AttributeTok{v =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{76}\NormalTok{), }\AttributeTok{lty =} \DecValTok{2}\NormalTok{)}
+\FunctionTok{lines}\NormalTok{(us93, }\AttributeTok{type =} \StringTok{"b"}\NormalTok{)}
+\FunctionTok{abline}\NormalTok{(}\AttributeTok{h =} \DecValTok{70}\NormalTok{, }\AttributeTok{lty =} \DecValTok{2}\NormalTok{)}
+\FunctionTok{axis}\NormalTok{(}\AttributeTok{side =} \DecValTok{2}\NormalTok{, }\AttributeTok{at =} \DecValTok{70}\NormalTok{, }\AttributeTok{labels =} \DecValTok{70}\NormalTok{, }\AttributeTok{las =} \DecValTok{1}\NormalTok{)}
+\FunctionTok{polygon}\NormalTok{(us\_graunt, }\AttributeTok{density =} \DecValTok{15}\NormalTok{, }\AttributeTok{col =} \StringTok{"blue"}\NormalTok{, }\AttributeTok{border =} \ConstantTok{NA}\NormalTok{)}
+\FunctionTok{points}\NormalTok{(us\_graunt, }\AttributeTok{pch =} \DecValTok{21}\NormalTok{, }\AttributeTok{col =} \StringTok{"black"}\NormalTok{, }\AttributeTok{bg =} \StringTok{"white"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Graunt_US93_files/figure-latex/unnamed-chunk-18-1.pdf}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{5}
+\tightlist
+\item
+  Grids
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{plot}\NormalTok{(graunt, }\AttributeTok{ann =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{xaxt =} \StringTok{"n"}\NormalTok{, }\AttributeTok{yaxt =} \StringTok{"n"}\NormalTok{, }\AttributeTok{type =} \StringTok{"b"}\NormalTok{)}
+\FunctionTok{axis}\NormalTok{(}\AttributeTok{side =} \DecValTok{1}\NormalTok{, }\AttributeTok{at =}\NormalTok{ graunt}\SpecialCharTok{$}\NormalTok{x, }\AttributeTok{labels =}\NormalTok{ graunt}\SpecialCharTok{$}\NormalTok{x)}
+\FunctionTok{axis}\NormalTok{(}\AttributeTok{side =} \DecValTok{2}\NormalTok{, }\AttributeTok{at =}\NormalTok{ graunt}\SpecialCharTok{$}\NormalTok{xPo, }\AttributeTok{labels =}\NormalTok{ graunt}\SpecialCharTok{$}\NormalTok{xPo\_g)}
+\FunctionTok{abline}\NormalTok{(}\AttributeTok{v =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{76}\NormalTok{), }\AttributeTok{lty =} \DecValTok{2}\NormalTok{)}
+\FunctionTok{lines}\NormalTok{(us93, }\AttributeTok{type =} \StringTok{"b"}\NormalTok{)}
+\FunctionTok{abline}\NormalTok{(}\AttributeTok{h =} \DecValTok{70}\NormalTok{, }\AttributeTok{lty =} \DecValTok{2}\NormalTok{)}
+\FunctionTok{axis}\NormalTok{(}\AttributeTok{side =} \DecValTok{2}\NormalTok{, }\AttributeTok{at =} \DecValTok{70}\NormalTok{, }\AttributeTok{labels =} \DecValTok{70}\NormalTok{, }\AttributeTok{las =} \DecValTok{1}\NormalTok{)}
+\FunctionTok{polygon}\NormalTok{(us\_graunt, }\AttributeTok{density =} \DecValTok{15}\NormalTok{, }\AttributeTok{col =} \StringTok{"blue"}\NormalTok{, }\AttributeTok{border =} \ConstantTok{NA}\NormalTok{)}
+\FunctionTok{abline}\NormalTok{(}\AttributeTok{v =}\NormalTok{ graunt}\SpecialCharTok{$}\NormalTok{x, }\AttributeTok{lty =} \DecValTok{2}\NormalTok{)}
+\FunctionTok{points}\NormalTok{(us\_graunt, }\AttributeTok{pch =} \DecValTok{21}\NormalTok{, }\AttributeTok{col =} \StringTok{"black"}\NormalTok{, }\AttributeTok{bg =} \StringTok{"white"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Graunt_US93_files/figure-latex/unnamed-chunk-19-1.pdf}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{6}
+\tightlist
+\item
+  Title, x-axis and y-axis labels
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{plot}\NormalTok{(graunt, }\AttributeTok{ann =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{xaxt =} \StringTok{"n"}\NormalTok{, }\AttributeTok{yaxt =} \StringTok{"n"}\NormalTok{, }\AttributeTok{type =} \StringTok{"b"}\NormalTok{)}
+\FunctionTok{axis}\NormalTok{(}\AttributeTok{side =} \DecValTok{1}\NormalTok{, }\AttributeTok{at =}\NormalTok{ graunt}\SpecialCharTok{$}\NormalTok{x, }\AttributeTok{labels =}\NormalTok{ graunt}\SpecialCharTok{$}\NormalTok{x)}
+\FunctionTok{axis}\NormalTok{(}\AttributeTok{side =} \DecValTok{2}\NormalTok{, }\AttributeTok{at =}\NormalTok{ graunt}\SpecialCharTok{$}\NormalTok{xPo, }\AttributeTok{labels =}\NormalTok{ graunt}\SpecialCharTok{$}\NormalTok{xPo\_g)}
+\FunctionTok{abline}\NormalTok{(}\AttributeTok{v =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{76}\NormalTok{), }\AttributeTok{lty =} \DecValTok{2}\NormalTok{)}
+\FunctionTok{lines}\NormalTok{(us93, }\AttributeTok{type =} \StringTok{"b"}\NormalTok{)}
+\FunctionTok{abline}\NormalTok{(}\AttributeTok{h =} \DecValTok{70}\NormalTok{, }\AttributeTok{lty =} \DecValTok{2}\NormalTok{)}
+\FunctionTok{axis}\NormalTok{(}\AttributeTok{side =} \DecValTok{2}\NormalTok{, }\AttributeTok{at =} \DecValTok{70}\NormalTok{, }\AttributeTok{labels =} \DecValTok{70}\NormalTok{, }\AttributeTok{las =} \DecValTok{1}\NormalTok{)}
+\FunctionTok{polygon}\NormalTok{(us\_graunt, }\AttributeTok{density =} \DecValTok{15}\NormalTok{, }\AttributeTok{col =} \StringTok{"blue"}\NormalTok{, }\AttributeTok{border =} \ConstantTok{NA}\NormalTok{)}
+\FunctionTok{abline}\NormalTok{(}\AttributeTok{v =}\NormalTok{ graunt}\SpecialCharTok{$}\NormalTok{x, }\AttributeTok{lty =} \DecValTok{2}\NormalTok{)}
+\FunctionTok{points}\NormalTok{(us\_graunt, }\AttributeTok{pch =} \DecValTok{21}\NormalTok{, }\AttributeTok{col =} \StringTok{"black"}\NormalTok{, }\AttributeTok{bg =} \StringTok{"white"}\NormalTok{)}
+\NormalTok{main\_title\_g\_us }\OtherTok{\textless{}{-}} \StringTok{"Survival Function of Graunt and US 1993"}
+\FunctionTok{title}\NormalTok{(}\AttributeTok{main =}\NormalTok{ main\_title\_g\_us, }\AttributeTok{xlab =}\NormalTok{ x\_lab, }\AttributeTok{ylab =}\NormalTok{ y\_lab)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Graunt_US93_files/figure-latex/unnamed-chunk-20-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{dev.copy}\NormalTok{(}\AttributeTok{device =}\NormalTok{ png, }\AttributeTok{file =} \StringTok{"../pics/graunt\_us93.png"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## png 
+##   3
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{dev.off}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## pdf 
+##   2
+\end{verbatim}
+
+\hypertarget{life-expectancy-1}{%
+\subsubsection{Life expectancy}\label{life-expectancy-1}}
+
+The area under the US 1993 survival function is
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{area.R}\NormalTok{(us93}\SpecialCharTok{$}\NormalTok{x, us93}\SpecialCharTok{$}\NormalTok{xPo\_us)}\SpecialCharTok{/}\DecValTok{100}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 70.92
+\end{verbatim}
+
+The area of shaded region is
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{area.R}\NormalTok{(us93}\SpecialCharTok{$}\NormalTok{x, us93}\SpecialCharTok{$}\NormalTok{xPo\_us)}\SpecialCharTok{/}\DecValTok{100} \SpecialCharTok{{-}} \FunctionTok{area.R}\NormalTok{(graunt}\SpecialCharTok{$}\NormalTok{x, graunt}\SpecialCharTok{$}\NormalTok{xPo\_g)}\SpecialCharTok{/}\DecValTok{100}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 52.75
+\end{verbatim}
+
+\hypertarget{ggplot}{%
+\subsection{ggplot}\label{ggplot}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(ggplot2)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{data-reshape}{%
+\subsubsection{Data Reshape}\label{data-reshape}}
+
+Attach \texttt{reshape2} package to change wide format to long format
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(reshape2)}
+\end{Highlighting}
+\end{Shaded}
+
+How \texttt{melt()} works
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{graunt\_us\_melt }\OtherTok{\textless{}{-}} \FunctionTok{melt}\NormalTok{(graunt\_us, }
+                       \AttributeTok{id.vars =} \StringTok{"x"}\NormalTok{, }
+                       \AttributeTok{measure.vars =} \FunctionTok{c}\NormalTok{(}\StringTok{"xPo\_g"}\NormalTok{, }\StringTok{"xPo\_us"}\NormalTok{), }
+                       \AttributeTok{value.name =} \StringTok{"xPo"}\NormalTok{, }
+                       \AttributeTok{variable.name =} \StringTok{"times"}\NormalTok{)}
+\NormalTok{graunt\_us\_melt}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##     x  times xPo
+## 1   0  xPo_g 100
+## 2   6  xPo_g  64
+## 3  16  xPo_g  40
+## 4  26  xPo_g  25
+## 5  36  xPo_g  16
+## 6  46  xPo_g  10
+## 7  56  xPo_g   6
+## 8  66  xPo_g   3
+## 9  76  xPo_g   1
+## 10  0 xPo_us 100
+## 11  6 xPo_us  99
+## 12 16 xPo_us  99
+## 13 26 xPo_us  98
+## 14 36 xPo_us  97
+## 15 46 xPo_us  95
+## 16 56 xPo_us  92
+## 17 66 xPo_us  84
+## 18 76 xPo_us  70
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{str}\NormalTok{(graunt\_us\_melt)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 'data.frame':    18 obs. of  3 variables:
+##  $ x    : num  0 6 16 26 36 46 56 66 76 0 ...
+##  $ times: Factor w/ 2 levels "xPo_g","xPo_us": 1 1 1 1 1 1 1 1 1 2 ...
+##  $ xPo  : num  100 64 40 25 16 10 6 3 1 100 ...
+\end{verbatim}
+
+\begin{itemize}
+\tightlist
+\item
+  Change factor levels of \texttt{times}
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{levels}\NormalTok{(graunt\_us\_melt}\SpecialCharTok{$}\NormalTok{times) }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"Graunt"}\NormalTok{, }\StringTok{"US1993"}\NormalTok{)}
+\NormalTok{graunt\_us\_melt}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##     x  times xPo
+## 1   0 Graunt 100
+## 2   6 Graunt  64
+## 3  16 Graunt  40
+## 4  26 Graunt  25
+## 5  36 Graunt  16
+## 6  46 Graunt  10
+## 7  56 Graunt   6
+## 8  66 Graunt   3
+## 9  76 Graunt   1
+## 10  0 US1993 100
+## 11  6 US1993  99
+## 12 16 US1993  99
+## 13 26 US1993  98
+## 14 36 US1993  97
+## 15 46 US1993  95
+## 16 56 US1993  92
+## 17 66 US1993  84
+## 18 76 US1993  70
+\end{verbatim}
+
+\hypertarget{graunt}{%
+\section{Graunt}\label{graunt}}
+
+\hypertarget{structure-of-ggplot}{%
+\subsection{Structure of ggplot}\label{structure-of-ggplot}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{(g1 }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data =}\NormalTok{ graunt,}
+              \AttributeTok{mapping =} \FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ x, }\AttributeTok{y =}\NormalTok{ xPo\_g)) }\SpecialCharTok{+} 
+   \FunctionTok{geom\_line}\NormalTok{())}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Graunt_US93_files/figure-latex/unnamed-chunk-27-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{(g2 }\OtherTok{\textless{}{-}}\NormalTok{ g1 }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{shape =} \DecValTok{21}\NormalTok{, }\AttributeTok{fill =} \StringTok{"white"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Graunt_US93_files/figure-latex/unnamed-chunk-28-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{(g3 }\OtherTok{\textless{}{-}}\NormalTok{ g2 }\SpecialCharTok{+}
+  \FunctionTok{theme\_bw}\NormalTok{())}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Graunt_US93_files/figure-latex/unnamed-chunk-29-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{(g4 }\OtherTok{\textless{}{-}}\NormalTok{ g3 }\SpecialCharTok{+}
+   \FunctionTok{xlab}\NormalTok{(x\_lab) }\SpecialCharTok{+} 
+   \FunctionTok{ylab}\NormalTok{(y\_lab) }\SpecialCharTok{+} 
+   \FunctionTok{ggtitle}\NormalTok{(main\_title) }\SpecialCharTok{+}
+   \FunctionTok{scale\_x\_continuous}\NormalTok{(}\AttributeTok{breaks =}\NormalTok{ graunt}\SpecialCharTok{$}\NormalTok{x) }\SpecialCharTok{+} 
+   \FunctionTok{scale\_y\_continuous}\NormalTok{(}\AttributeTok{breaks =}\NormalTok{ graunt}\SpecialCharTok{$}\NormalTok{xPo\_g))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Graunt_US93_files/figure-latex/unnamed-chunk-30-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{(g5 }\OtherTok{\textless{}{-}}\NormalTok{ g4 }\SpecialCharTok{+}
+  \FunctionTok{geom\_vline}\NormalTok{(}\AttributeTok{xintercept =}\NormalTok{ graunt}\SpecialCharTok{$}\NormalTok{x, }\AttributeTok{linetype =} \StringTok{"dotted"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_hline}\NormalTok{(}\AttributeTok{yintercept =} \DecValTok{0}\NormalTok{, }\AttributeTok{linetype =} \StringTok{"dotted"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Graunt_US93_files/figure-latex/unnamed-chunk-31-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{(pg5 }\OtherTok{\textless{}{-}}\NormalTok{ g5 }\SpecialCharTok{+}
+  \FunctionTok{geom\_polygon}\NormalTok{(}\AttributeTok{data =}\NormalTok{ graunt\_poly, }
+               \AttributeTok{mapping =} \FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ x, }\AttributeTok{y =}\NormalTok{ y), }
+               \AttributeTok{alpha =} \FloatTok{0.3}\NormalTok{, }\AttributeTok{fill =} \StringTok{"grey"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Graunt_US93_files/figure-latex/unnamed-chunk-32-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# ggsave("../pics/graunt\_poly\_ggplot.png", pg5)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(gridExtra)}
+\NormalTok{g\_graunt }\OtherTok{\textless{}{-}} \FunctionTok{grid.arrange}\NormalTok{(g1, g2, g3, g4, g5, pg5, }\AttributeTok{nrow =} \DecValTok{3}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Graunt_US93_files/figure-latex/unnamed-chunk-33-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# ggsave(g\_graunt, file = "../pics/graunt\_ggplots.png", width = 8, height = 12)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{graunt-and-us-1993}{%
+\section{Graunt and US 1993}\label{graunt-and-us-1993}}
+
+\hypertarget{points-and-lines}{%
+\subsubsection{Points and Lines}\label{points-and-lines}}
+
+Step by step approach to understand the grammar of ggplot
+
+\begin{itemize}
+\tightlist
+\item
+  We set \texttt{ggplot()} to accept varying \texttt{data.frame()} and
+  \texttt{aes()}in \texttt{geom\_polygon}
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{(gu1 }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{() }\SpecialCharTok{+} 
+  \FunctionTok{geom\_line}\NormalTok{(}\AttributeTok{data =}\NormalTok{ graunt\_us\_melt, }
+            \AttributeTok{mapping =} \FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ x, }\AttributeTok{y =}\NormalTok{ xPo, }\AttributeTok{colour =}\NormalTok{ times)))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Graunt_US93_files/figure-latex/unnamed-chunk-34-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{(gu2 }\OtherTok{\textless{}{-}}\NormalTok{ gu1 }\SpecialCharTok{+} 
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{data =}\NormalTok{ graunt\_us\_melt, }
+             \AttributeTok{mapping =} \FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ x, }\AttributeTok{y =}\NormalTok{ xPo, }\AttributeTok{colour =}\NormalTok{ times), }
+             \AttributeTok{shape =} \DecValTok{21}\NormalTok{, }\AttributeTok{fill =} \StringTok{"white"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Graunt_US93_files/figure-latex/unnamed-chunk-35-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{(gu3 }\OtherTok{\textless{}{-}}\NormalTok{ gu2 }\SpecialCharTok{+} 
+  \FunctionTok{theme\_bw}\NormalTok{()) }
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Graunt_US93_files/figure-latex/unnamed-chunk-36-1.pdf}
+
+\hypertarget{polygon}{%
+\subsection{Polygon}\label{polygon}}
+
+Reuse \texttt{us\_graunt} which contains \texttt{x\ =\ us\_graunt\_x}
+and \texttt{y\ =\ us\_graunt\_y} for \texttt{polygon()}. Note that we
+start with \texttt{gu3}, and also note how to remove default legends.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{(gup3 }\OtherTok{\textless{}{-}}\NormalTok{ gu3 }\SpecialCharTok{+} 
+  \FunctionTok{geom\_polygon}\NormalTok{(}\AttributeTok{data =}\NormalTok{ us\_graunt, }
+               \AttributeTok{mapping =} \FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ x, }\AttributeTok{y =}\NormalTok{ y), }
+               \AttributeTok{alpha =} \FloatTok{0.3}\NormalTok{, }\AttributeTok{fill =} \StringTok{"blue"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Graunt_US93_files/figure-latex/unnamed-chunk-37-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{(gup4 }\OtherTok{\textless{}{-}}\NormalTok{ gup3 }\SpecialCharTok{+} 
+  \FunctionTok{guides}\NormalTok{(}\AttributeTok{colour =} \StringTok{"none"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Graunt_US93_files/figure-latex/unnamed-chunk-38-1.pdf}
+
+\hypertarget{change-default-annotations}{%
+\subsection{Change default
+annotations}\label{change-default-annotations}}
+
+\hypertarget{points-and-lines-1}{%
+\subsubsection{Points and Lines}\label{points-and-lines-1}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Change the x-axis and y-axis labels
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{(gu4 }\OtherTok{\textless{}{-}}\NormalTok{ gu3 }\SpecialCharTok{+} 
+   \FunctionTok{xlab}\NormalTok{(x\_lab) }\SpecialCharTok{+} 
+   \FunctionTok{ylab}\NormalTok{(y\_lab))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Graunt_US93_files/figure-latex/unnamed-chunk-39-1.pdf}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  Add main title
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{(gu4 }\OtherTok{\textless{}{-}}\NormalTok{ gu3 }\SpecialCharTok{+} 
+   \FunctionTok{xlab}\NormalTok{(x\_lab) }\SpecialCharTok{+} 
+   \FunctionTok{ylab}\NormalTok{(y\_lab) }\SpecialCharTok{+} 
+   \FunctionTok{ggtitle}\NormalTok{(main\_title\_g\_us))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Graunt_US93_files/figure-latex/unnamed-chunk-40-1.pdf}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  Change legend title
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{(gu4 }\OtherTok{\textless{}{-}}\NormalTok{ gu3 }\SpecialCharTok{+} 
+   \FunctionTok{xlab}\NormalTok{(x\_lab) }\SpecialCharTok{+} 
+   \FunctionTok{ylab}\NormalTok{(y\_lab) }\SpecialCharTok{+} 
+   \FunctionTok{ggtitle}\NormalTok{(main\_title\_g\_us) }\SpecialCharTok{+}
+   \FunctionTok{labs}\NormalTok{(}\AttributeTok{colour =} \StringTok{"Era"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Graunt_US93_files/figure-latex/unnamed-chunk-41-1.pdf}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{3}
+\tightlist
+\item
+  Change legends.
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{(gu4 }\OtherTok{\textless{}{-}}\NormalTok{ gu3 }\SpecialCharTok{+} 
+   \FunctionTok{xlab}\NormalTok{(x\_lab) }\SpecialCharTok{+} 
+   \FunctionTok{ylab}\NormalTok{(y\_lab) }\SpecialCharTok{+}
+   \FunctionTok{ggtitle}\NormalTok{(main\_title\_g\_us) }\SpecialCharTok{+}
+   \FunctionTok{labs}\NormalTok{(}\AttributeTok{colour =} \StringTok{"Era"}\NormalTok{) }\SpecialCharTok{+}
+   \FunctionTok{scale\_colour\_discrete}\NormalTok{(}\AttributeTok{labels =} \FunctionTok{c}\NormalTok{(}\StringTok{"Graunt Era"}\NormalTok{, }\StringTok{"US 1993"}\NormalTok{)))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Graunt_US93_files/figure-latex/unnamed-chunk-42-1.pdf}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{4}
+\tightlist
+\item
+  Place legends inside the plot
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{(gu5 }\OtherTok{\textless{}{-}}\NormalTok{ gu4 }\SpecialCharTok{+} 
+   \FunctionTok{theme}\NormalTok{(}\AttributeTok{legend.position =} \FunctionTok{c}\NormalTok{(}\FloatTok{0.8}\NormalTok{, }\FloatTok{0.5}\NormalTok{)))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Graunt_US93_files/figure-latex/unnamed-chunk-43-1.pdf}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{5}
+\tightlist
+\item
+  Change x-axis and y-axis tick marks
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{(gu6 }\OtherTok{\textless{}{-}}\NormalTok{ gu5 }\SpecialCharTok{+} 
+   \FunctionTok{scale\_x\_continuous}\NormalTok{(}\AttributeTok{breaks =}\NormalTok{ graunt}\SpecialCharTok{$}\NormalTok{x) }\SpecialCharTok{+} 
+   \FunctionTok{scale\_y\_continuous}\NormalTok{(}\AttributeTok{breaks =}\NormalTok{ graunt}\SpecialCharTok{$}\NormalTok{xPo\_g))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Graunt_US93_files/figure-latex/unnamed-chunk-44-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# ggsave("../pics/graunt\_us\_ggplot.png", gu6)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{polygon-1}{%
+\subsection{Polygon}\label{polygon-1}}
+
+Add information to the plot drawn with \texttt{polygon()}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Start with \texttt{gup4}
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{gup4}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Graunt_US93_files/figure-latex/unnamed-chunk-45-1.pdf}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  Main title, x-axis and y-axis labels
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{(gup5 }\OtherTok{\textless{}{-}}\NormalTok{ gup4 }\SpecialCharTok{+} 
+   \FunctionTok{xlab}\NormalTok{(x\_lab) }\SpecialCharTok{+} 
+   \FunctionTok{ylab}\NormalTok{(y\_lab) }\SpecialCharTok{+}
+   \FunctionTok{ggtitle}\NormalTok{(main\_title\_g\_us))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Graunt_US93_files/figure-latex/unnamed-chunk-46-1.pdf}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  \texttt{"Graunt\ Era"}, \texttt{"US\ 1993"},
+  \texttt{"Difference\ of\ Life\ Expectancies"} at proper positions
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{(gup6 }\OtherTok{\textless{}{-}}\NormalTok{ gup5 }\SpecialCharTok{+} 
+   \FunctionTok{annotate}\NormalTok{(}\StringTok{"text"}\NormalTok{, }
+            \AttributeTok{x =} \FunctionTok{c}\NormalTok{(}\DecValTok{20}\NormalTok{, }\DecValTok{40}\NormalTok{, }\DecValTok{70}\NormalTok{), }\AttributeTok{y =} \FunctionTok{c}\NormalTok{(}\DecValTok{20}\NormalTok{, }\DecValTok{60}\NormalTok{, }\DecValTok{90}\NormalTok{), }
+            \AttributeTok{label =} \FunctionTok{c}\NormalTok{(}\StringTok{"Graunt Era"}\NormalTok{, }\StringTok{"Difference of}\SpecialCharTok{\textbackslash{}n}\StringTok{Life Expectancies"}\NormalTok{, }\StringTok{"US 1993"}\NormalTok{), }
+            \AttributeTok{family =} \StringTok{""}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Graunt_US93_files/figure-latex/unnamed-chunk-47-1.pdf}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{3}
+\tightlist
+\item
+  x-axis and y-axis tick marks
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{(gup7 }\OtherTok{\textless{}{-}}\NormalTok{ gup6 }\SpecialCharTok{+} 
+   \FunctionTok{scale\_x\_continuous}\NormalTok{(}\AttributeTok{breaks =}\NormalTok{ graunt}\SpecialCharTok{$}\NormalTok{x) }\SpecialCharTok{+} 
+   \FunctionTok{scale\_y\_continuous}\NormalTok{(}\AttributeTok{breaks =}\NormalTok{ graunt}\SpecialCharTok{$}\NormalTok{xPo\_g))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Graunt_US93_files/figure-latex/unnamed-chunk-48-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# ggsave("../pics/graunt\_us\_poly.png", gup7)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{dump-and-source}{%
+\subsubsection{\texorpdfstring{\texttt{dump()} and
+\texttt{source()}}{dump() and source()}}\label{dump-and-source}}
+
+\begin{itemize}
+\tightlist
+\item
+  Check out how to save and retrieve. Use \texttt{source()} and
+  \texttt{load()} for retrieval.
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{dump("area.R", file = "area.R")}
+\NormalTok{save.image("./graunt\_halley.RData")}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{comments}{%
+\subsection{Comments}\label{comments}}
+
+\end{document}
