@@ -47,9 +47,11 @@ barplot(rates)
 
 ```{r, fig.width = 8, fig.height = 4}
 showtext_auto()
-font_add(family = "KoPubWorld Dotum Medium", regular = "KoPubWorld/KoPubWorld Dotum Medium.ttf")
-font_add(family = "KoPubWorld Dotum Bold", regular = "KoPubWorld/KoPubWorld Dotum Bold.ttf")
-par(family = "KoPubWorld Dotum Medium")
+font_add(family = "KoPubWorldDotum Medium", 
+         regular = "C:/Users/kwlee/AppData/Local/Microsoft/Windows/Fonts/KoPubWorld Dotum Medium.ttf")
+font_add(family = "KoPubWorldDotum Bold", 
+         regular = "C:/Users/kwlee/AppData/Local/Microsoft/Windows/Fonts/KoPubWorld Dotum Bold.ttf")
+par(family = "KoPubWorldDotum Medium")
 b1 <- barplot(rates, 
               axes = FALSE, 
               col = candidates_colour, 
@@ -93,7 +95,7 @@ g0 <- ggplot(data = rates_df,
   geom_bar(stat = "identity", 
            fill = candidates_colour))
 (g3 <- g2 +
-  theme_bw(base_family = "KoPubWorld Dotum Medium"))
+  theme_bw(base_family = "KoPubWorldDotum Medium"))
 (g4 <- g3 +
   geom_text(mapping = aes(x = candidates, 
                           y = rates + c(rep(-3, 4), rep(2, 2)), 
@@ -108,7 +110,7 @@ g0 <- ggplot(data = rates_df,
 
 ```{r, fig.height = 4, fig.width = 8}
 (g6 <- g5 +
-  theme(plot.title = element_text(family = "KoPubWorld Dotum Medium", 
+  theme(plot.title = element_text(family = "KoPubWorldDotum Medium", 
                                   size = 15, 
                                   hjust = 0.5)))
 (g7 <- g6 +
@@ -133,7 +135,7 @@ g0 <- ggplot(data = rates_df,
                             y = -1,
                             label = candidates),
               size = 5,
-              family = "KoPubWorld Dotum Medium"))
+              family = "KoPubWorldDotum Medium"))
 ```
 <P style = "page-break-before:always">
 
@@ -146,7 +148,7 @@ g0 <- ggplot(data = rates_df,
              label = main_title, 
              vjust = 1.5, 
              size = 6,
-             family = "KoPubWorld Dotum Medium"))
+             family = "KoPubWorldDotum Medium"))
 ```
 
 ```{r, fig.height = 16, fig.width = 10}

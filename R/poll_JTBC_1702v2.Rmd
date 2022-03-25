@@ -22,8 +22,8 @@ knitr::include_graphics("../pics/poll_2017_JTBC.jpg")
 
 ## Data Setup
 
-```{r, data}
-library(extrafont)
+```{r, data, message = FALSE}
+# library(extrafont)
 candidates <- c("문재인", "안희정", "황교안", "안철수", "이재명", "유승민") 
 rates <- c(33, 22, 9, 9, 5, 2)
 party <- c("더불어민주당", "자유한국당", "국민의당", "바른정당")
