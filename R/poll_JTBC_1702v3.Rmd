@@ -47,6 +47,8 @@ barplot(rates)
 
 ```{r, fig.width = 8, fig.height = 4}
 showtext_auto()
+## regular 에서 kwlee 를 자신의 사용자 이름으로 바꿔줘야 함.
+## 폰트 패밀리 이름하고 폰트 파일 이름하고 띄어쓰기에 차이가 있음에 유의.
 font_add(family = "KoPubWorldDotum Medium", 
          regular = "C:/Users/kwlee/AppData/Local/Microsoft/Windows/Fonts/KoPubWorld Dotum Medium.ttf")
 font_add(family = "KoPubWorldDotum Bold", 
