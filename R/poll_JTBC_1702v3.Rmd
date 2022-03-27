@@ -1,6 +1,8 @@
 ---
 title: "JTBC 1702"
-output: html_document
+output: 
+  html_document: 
+    fig_retina: 1
 ---
 
 ## Problem
@@ -23,8 +25,6 @@ knitr::include_graphics("../pics/poll_2017_JTBC.jpg")
 ## Data Setup
 
 ```{r, data}
-library(extrafont)
-library(showtext)
 candidates <- c("문재인", "안희정", "황교안", "안철수", "이재명", "유승민") 
 rates <- c(33, 22, 9, 9, 5, 2)
 party <- c("더불어민주당", "자유한국당", "국민의당", "바른정당")
@@ -46,10 +46,22 @@ barplot(rates)
 <P style = "page-break-before:always">
 
 ```{r, fig.width = 8, fig.height = 4}
+library(showtext)
+# font_paths()
+# font_files()
 showtext_auto()
-font_add(family = "KoPubWorld Dotum Medium", regular = "KoPubWorld/KoPubWorld Dotum Medium.ttf")
-font_add(family = "KoPubWorld Dotum Bold", regular = "KoPubWorld/KoPubWorld Dotum Bold.ttf")
-par(family = "KoPubWorld Dotum Medium")
+## World와 Dotum을 띄어쓰면 악명높은 Error in grid.call(C_textBounds ...) 가 나오게 되어 ttf 파일 이름과는 달리 붙여쓰게 되었음.
+font_add(family = "KoPubWorldDotum Medium", regular =
+           "/Library/Fonts/Supplemental/KoPubWorld Dotum Medium.ttf")
+#           "/System/Library/Fonts/Supplemental/KoPubWorld Dotum Medium.ttf")
+#           "System/Library/Fonts/KoPubWorld Dotum Medium.ttf")
+#           "/Users/kwlee/Library/Fonts/KoPubWorld Dotum Medium.ttf")
+font_add(family = "KoPubWorldDotum Bold", regular =
+           "/Library/Fonts/Supplemental/KoPubWorld Dotum Medium.ttf")
+#           "/System/Library/Fonts/Supplemental/KoPubWorld Dotum Medium.ttf")
+#          "System/Library/Fonts/KoPubWorld Dotum Bold.ttf") 
+#          "/Users/kwlee/Library/Fonts//KoPubWorld Dotum Bold.ttf")
+par(family = "wqy-microhei")
 b1 <- barplot(rates, 
               axes = FALSE, 
               col = candidates_colour, 
@@ -72,7 +84,7 @@ dev.off()
 
 ## ggplot
 
-```{r, ggplot, fig.width = 8, fig.height = 4}
+```{r, ggplot, fig.width = 8, fig.height = 4, show.text = TRUE}
 library(ggplot2)
 candidates <- factor(candidates, levels = candidates)
 rates_df <- data.frame(candidates, 
@@ -88,12 +100,12 @@ g0 <- ggplot(data = rates_df,
 
 <P style = "page-break-before:always">
 
-```{r, fig.height = 4, fig.width = 8}
+```{r, fig.height = 4, fig.width = 8, show.text = TRUE}
 (g2 <- g0 +
   geom_bar(stat = "identity", 
            fill = candidates_colour))
 (g3 <- g2 +
-  theme_bw(base_family = "KoPubWorld Dotum Medium"))
+  theme_bw(base_family = "KoPubWorldDotum Medium"))
 (g4 <- g3 +
   geom_text(mapping = aes(x = candidates, 
                           y = rates + c(rep(-3, 4), rep(2, 2)), 
@@ -106,9 +118,9 @@ g0 <- ggplot(data = rates_df,
 
 <P style = "page-break-before:always">
 
-```{r, fig.height = 4, fig.width = 8}
+```{r, fig.height = 4, fig.width = 8, show.text = TRUE}
 (g6 <- g5 +
-  theme(plot.title = element_text(family = "KoPubWorld Dotum Medium", 
+  theme(plot.title = element_text(family = "KoPubWorldDotum Bold", 
                                   size = 15, 
                                   hjust = 0.5)))
 (g7 <- g6 +
@@ -117,7 +129,7 @@ g0 <- ggplot(data = rates_df,
 
 <P style = "page-break-before:always">
 
-```{r, fig.height = 4, fig.width = 8}
+```{r, fig.height = 4, fig.width = 8, show.text = TRUE}
 (g8 <- g7 +
   theme(panel.border = element_blank(),
         axis.title.x = element_blank(),
@@ -127,17 +139,17 @@ g0 <- ggplot(data = rates_df,
         axis.text.y = element_blank()))
 ```
 
-```{r, fig.height = 4, fig.width = 8}
+```{r, fig.height = 4, fig.width = 8, show.text = TRUE}
 (g9 <- g8 +
     geom_text(mapping = aes(x = candidates,
                             y = -1,
                             label = candidates),
               size = 5,
-              family = "KoPubWorld Dotum Medium"))
+              family = "KoPubWorldDotum Medium"))
 ```
 <P style = "page-break-before:always">
 
-```{r, fig.height = 4, fig.width = 8}
+```{r, fig.height = 4, fig.width = 8, show.text = TRUE}
 (g10 <- g9 +
     ggtitle("") +
     annotate("text", 
@@ -146,14 +158,21 @@ g0 <- ggplot(data = rates_df,
              label = main_title, 
              vjust = 1.5, 
              size = 6,
-             family = "KoPubWorld Dotum Medium"))
+             family = "KoPubWorldDotum Medium"))
 ```
 
-```{r, fig.height = 16, fig.width = 10}
+```{r, fig.height = 16, fig.width = 10, eval = TRUE}
 library(gridExtra)
 g_all <- grid.arrange(g1, g2, g3, g4, g5, g6, g7, g8, g9, g10, nrow = 5)
-ggsave(g10, file = "../pics/poll_JTBC_1702.png", width = 8, height = 4)
-ggsave(g_all, file = "../pics/poll_JTBC_1702_plots.png", width = 10, height = 16)
+ggsave(g10, 
+       file = "../pics/poll_JTBC_1702.png", 
+       width = 8, 
+       height = 4)
+ggsave(g_all, 
+       file = "../pics/poll_JTBC_1702_plots.png", 
+       width = 10, 
+       height = 16)
+showtext_auto(FALSE)
 ```
 
 ## Comments
