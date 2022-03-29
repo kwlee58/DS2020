@@ -25,12 +25,11 @@ knitr::include_graphics("../pics/poll_2017_JTBC.jpg")
 ## Data Setup
 
 ```{r, data}
-<<<<<<< HEAD
-# library(extrafont)
-=======
-library(extrafont) ## KoPubWOrld 폰트를 등록하기 위하여 필요함.
->>>>>>> dc2e2354c2aa757508924d6d0c160c19f41490e7
 library(showtext)
+font_install(source_han_serif(lang = "KR"))
+font_installed()
+font_families()
+font_paths()
 candidates <- c("문재인", "안희정", "황교안", "안철수", "이재명", "유승민") 
 rates <- c(33, 22, 9, 9, 5, 2)
 party <- c("더불어민주당", "자유한국당", "국민의당", "바른정당")
@@ -53,31 +52,9 @@ barplot(rates)
 
 ```{r, fig.width = 8, fig.height = 4}
 showtext_auto()
-<<<<<<< HEAD
-## World와 Dotum을 띄어쓰면 악명높은 Error in grid.call(C_textBounds ...) 가 나오게 되어 ttf 파일 이름과는 달리 붙여쓰게 되었음.
-font_add(family = "KoPubWorldDotum Medium", regular =
-           "/System/Library/Fonts/Supplemental/KoPubWorld Dotum Medium.ttf")
-#           "System/Library/Fonts/KoPubWorld Dotum Medium.ttf")
-#           "/Users/kwlee/Library/Fonts/KoPubWorld Dotum Medium.ttf")
-font_add(family = "KoPubWorldDotum Bold", regular =
-           "/System/Library/Fonts/Supplemental/KoPubWorld Dotum Medium.ttf")
-#          "System/Library/Fonts/KoPubWorld Dotum Bold.ttf") 
-#          "/Users/kwlee/Library/Fonts//KoPubWorld Dotum Bold.ttf")
-=======
-font_families()
-font_paths()
-## regular 에서 kwlee 를 자신의 사용자 이름으로 바꿔줘야 함.
-## 폰트 패밀리 이름하고 폰트 파일 이름하고 띄어쓰기에 차이가 있음에 유의.
-## Windows의 경우 font_paths()에서 찾은 경로가 작동하지 않음에 유의.
-## Mac 버전에서는 font_paths()에서 나오는 경로가 잘 작동하는 것으로 파악됨.
-font_add(family = "KoPubWorldDotum Medium", 
-#         regular = "C:/Windows/Fonts/KoPubWorld Dotum Medium.ttf") ## 작동하지 않음.
-         regular = "C:/Users/kwlee/AppData/Local/Microsoft/Windows/Fonts/KoPubWorld Dotum Medium.ttf")
-font_add(family = "KoPubWorldDotum Bold", 
-#         regular = "C:/Windows/Fonts/KoPubWorld Dotum Medium.ttf") ## 작동하지 않음.
-         regular = "C:/Users/kwlee/AppData/Local/Microsoft/Windows/Fonts/KoPubWorld Dotum Bold.ttf")
->>>>>>> dc2e2354c2aa757508924d6d0c160c19f41490e7
-par(family = "KoPubWorldDotum Medium")
+font_add(family = "wqy-microhei",
+         regular = "C:/Users/kwlee/AppData/Local/Microsoft/Windows/Fonts/wqy-microhei.ttc")
+par(family = "wqy-microhei")
 b1 <- barplot(rates, 
               axes = FALSE, 
               col = candidates_colour, 
@@ -100,7 +77,7 @@ dev.off()
 
 ## ggplot
 
-```{r, ggplot, fig.width = 8, fig.height = 4, show.text = TRUE}
+```{r, ggplot, fig.width = 8, fig.height = 4}
 library(ggplot2)
 candidates <- factor(candidates, levels = candidates)
 rates_df <- data.frame(candidates, 
@@ -116,12 +93,12 @@ g0 <- ggplot(data = rates_df,
 
 <P style = "page-break-before:always">
 
-```{r, fig.height = 4, fig.width = 8, show.text = TRUE}
+```{r, fig.height = 4, fig.width = 8}
 (g2 <- g0 +
   geom_bar(stat = "identity", 
            fill = candidates_colour))
 (g3 <- g2 +
-  theme_bw(base_family = "KoPubWorldDotum Medium"))
+  theme_bw(base_family = "wqy-microhei"))
 (g4 <- g3 +
   geom_text(mapping = aes(x = candidates, 
                           y = rates + c(rep(-3, 4), rep(2, 2)), 
@@ -134,9 +111,9 @@ g0 <- ggplot(data = rates_df,
 
 <P style = "page-break-before:always">
 
-```{r, fig.height = 4, fig.width = 8, show.text = TRUE}
+```{r, fig.height = 4, fig.width = 8}
 (g6 <- g5 +
-  theme(plot.title = element_text(family = "KoPubWorldDotum Bold", 
+  theme(plot.title = element_text(family = "wqy-microhei", 
                                   size = 25, 
                                   hjust = 0.5)))
 (g7 <- g6 +
@@ -145,7 +122,7 @@ g0 <- ggplot(data = rates_df,
 
 <P style = "page-break-before:always">
 
-```{r, fig.height = 4, fig.width = 8, show.text = TRUE}
+```{r, fig.height = 4, fig.width = 8}
 (g8 <- g7 +
   theme(panel.border = element_blank(),
         axis.title.x = element_blank(),
@@ -155,17 +132,17 @@ g0 <- ggplot(data = rates_df,
         axis.text.y = element_blank()))
 ```
 
-```{r, fig.height = 4, fig.width = 8, show.text = TRUE}
+```{r, fig.height = 4, fig.width = 8}
 (g9 <- g8 +
     geom_text(mapping = aes(x = candidates,
                             y = -1,
                             label = candidates),
               size = 8,
-              family = "KoPubWorldDotum Medium"))
+              family = "wqy-microhei"))
 ```
 <P style = "page-break-before:always">
 
-```{r, fig.height = 4, fig.width = 8, show.text = TRUE}
+```{r, fig.height = 4, fig.width = 8}
 (g10 <- g9 +
     ggtitle("") +
     annotate("text", 
@@ -174,20 +151,14 @@ g0 <- ggplot(data = rates_df,
              label = main_title, 
              vjust = 1.5, 
              size = 12,
-             family = "KoPubWorldDotum Bold"))
+             family = "wqy-microhei"))
 ```
 
 ```{r, fig.height = 16, fig.width = 10}
 library(gridExtra)
 g_all <- grid.arrange(g1, g2, g3, g4, g5, g6, g7, g8, g9, g10, nrow = 5)
-ggsave(g10, 
-       file = "../pics/poll_JTBC_1702.png", 
-       width = 8, 
-       height = 4)
-ggsave(g_all, 
-       file = "../pics/poll_JTBC_1702_plots.png", 
-       width = 10, 
-       height = 16)
+ggsave(g10, file = "../pics/poll_JTBC_1702.png", width = 8, height = 4)
+ggsave(g_all, file = "../pics/poll_JTBC_1702_plots.png", width = 10, height = 16)
 ```
 
 ## Comments

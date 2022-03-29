@@ -119,7 +119,7 @@ e-mail 주소는 `@`을 중심으로 사용자명과 서비스업체주소로 �
 ```{r, e_mail}
 email_list <- strsplit(class_roll$email, 
                        split = "@", 
-                       fixed = FALSE)
+                       fixed = FALSE) ## fixed = FALSE 가  default
 mail_com <- sapply(email_list, 
                    FUN = `[`, 2)
 kable(table("그룹" = class_roll$group,
