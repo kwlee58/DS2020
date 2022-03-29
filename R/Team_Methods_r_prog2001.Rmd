@@ -1,5 +1,5 @@
 ---
-title: "Team Allocation for Class DS2020 "
+title: "Team Allocation for Basic Programming in R "
 author: "coop711"
 date: "2020-05-04"
 output: html_document
@@ -7,21 +7,18 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-library(magrittr)
-library(xlsx)
-library(knitr)
 ```
 
-<<<<<<< HEAD
 <!--
-=======
->>>>>>> 17793f482325e9dd87c9aeb9062a143a3dc80977
 ### Data
 
 ```{r, data}
-class_roll <- "../data/class_roll200407.xlsx" %>%
+library(magrittr)
+library(xlsx)
+library(knitr)
+class_roll <- "../data/class_roll200503.xlsx" %>%
   read.xlsx(sheetIndex = 1,
-             startRow = 2, endRow = 118,
+             startRow = 2, endRow = 95,
              colIndex = c(3:7, 9),
              colClasses = rep("character", 6),
             encoding = "UTF-8",
@@ -30,19 +27,15 @@ names(class_roll) <- c("dept", "id", "name", "year", "email", "cell_no")
 str(class_roll)
 ```
 
-### 랜덤하게 29 Team으로 나누기
+### 랜덤하게 31 Team으로 나누기
 
 ```{r, team id, echo = TRUE}
-set.seed(1)
+set.seed(2)
 N <- nrow(class_roll)
-group <- sample(1:N) %% 29
+group <- sample(1:N) %% 31
 class_roll$group <- factor(group, 
-                           levels = 0:28, 
-<<<<<<< HEAD
-                           labels = paste("Team", 1:29, sep = "_"))
-=======
-                           labels = paste("Team", 1:29))
->>>>>>> 17793f482325e9dd87c9aeb9062a143a3dc80977
+                           levels = 0:30, 
+                           labels = paste("Team", 1:31, sep = "_"))
 kable(class_roll)
 ```
 
@@ -90,9 +83,8 @@ f_name_f <- factor(ifelse(f_name %in% c("김", "이", "박", "최"),
                    levels = c("김", "이", "박", "최", "기타"))
 kable(table("팀" = class_roll$group, "Family Name" = f_name_f))
 ```
-<<<<<<< HEAD
--->
 
+-->
 ### Team 별로 모으기
 
 ```{r, list, echo = FALSE, results = 'markup'}
@@ -102,23 +94,11 @@ names_by_gr <- class_roll[gr_names_o,
 kable(names_by_gr[-3], row.names = FALSE)
 ```
 
-
 ### 출력
 
 ```{r}
 write.table(names_by_gr[, c(1, 3:7, 2)], 
             file ="../data/team_roll.txt", row.names = FALSE)
-=======
-
-### Team 별로 모으기
-
-```{r, list, echo = TRUE, results = 'markup'}
-gr_names_o <- order(class_roll$group, class_roll$name)
-gr_names_o
-names_by_gr <- class_roll[gr_names_o, 
-                          c("group", "dept", "id", "name", "year", "email", "cell_no")]
-kable(names_by_gr, row.names = FALSE)
->>>>>>> 17793f482325e9dd87c9aeb9062a143a3dc80977
 ```
 
 <!--

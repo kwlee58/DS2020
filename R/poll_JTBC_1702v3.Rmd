@@ -1,8 +1,6 @@
 ---
 title: "JTBC 1702"
-output: 
-  html_document: 
-    fig_retina: 1
+output: html_document
 ---
 
 ## Problem
@@ -25,6 +23,8 @@ knitr::include_graphics("../pics/poll_2017_JTBC.jpg")
 ## Data Setup
 
 ```{r, data}
+# library(extrafont)
+library(showtext)
 candidates <- c("문재인", "안희정", "황교안", "안철수", "이재명", "유승민") 
 rates <- c(33, 22, 9, 9, 5, 2)
 party <- c("더불어민주당", "자유한국당", "국민의당", "바른정당")
@@ -46,22 +46,17 @@ barplot(rates)
 <P style = "page-break-before:always">
 
 ```{r, fig.width = 8, fig.height = 4}
-library(showtext)
-# font_paths()
-# font_files()
 showtext_auto()
 ## World와 Dotum을 띄어쓰면 악명높은 Error in grid.call(C_textBounds ...) 가 나오게 되어 ttf 파일 이름과는 달리 붙여쓰게 되었음.
 font_add(family = "KoPubWorldDotum Medium", regular =
-           "/Library/Fonts/Supplemental/KoPubWorld Dotum Medium.ttf")
-#           "/System/Library/Fonts/Supplemental/KoPubWorld Dotum Medium.ttf")
+           "/System/Library/Fonts/Supplemental/KoPubWorld Dotum Medium.ttf")
 #           "System/Library/Fonts/KoPubWorld Dotum Medium.ttf")
 #           "/Users/kwlee/Library/Fonts/KoPubWorld Dotum Medium.ttf")
 font_add(family = "KoPubWorldDotum Bold", regular =
-           "/Library/Fonts/Supplemental/KoPubWorld Dotum Medium.ttf")
-#           "/System/Library/Fonts/Supplemental/KoPubWorld Dotum Medium.ttf")
+           "/System/Library/Fonts/Supplemental/KoPubWorld Dotum Medium.ttf")
 #          "System/Library/Fonts/KoPubWorld Dotum Bold.ttf") 
 #          "/Users/kwlee/Library/Fonts//KoPubWorld Dotum Bold.ttf")
-par(family = "wqy-microhei")
+par(family = "KoPubWorldDotum Medium")
 b1 <- barplot(rates, 
               axes = FALSE, 
               col = candidates_colour, 
@@ -120,7 +115,7 @@ g0 <- ggplot(data = rates_df,
 
 ```{r, fig.height = 4, fig.width = 8, show.text = TRUE}
 (g6 <- g5 +
-  theme(plot.title = element_text(family = "KoPubWorldDotum Bold", 
+  theme(plot.title = element_text(family = "KoPubWorldDotum Medium", 
                                   size = 15, 
                                   hjust = 0.5)))
 (g7 <- g6 +
@@ -161,7 +156,7 @@ g0 <- ggplot(data = rates_df,
              family = "KoPubWorldDotum Medium"))
 ```
 
-```{r, fig.height = 16, fig.width = 10, eval = TRUE}
+```{r, fig.height = 16, fig.width = 10}
 library(gridExtra)
 g_all <- grid.arrange(g1, g2, g3, g4, g5, g6, g7, g8, g9, g10, nrow = 5)
 ggsave(g10, 
@@ -172,7 +167,6 @@ ggsave(g_all,
        file = "../pics/poll_JTBC_1702_plots.png", 
        width = 10, 
        height = 16)
-showtext_auto(FALSE)
 ```
 
 ## Comments

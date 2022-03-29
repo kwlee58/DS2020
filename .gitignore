@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 *.log
 .Rproj.user
 .Rhistory
@@ -6,3 +7,11 @@
 R/*.html
 R/*.rda
 R/rsconnect/*
+=======
+.DS_Store
+.Rproj.user
+.Rhistory
+./R/.Rhistory
+./R/*.RData
+./R/.Ruserdata
+>>>>>>> 17793f482325e9dd87c9aeb9062a143a3dc80977
