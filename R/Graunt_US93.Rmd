@@ -2,15 +2,13 @@
 title: "Graunt and US 1993 Life Table"
 author: "coop711"
 date: "`r Sys.Date()`"
-output:
-  pdf_document: default
-  html_document: default
+output: html_document
 ---
 
 # Source of Data
 
 <!--
-<img src = "../pics/graunt_table.png" width = "240"/>
+<img src = "../pics/graunt_table.png" width = "120"/>
 -->
 
 ```{r, echo = TRUE, out.width = "25%", fig.align = "left"}
