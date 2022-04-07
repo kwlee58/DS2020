@@ -384,6 +384,7 @@ graunt_us_melt
    xlab(x_lab) + 
    ylab(y_lab) + 
    ggtitle(main_title) +
+   theme(plot.title = element_text(hjust = 0.5)) +
    scale_x_continuous(breaks = graunt$x) + 
    scale_y_continuous(breaks = graunt$xPo_g))
 ```
@@ -554,7 +555,8 @@ gup4
 (gup5 <- gup4 + 
    xlab(x_lab) + 
    ylab(y_lab) +
-   ggtitle(main_title_g_us))
+   ggtitle(main_title_g_us) +
+   theme(plot.title = element_text(hjust = 0.5)))
 ```
 
 <P style = "page-break-before:always">
