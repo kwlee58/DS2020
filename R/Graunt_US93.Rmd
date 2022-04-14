@@ -7,9 +7,12 @@ output: html_document
 
 # Source of Data
 
-<!--
+
+
 <img src = "../pics/graunt_table.png" width = "120"/>
--->
+
+![Graunt Life Table](../pics/graunt_table.png)
+
 
 ```{r, echo = TRUE, out.width = "25%", fig.align = "left"}
 knitr::include_graphics("../pics/graunt_table.png")

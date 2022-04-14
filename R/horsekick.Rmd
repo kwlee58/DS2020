@@ -228,5 +228,7 @@ points(x = n_deaths[2:5], y = horsekick_cum[1:4],
 
 이번에 쌓아놓은 막대 면적의 합은 평균을 계산한 것임을 확인.
 
+## Comments
 
+What I have learned.
 
