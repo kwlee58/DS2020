@@ -8,10 +8,11 @@ output: html_document
 # Source of Data
 
 
-
+<!--
 <img src = "../pics/graunt_table.png" width = "120"/>
 
-![Graunt Life Table](../pics/graunt_table.png)
+![Graunt Life Table](../pics/graunt_table.png) 
+-->
 
 
 ```{r, echo = TRUE, out.width = "25%", fig.align = "left"}
@@ -591,7 +592,7 @@ gup4
 
 * Check out how to save and retrieve. Use `source()` and `load()` for retrieval.
 
-```{rsys}
+```{r, dump and save}
 dump("area.R", file = "area.R")
 save.image("./graunt_halley.RData")
 ```
