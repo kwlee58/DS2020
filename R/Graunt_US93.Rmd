@@ -180,10 +180,10 @@ The area under the curve can be approximated by the sum of the areas of trapezoi
 *  `diff()`, `head()`, and `tail()` can be used to write a function to compute the area easily.  
 
 ```{r}
-area.R <- function(x, y) {
+area_R <- function(x, y) {
   sum(diff(x) * (head(y, -1) + tail(y, -1))/2)
   }
-area.R(graunt$x, graunt$xPo_g)/100
+area_R(graunt$x, graunt$xPo_g)/100
 ```
 
 <P style = "page-break-before:always">
@@ -311,13 +311,13 @@ dev.off()
 The area under the US 1993 survival function is
 
 ```{r} 
-area.R(us93$x, us93$xPo_us)/100
+area_R(us93$x, us93$xPo_us)/100
 ``` 
 
 The area of shaded region is
 
 ```{r}
-area.R(us93$x, us93$xPo_us)/100 - area.R(graunt$x, graunt$xPo_g)/100
+area_R(us93$x, us93$xPo_us)/100 - area_R(graunt$x, graunt$xPo_g)/100
 ```
 
 <P style = "page-break-before:always">
@@ -593,7 +593,7 @@ gup4
 * Check out how to save and retrieve. Use `source()` and `load()` for retrieval.
 
 ```{r, dump and save}
-dump("area.R", file = "area.R")
+dump("area_R", file = "area.R")
 save.image("./graunt_halley.RData")
 ```
 
