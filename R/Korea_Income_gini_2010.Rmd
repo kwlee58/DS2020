@@ -14,7 +14,9 @@ knitr::opts_chunk$set(echo = TRUE, highlight = FALSE)
 
 자료 입력
 
+<!--
 <img src = "../pics/korea_labor_income_2010.png" height = "480" width = "480">
+-->
 
 ```{r, echo = FALSE, out.width = "67%"}
 knitr::include_graphics("../pics/korea_labor_income_2010.png")
