@@ -16,6 +16,10 @@ knitr::opts_chunk$set(echo = TRUE, highlight = FALSE)
 
 <img src = "../pics/korea_labor_income_2010.png" height = "480" width = "480">
 
+```{r, echo = FALSE, out.width = "67%"}
+knitr::include_graphics("../pics/korea_labor_income_2010.png")
+```
+
 ```{r, data, highlight = FALSE}
 (income_kr <- read.table("../data/labor_income_kor.txt", 
                          header = TRUE, 
@@ -83,7 +87,7 @@ options(digits = 3)
 
 <P style = "page-break-before:always">
 
-## Probability Historam with `barplot()`
+## Probability Histogram with `barplot()`
 
 아무런 `argument` 도 설정하지 않고 `barplot()` 을 그리면 
 
@@ -452,7 +456,7 @@ text(x = 30, y = 60,
 
 ### Cumulative Distribution
 
-```{r, fig.width = 6, fig.height = 6, fig.keep = 'none', warning = TRUE}
+```{r, fig.width = 6, fig.height = 6, fig.keep = 'all', warning = TRUE}
 library(ggplot2)
 (c1 <- ggplot() +
   geom_line(data = earners_kor_cum_df, 
@@ -504,7 +508,7 @@ ggsave("../pics/cumulative_plot_wage_kr.png", width = 9, height = 9)
 
 ### Lorenz Curve
 
-```{r, fig.width = 6, fig.height = 6, fig.keep = 'none', warning = FALSE}
+```{r, fig.width = 6, fig.height = 6, fig.keep = 'all', warning = FALSE}
 (g1 <- ggplot() +
   geom_line(data = earners_income_df, 
             mapping = aes(x = earners, y = income))) 
