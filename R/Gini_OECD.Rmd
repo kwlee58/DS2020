@@ -2,9 +2,7 @@
 title: "Gini Coefficients of OECD Countries"
 author: "coop711"
 date: "`r Sys.Date()`"
-output:
-  html_document: default
-  pdf_document: default
+output: html_document
 ---
  
 ## Data 작업
