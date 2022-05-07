@@ -16,7 +16,7 @@ output: html_document
 options(warn = -1)
 library(knitr)
 library(magrittr)
-library(showtext)
+# library(showtext)
 ```
 
 ```{r, out.width = "80%"}
@@ -48,7 +48,8 @@ rownames(field) <- Year
 colnames(field) <- Province
 field %>% str
 options(digits = 2)
-mean_field <- field %>% colMeans(na.rm = TRUE)
+mean_field <- field %>% 
+  colMeans(na.rm = TRUE)
 prop_field <- field %>% 
   {colMeans(., na.rm = TRUE) / sum(colMeans(., na.rm = TRUE))} %>%
   `*`(100) %>%
@@ -78,9 +79,9 @@ field_melt %>% str
 ```{r, ggplot, warning = FALSE, message = FALSE, fig.width = 9, fig.height = 5}
 library(ggplot2)
 library(extrafont)
-showtext_auto()
-font_add(family = "KoPubWorld Dotum Medium", regular = "KoPubWorld/KoPubWorld Dotum Medium.ttf")
-font_add(family = "KoPubWorld Dotum Bold", regular = "KoPubWorld/KoPubWorld Dotum Bold.ttf")
+# showtext_auto()
+# font_add(family = "KoPubWorld Dotum Medium", regular = "KoPubWorld/KoPubWorld  Dotum Medium.ttf")
+# font_add(family = "KoPubWorld Dotum Bold", regular = "KoPubWorld/KoPubWorld Dotum Bold.ttf")
 g0 <- ggplot()
 g1 <- g0 +
   geom_area(data = field_melt, 
