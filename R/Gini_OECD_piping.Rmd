@@ -312,29 +312,6 @@ Gini_b_a_order_tbl <- Gini_b_a %>%
 * `Gini_b_a_order_melt`의 `Country_order`가 개선도 올림차순으로 정리되어 있는 `factor`이기 때문에 그대로 활용하면 됨. 이 데이터는 `Before`가 `After`보다 항상 큰 값을 갖기 떄문에 `position = position_identity()` 를 적용하기 매우 좋은 사례임.
 
 ```{r, fig.width = 7, fig.height = 9}
-ggplot(data = Gini_b_a_order_tbl, 
-       mapping = aes(x = Country_order, 
-                     y = Gini_Coef, 
-                     fill = Tax)) + 
-  geom_bar(stat = "identity", 
-           position = "identity", 
-           width = 0.7, 
-           na.rm = TRUE) +
-  geom_hline(yintercept = 0.4, 
-             color = "red", 
-             linetype = 2, 
-             size = 1) +
-  scale_fill_manual(values = c("darkgrey", "blue")) +
-#  scale_fill_brewer(type = "qual", palette = "Set1", direction = -1) +
-  scale_y_continuous(expand = c(0, 0), limits = c(0, 0.58)) +
-  labs(title = "OECD Gini Coefficient", 
-       subtitle = "Before and After Tax", 
-       x = "Country",
-       y = "Gini Coefficient") +
-  theme(axis.ticks.y = element_blank(),
-        plot.title = element_text(size = 15, hjust = 0.5),
-        plot.subtitle = element_text(size = 10, hjust = 0.5)) +
-  coord_flip()
 ggsave("../pics/Gini_OECD.png", width = 7, height = 9)
 ```
 
