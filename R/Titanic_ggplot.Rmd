@@ -2,9 +2,7 @@
 title: "Women and Children First!"
 author: "coop711"
 date: "`r Sys.Date()`"
-output:
-  html_document: default
-  pdf_document: default
+output: html_document
 ---
 
 타이타닉호의 침몰 과정에서 **여성과 어린이를 먼저 구한다**는 원칙은 지켜졌는가?
