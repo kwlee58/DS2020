@@ -1,8 +1,8 @@
 mosaic_gg <-
-function(tbl_df){
-#  tbl_df <- tbl %>%
-#  as.data.frame
-#  N <- length(levels(tbl_df[, 1]))
+function(tbl){
+tbl_df <- tbl %>%
+as.data.frame
+N <- length(levels(tbl_df[, 1]))
 #> data for mosaic coordinates
   pos <- function(x){
     cumsum(x) - x / 2
