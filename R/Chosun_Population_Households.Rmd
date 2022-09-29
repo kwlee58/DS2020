@@ -5,8 +5,8 @@ output: html_document
 
 ## Problem
 
-오기수 교수의 논문 조선시대 각 도별 인구 및 전답과 조세부담액 분석에 등장하는 __연도별 호수 및 인구와 호당인구__ 를 도표로 제시
-
+오기수 교수의 논문 조선시대 각 도별 인구 및 전답과 조세부담액 분석에 등장하는 __연도별 호수 및 인구와 호당인구__ 를 도표로 제시합니다. 단, 
+임진왜란 이전인 1543년 자료는 한국민족문화대백과사전에 올라와 있는 것을 추가한 것입니다. 두 자료의 내용은 동일하지만 1432년의 인구수와 호수는 차이가 있어서 세종실록지리지 자료를 채택한 오기수 교수의 논문 자료를 사용합니다.  
 
 ```{r, out.width = "75%", fig.align = "center"}
 knitr::include_graphics("../pics/chosun_population_households.png")
@@ -17,9 +17,9 @@ knitr::include_graphics("../pics/chosun_population_households.png")
 ## Data
 
 ```{r, data}
-Years <- c(1404, 1406, 1432, 1648, 1657, 1669, 1672, 1678, 1717, 1724, 1726, 1777)
-Households <- c(153403, 180246, 201853, 441321, 658771, 1313453, 1178144, 1342428, 1560561, 1572086, 1576598, 1715371)
-Population <- c(322746, 370365, 692475, 1531365, 2290083, 5018644, 4701359, 5246972, 6846568, 6865286, 7032425, 7238546)
+Years <- c(1404, 1406, 1432, 1543, 1639, 1648, 1657, 1669, 1672, 1678, 1717, 1724, 1726, 1777)
+Households <- c(153403, 180246, 201853, 836669, 441827, 441321, 658771, 1313453, 1178144, 1342428, 1560561, 1572086, 1576598, 1715371)
+Population <- c(322746, 370365, 692475, 4162021, 1521165, 1531365, 2290083, 5018644, 4701359, 5246972, 6846568, 6865286, 7032425, 7238546)
 chosun_df <- data.frame(Years, Households, Population)
 str(chosun_df)
 ```
@@ -28,12 +28,12 @@ str(chosun_df)
 
 ```{r, base plot, fig.width = 9, fig.height = 6.75}
 library(extrafont)
-par(family = "KoPubWorldDotum Medium")
+par(mar = c(5, 6, 4, 2) + 0.1, family = "KoPubWorldDotum Medium")
 plot(Population / 10000 ~ Years, 
      data = chosun_df, 
      type = "b", 
      pch = 21, 
-     col = "red", 
+     col = "blue", 
      bg = "white",
      ylim = c(0, 800), 
      xaxt = "n", 
@@ -43,12 +43,12 @@ lines(Households / 10000 ~ Years,
       data = chosun_df, 
       type = "b",
       pch = 21, 
-      col = "blue", 
+      col = "red", 
       bg = "white")
-Years_ticks <- c(1404, 1432, 1648, 1669, 1678, 1717, 1777)
+Years_ticks <- c(1404, 1432, 1543, 1639, 1648, 1669, 1678, 1717, 1777)
 Years %in% Years_ticks
 Households_ticks <- Households[Years %in% c(1404, 1669, 1777)]
-Population_ticks <- Population[Years %in% c(1404, 1432, 1648, 1657, 1669, 1717, 1777)]
+Population_ticks <- Population[Years %in% c(1404, 1432, 1543, 1648, 1657, 1669, 1672, 1717, 1777)]
 y_breaks <- c(Population_ticks, Households_ticks) / 10000
 y_labels <- format(c(Population_ticks, Households_ticks) / 10000, 
                    digits = 3, 
@@ -67,7 +67,7 @@ legend("topleft",
        inset = 0.05, 
        legend = c("인구", "호수"), 
        lty = 1, 
-       col = c("red", "blue"))
+       col = c("blue", "red"))
 text(x = 1700, 
      y = c(500, 100), 
      labels = c("인구", "호수"))
@@ -79,11 +79,13 @@ title(main = main_title,
       cex.main = 2, 
       family = "KoPubWorldDotum Bold")
 title(xlab = x_lab, 
-      ylab = y_lab, 
       line = 2, 
       family = "KoPubWorldDotum Bold")
-# dev.copy(png, file = "../pics/chosun_demo.png", width = 800, height = 450)
-# dev.off()
+title(ylab = y_lab, 
+      line = 4, 
+      family = "KoPubWorldDotum Bold")
+dev.copy(png, file = "../pics/chosun_demo.png", width = 800, height = 450)
+dev.off()
 ```
 
 <!--
@@ -134,16 +136,22 @@ g3 <- g2 +
   scale_x_continuous(name = x_lab, 
                      breaks = Years_ticks, 
                      labels = Years_ticks) +
-  theme(axis.text.x = element_text(angle = 90))
+  theme(axis.title.x = element_text(hjust = 0.5, 
+                                    angle = 0, 
+                                    family = "KoPubWorldDotum Light"), 
+        axis.text.x = element_text(angle = 90))
 g4 <- g3 +
   scale_y_continuous(name = y_lab, 
                      breaks = y_breaks, 
                      labels = y_labels) +
-  theme(axis.text.y = element_text(angle = 0))
+  theme(axis.title.y = element_text(angle = 90, 
+                                    family = "KoPubWorldDotum Light"), 
+        axis.text.y = element_text(angle = 0))
 g5 <- g4 + 
   scale_colour_manual(values = c("red", "blue"), 
                       labels = c("호수", "인구수")) +
-  theme(legend.title = element_blank())
+  theme(legend.text = element_text(family = "KoPubWorldDotum Light"),
+        legend.title = element_blank())
 g6 <- g5 + 
   theme(legend.position = c(0.2, 0.8), 
         legend.background = element_rect(colour = "black", 
@@ -152,10 +160,11 @@ g7 <- g6 +
   ggtitle(main_title) + 
   theme(plot.title = element_text(hjust = 0.5, 
                                   size = 18, 
-                                  margin = margin(b = 12))) +
+                                  margin = margin(b = 12),
+                                  family = "KoPubWorldDotum Bold")) +
   annotate("text", x = 1700, y = c(500, 100), 
            label = c("인구", "호수"), 
            family = "KoPubWorldDotum Medium")
 g7
-# ggsave("../pics/chosun_demo_ggplot.png", width = 9, height = 81/16, units = "in", dpi = 72)
+ggsave("../pics/chosun_demo_ggplot.png", width = 9, height = 81/16, units = "in", dpi = 72)
 ```

@@ -7,7 +7,9 @@ output: html_document
 
 원자료는 [세종실록](http://sillok.history_go_kr/id/kda_11208010_005), 요약표는 오기수 교수의 논문에서.
 
-`r knitr::include_graphics("../pics/sejong_ref_data.png")`
+```{r, data, out.width = "80%", fig.align = "center"}
+knitr::include_graphics("../pics/sejong_ref_data.png")
+```
 
 ```{r, echo = FALSE, message = FALSE, results = 'hide'}
 knitr::opts_chunk$set(echo = TRUE)
