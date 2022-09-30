@@ -7,6 +7,7 @@ output: html_document
 options(warn = -1)
 library(knitr)
 library(magrittr)
+library(extrafont)
 ```
 
 ## Problem
@@ -112,6 +113,7 @@ g4 <- g3 +
     scale_colour_manual(values = c("darkgrey", "blue"), 
                         labels = c("징수액", "상납액")) + 
     theme(legend.title = element_blank(), 
+          legend.text = element_text(family = "KoPubWorldDotum Light"),
           legend.box.background = element_rect(), 
           legend.spacing.x = unit(6, "pt"))
 #> g4
@@ -127,8 +129,12 @@ g7 <- g6 +
     labs(title = main_title, subtitle = sub_title)
 #> g7
 g8 <- g7 +
-  theme(plot.title = element_text(hjust = 0.5, size = 24), 
+  theme(plot.title = element_text(hjust = 0.5, 
+                                  size = 24, 
+                                  family = "KoPubWorldDotum Bold"), 
         plot.subtitle = element_text(family = "KoPubWorldDotum Medium"),
+        axis.title.x = element_text(family = "KoPubWorldDotum Medium"),
+        axis.title.y = element_text(family = "KoPubWorldDotum Medium"),
         legend.position = c(0.9, 0.8))
 g8
 ```
