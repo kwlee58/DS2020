@@ -578,7 +578,11 @@ b3_seoul <- b2_seoul +
 # geom_text(aes(y = y_stack/2), label = Vote_seoul_df$Freq)
   geom_text(aes(y = y_stack), 
             label = Vote_seoul_df[, 3], 
-            position = "identity")
+            position = "identity")+
+  ggtitle("서울의 찬반") +
+  theme(plot.title = element_text(hjust = 0.5, 
+                                  size = 18, 
+                                  family = "KoPubWorldDotum Bold")) 
 b3_seoul
 ggsave("../pics/sejong_seoul_barplot_stack_ggplot.png", b3_seoul, width = 6, height = 4.5, dpi = 72)
 ```
@@ -677,7 +681,7 @@ b3_seoul_fill <- b2_seoul_fill +
   geom_text(aes(y = p_fill), 
             label = Vote_seoul_df[, 3], 
             position = "identity") +
-  ggtitle("서울의 찬반")
+  ggtitle("서울의 찬반") 
 b3_seoul_fill
 # ggsave("../pics/sejong_seoul_barplot_fill_ggplot.png", b3_seoul_fill, width = 6, height = 4.5, dpi = 72)
 ```
@@ -721,7 +725,10 @@ ggplot(df,
 barplot_gg_stack(Vote_seoul_df) +
   theme_bw(base_family = "KoPubWorldDotum Medium") +
   labs(x = "계급", y = "집계") +
-  scale_fill_manual(name = "찬반", values = rainbow(2)[2:1])
+  scale_fill_manual(name = "찬반", values = rainbow(2)[2:1]) +
+  theme(plot.title = element_text(hjust = 0.5, 
+                                  size = 18, 
+                                  family = "KoPubWorldDotum Bold")) 
 ```
 
 <P style = "page-break-before:always">
@@ -1058,7 +1065,7 @@ m +
             label = p_df[, 2]) +
   theme_bw(base_family = "KoPubWorldDotum Medium") +
   labs(title = "서울의 찬반", x = "계급(누적 %)", y = "찬반(%)") +
-  scale_fill_manual(name = "찬반", values = rainbow(2)[2:1]) 
+  scale_fill_manual(name = "찬반", values = rainbow(2)[2:1]) +
   theme(plot.title = element_text(hjust = 0.5, 
                                   size = 18, 
                                   family = "KoPubWorldDotum Bold")) 
@@ -1104,7 +1111,7 @@ barplot_gg(Vote_Region_bureaus_df,
   theme_bw(base_family = "KoPubWorldDotum Medium") +
   labs(x = "지역", y = "집계") +
   scale_fill_manual(name = "찬반", values = rainbow(2)[2:1]) +
-  ggtitle("지방 관료들의 찬반") +
+  ggtitle("지방 관료의 찬반") +
   theme(plot.title = element_text(hjust = 0.5, 
                                   size = 18, 
                                   family = "KoPubWorldDotum Bold"))
