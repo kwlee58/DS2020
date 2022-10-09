@@ -17,10 +17,12 @@ knitr::include_graphics("../pics/Chosun_Population_and_Households_v2.png")
 ## Data
 
 ```{r, data}
-Years <- c(1395, 1432, 1543, 1639, 1651, 1660, 1669, 1678, 1721, 1732, 1774, 1786, 1807, 1837, 1852, 1864, 1906)
-Households <- c(153403, 226320, 836669, 441827, 580539, 758417, 1313652, 1332446, 1559488, 1713849, 1703030, 1740592, 1764504, 1591963, 1588875, 1703450, 2742263)
-Population <- c(322746, 766582, 4162021, 1521165, 1860484, 2479658, 5018744, 5872217, 6977097, 7273446, 7098441, 7330965, 7561403, 6708529, 6810206, 6828520, 12934282)
+Years <- c(1395, 1432, 1543, 1639, 1651, 1660, 1669, 1672, 1678, 1721, 1732, 1774, 1786, 1807, 1837, 1852, 1864, 1906)
+Households <- c(153403, 226320, 836669, 441827, 580539, 758417, 1313652, 1178144, 1332446, 1559488, 1713849, 1703030, 1740592, 1764504, 1591963, 1588875, 1703450, 2742263)
+Population <- c(322746, 766582, 4162021, 1521165, 1860484, 2479658, 5018744, 4701359, 5872217, 6977097, 7273446, 7098441, 7330965, 7561403, 6708529, 6810206, 6828520, 12934282)
 chosun_df <- data.frame(Years, Households, Population)
+chosun_df_full <- chosun_df
+chosun_df <- chosun_df_full[1:14, ]
 str(chosun_df)
 ```
 
@@ -28,14 +30,14 @@ str(chosun_df)
 
 ```{r, base plot, fig.width = 9, fig.height = 6.75}
 library(extrafont)
-par(mar = c(5, 5, 4, 2) + 0.1, family = "KoPubWorldDotum Medium")
+par(mar = c(5, 5, 4, 5) + 0.1, family = "KoPubWorldDotum Medium")
 plot(Population / 10000 ~ Years, 
      data = chosun_df, 
      type = "b", 
      pch = 21, 
-     col = "red", 
+     col = "blue", 
      bg = "white",
-     ylim = c(0, 1300), 
+     ylim = c(0, 800), 
      xaxt = "n", 
      yaxt = "n", 
      ann = FALSE)
@@ -43,12 +45,12 @@ lines(Households / 10000 ~ Years,
       data = chosun_df, 
       type = "b",
       pch = 21, 
-      col = "blue", 
+      col = "red", 
       bg = "white")
-Years_ticks <- c(1395, 1432, 1543, 1639, 1669, 1678, 1721, 1807, 1906)
+Years_ticks <- c(1395, 1432, 1543, 1639, 1669, 1678, 1721, 1774, 1807)
 Years %in% Years_ticks
-Households_ticks <- Households[Years %in% c(1404, 1669, 1807)]
-Population_ticks <- Population[Years %in% c(1404, 1432, 1678, 1721, 1807, 1906)]
+Households_ticks <- Households[Years %in% c(1395, 1543, 1669, 1807)]
+Population_ticks <- Population[Years %in% c(1395, 1432, 1543, 1639, 1669, 1672, 1678, 1721, 1807)]
 y_breaks <- c(Population_ticks, Households_ticks) / 10000
 y_labels <- format(c(Population_ticks, Households_ticks) / 10000, 
                    digits = 3, 
@@ -58,8 +60,14 @@ axis(side = 1,
      labels = Years_ticks, 
      las = 2)
 axis(side = 2, 
-     at = c(Population_ticks, Households_ticks) / 10000, 
-     labels = format(c(Population_ticks, Households_ticks) / 10000, 
+     at = Population_ticks / 10000, 
+     labels = format(Population_ticks / 10000, 
+                     digits = 3, 
+                     nsmall = 0), 
+     las = 2)
+axis(side = 4, 
+     at = Households_ticks / 10000, 
+     labels = format(Households_ticks / 10000, 
                      digits = 3, 
                      nsmall = 0), 
      las = 2)
@@ -67,13 +75,16 @@ legend("topleft",
        inset = 0.05, 
        legend = c("인구", "호수"), 
        lty = 1, 
-       col = c("red", "blue"))
-text(x = 1700, 
-     y = c(500, 100), 
-     labels = c("인구", "호수"))
+       col = c("blue", "red"))
+text(x = c(1592, 1700), 
+     y = c(380, 430), 
+     labels = c("임진왜란", "경신대기근"),
+     cex = 1.3, 
+     col = "red")
 main_title <- "조선시대 호수와 인구수의 변화"
 x_lab <- "연도"
-y_lab <- "호수와 인구수(단위 만)"
+y_lab <- "인구수(단위 만)"
+y4_lab <- "호수(단위 만)"
 title(main = main_title, 
       line = 1, 
       cex.main = 2, 
@@ -82,8 +93,10 @@ title(xlab = x_lab,
       ylab = y_lab, 
       line = 4, 
       family = "KoPubWorldDotum Bold")
-# dev.copy(png, file = "../pics/chosun_demo.png", width = 800, height = 450)
-# dev.off()
+mtext(y4_lab, side = 4, line = 2, 
+      family = "KoPubWorldDotum Bold")
+dev.copy(png, file = "../pics/chosun_demo.png", width = 800, height = 450)
+dev.off()
 ```
 
 <!--
@@ -161,5 +174,5 @@ g7 <- g6 +
            label = c("인구", "호수"), 
            family = "KoPubWorldDotum Medium")
 g7
-# ggsave("../pics/chosun_demo_ggplot.png", width = 9, height = 81/16, units = "in", dpi = 72)
+ggsave("../pics/chosun_demo_ggplot.png", width = 9, height = 81/16, units = "in", dpi = 72)
 ```

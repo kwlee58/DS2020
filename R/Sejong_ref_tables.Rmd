@@ -12,6 +12,7 @@ output: html_document
 ```{r, setup, echo = TRUE}
 knitr::opts_chunk$set(echo = TRUE)
 library(knitr)
+library(pander)
 options(width = 180, digits = 3)
 load("sejong_ref_data.RData")
 ```
@@ -35,7 +36,7 @@ kable(t(Vote_total),
 `prop.table()`은 백분율을 계산한다.
 
 ```{r}
-prop.table(Vote_total) * 100
+pander(prop.table(Vote_total) * 100)
 ```
 
 `tapply()`를 사용하여 집계할 수도 있다.
@@ -60,7 +61,7 @@ kable(Vote_Class,
 `prop.table()`을 이용하여 열 단위 백분율을 계산한다. `margin = 2` 로 설정한다.
 
 ```{r}
-prop.table(Vote_Class, margin = 2) * 100
+pander(format(prop.table(Vote_Class, margin = 2) * 100, nsmall = 1))
 ```
 
 `tapply()`를 적용하여 분할표를 만들 수도 있다.
