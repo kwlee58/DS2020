@@ -256,7 +256,7 @@ str(Gini_b_a_order_melt)
 
 * `Gini_b_a_order_melt`의 `Country_order`가 개선도 올림차순으로 정리되어 있는 `factor`이기 때문에 그대로 활용하면 됨.
 
-```{r, fig.width=7, fig.height=9}
+```{r, fig.width = 16, fig.height = 8}
 ggplot(data = Gini_b_a_order_melt, 
        mapping = aes(x = Country_order, 
                      y = Gini_Coef, 
@@ -272,10 +272,14 @@ ggplot(data = Gini_b_a_order_melt,
 #   scale_fill_brewer(type = "qual", palette = "Set1", direction = -1) +
   labs(title = "OECD Gini Coefficient", 
        subtitle = "Before and After Tax", 
+       x = "OECD Countries",
        y = "Gini Coefficient") +
-  theme(plot.title = element_text(size = 15, hjust = 0.5),
-        plot.subtitle = element_text(size = 10, hjust = 0.5)) +
-coord_flip()
+  theme(plot.title = element_text(size = 30, hjust = 0.5),
+        axis.text.x = element_text(size = 10, angle = 90, hjust = 1),
+        plot.subtitle = element_text(size = 18, hjust = 0.5)) 
+# +
+# coord_flip()
+ggsave(file = "../pics/OECD_gini_ggplot.png", dpi = 72)
 ```
 
 * 한글 제목 등의 세부 작업은 차후에

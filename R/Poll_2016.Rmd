@@ -1,0 +1,93 @@
+---
+title: "poll_2016"
+output: html_document
+date: "2022-10-14"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r cars}
+Roh <- c(47.5, 47.4, 47.7, 48.6, 48.9, 49.1)
+Lee <- c(49.3, 49.4, 48.7, 47.6, 47.1, 46.8)
+Time <- 1:6
+poll_df <- data.frame(Rates = c(Roh, Lee), Candidates = rep(c("Roh", "Lee"), each = 6), Time = rep(Time, times = 2))
+poll_df$Candidates <- factor(poll_df$Candidates, levels = c("Roh", "Lee"))
+# poll_df$Time <- factor(poll_df$Time, 
+#                        labels = c("오전 6-9시", "오전 9-11시", "오전11시-오후1시", "오후 1-3시", "오후 3-4시", "오후 4-5시"))
+```
+
+## Plots
+
+```{r, echo = FALSE, fig.width = 12, fig.height = 6, message = FALSE}
+par(family = "KoPubWorldDotum Bold")
+plot(Roh ~ Time, 
+     ann = FALSE, 
+     axes = FALSE, 
+     type = "b", 
+     pch = 21, 
+     col = "orange", 
+     bg = "white", 
+     ylim = c(46, 50),
+     xlim = c(0.5, 6.5),
+     cex = 2.0,
+     lwd = 5)
+lines(x = Time, y = Lee, 
+      type = "b", 
+      pch = 21, 
+      col = "skyblue", 
+      bg = "white", 
+      cex = 2.0, 
+      lwd = 5)
+text(x = 1:6, y = Roh, labels = Roh, pos = c(2, 1, 3, 3, 3, 4), cex = 1.5)
+text(x = 1:6, y = Lee, labels = Lee, pos = c(2, 3, 3, 1, 1, 4), cex = 1.5)
+rect(xleft = 3.9, ybottom = 46.8, xright = 4.7, ytop = 47.2, col = "skyblue", border = NA)
+polygon(x = c(4.3, 4.4, 4.6), y = c(47.2, 47.2, 47.35), col = "skyblue", border = NA)
+text(x = 4.3, y = 47.0, labels = "이회창", col = "white", cex = 1.5)
+rect(xleft = 5.1, ybottom = 48.4, xright = 5.9, ytop = 48.8, col = "orange", border = NA)
+polygon(x = c(5.5, 5.6, 5.7), y = c(48.8, 48.8, 49.0), col = "orange", border = NA)
+text(x = 5.5, y = 48.6, labels = "노무현", col = "white", cex = 1.5)
+text(x = 1.5, y = 46.3, labels = "<자료 : <한국방송> 출구조사>", cex = 1.2)
+abline(v = 1:6, col = "lightgrey")
+points(x = Time, y = Lee, 
+       type = "p", 
+       pch = 21, 
+       col = "skyblue", 
+       bg = "white", 
+       cex = 2.0, 
+       lwd = 5)
+points(x = Time, y = Roh, 
+       type = "p", 
+       pch = 21, 
+       col = "orange", 
+       bg = "white", 
+       cex = 2.0, 
+       lwd = 5)
+title(main = "투표일 시간대별 대선후보 지지율 추이", cex.main = 2.0)
+axis(side = 1, 
+     at = 1:6, 
+     tick = FALSE, 
+     line = -2, 
+     cex.axis = 1.2,
+     labels = c("오전 6-9시", "오전 9-11시", "오전11시-오후1시", "오후 1-3시", "오후 3-4시", "오후 4-5시"))
+dev.copy(png, file = "../pics/Poll_2016.png", width = 960, height = 480)
+```
+
+ggplot
+
+```{r, fig.width = 9, fig.height = 5}
+library(ggplot2)
+ggplot(data = poll_df, 
+       mapping = aes(x = Time, y = Rates, colour = Candidates)) +
+  geom_line(show.legend = FALSE, size = 3) +
+  geom_point(shape = 21, 
+             aes(colour = Candidates), 
+             size = 10, 
+             stroke = 3,
+             fill = "white",
+             show.legend = FALSE) +
+  theme_void() +
+  annotate("text", x = poll_df$Time, y = poll_df$Rates + c(0.15, -0.15, 0.15, 0.15, 0.15, 0.15, 0.15, 0.15, 0.15, -0.15, -0.15, -0.15), label = poll_df$Rates, size = 10)
+```
+

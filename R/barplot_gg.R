@@ -1,18 +1,17 @@
 barplot_gg <-
-function(x, 
-                       position){
+function(x, position){
   switch(position,
          stack = barplot_gg_stack(x),
          dodge = barplot_gg_dodge(x),
          fill = barplot_gg_fill(x))
 }
 barplot_gg_stack <-
-function(df){
-n_fill <- length(levels(df[, 1]))
-x <- df[, 2]
-y <- unlist(tapply(df[, 3], 
-                   x, 
-                   function(x){cumsum(x) - x / 2}))
+  function(df){
+    n_fill <- length(levels(df[, 1]))
+    x <- df[, 2]
+    y <- unlist(tapply(df[, 3], 
+                       x, 
+                       function(x){cumsum(x) - x / 2}))
 y_breaks <- unlist(tapply(df[, 3], 
                           x, 
                           cumsum))
@@ -37,11 +36,11 @@ ggplot(df,
             position = "identity")
 }
 barplot_gg_dodge <-
-function(df){
-n_fill <- length(levels(df[, 1]))
-x <- df[, 2]
-y_dodge <- df[, 3] / 2
-y_label < df[, 3]
+  function(df){
+    n_fill <- length(levels(df[, 1]))
+    x <- df[, 2]
+    y_dodge <- df[, 3] / 2
+    y_label < df[, 3]
 ggplot(df, aes(x = x, 
                y = df[, 3], 
                fill = df[, 1])) +
@@ -60,15 +59,15 @@ ggplot(df, aes(x = x,
             position = position_dodge(width = 0.9))
 }
 barplot_gg_fill <-
-function(df){
-n_fill <- length(levels(df[, 1]))
-x <- df[, 2]
-y_fill <- unlist(tapply(df[, 3], 
-                        x, 
-                        function(x){cumsum(x) / sum(x)}))
-p_fill <- unlist(tapply(df[, 3], 
-                        x, 
-                        function(x){(cumsum(x) - x / 2) / sum(x)}))
+  function(df){
+    n_fill <- length(levels(df[, 1]))
+    x <- df[, 2]
+    y_fill <- unlist(tapply(df[, 3], 
+                            x, 
+                            function(x){cumsum(x) / sum(x)}))
+    p_fill <- unlist(tapply(df[, 3], 
+                            x, 
+                            function(x){(cumsum(x) - x / 2) / sum(x)}))
 ggplot(df, aes(x = x, 
                y = df[, 3], 
                fill = df[, 1])) +

@@ -111,8 +111,9 @@ monty <-
           plot.title = element_text(hjust = 0.5, size = 20))
 list(monty = monty, p_wins = p_wins)
 }
-monty_plot(30)$monty
-monty_plot(30)$p_wins
+monty_plot(100)$monty
+monty_plot(100)$p_wins
+ggsave("../pics/Monty_Hall_Simulation.png", dpi = 72, width = 720, height = 480, units = "px")
 ```
 
 ## Repetitions
