@@ -78,16 +78,41 @@ ggplot
 
 ```{r, fig.width = 9, fig.height = 5}
 library(ggplot2)
+library(RColorBrewer)
+col1 <- brewer.pal(name = "Set2", n = 3)[1]
+col2 <- brewer.pal(name = "Set2", n = 3)[2]
 ggplot(data = poll_df, 
        mapping = aes(x = Time, y = Rates, colour = Candidates)) +
-  geom_line(show.legend = FALSE, size = 3) +
+  geom_line(show.legend = FALSE, size = 2) +
+  annotate("segment", x = 1:6, xend = 1:6, 
+           y = 46, yend = c(49.3, 49.4, 48.7, 48.6, 48.9, 49.1), 
+           colour = "grey", alpha = 0.2) +
+  theme_minimal(base_family = "KoPubWorldDotum Bold") +
+  annotate("text", 
+           x = poll_df$Time, 
+           y = poll_df$Rates + c(0.15, -0.15, rep(0.15, 7), rep(-0.15, 3)), 
+           label = poll_df$Rates, size = 5) +
+  annotate("rect", xmin = 3.9, xmax = 4.7, ymin = 46.8, ymax = 47.2, fill = col1) +
+  annotate("text", x = 4.3, y = 47, label = "이회창", col = "white", size = 6, family = "KoPubWorldDotum Bold") +
+  annotate("rect", xmin = 5.1, xmax = 5.9, ymin = 48.4, ymax = 48.8, fill = col2) +
+  annotate("text", x = 5.5, y = 48.6, label = "노무현", col = "white", size = 6, family = "KoPubWorldDotum Bold") + 
+  annotate("text", x = 1.5, y = 46.3, 
+           label = "<자료 : <한국방송> 출구조사>", family = "KoPubWorldDotum Bold", size = 5) +
   geom_point(shape = 21, 
              aes(colour = Candidates), 
-             size = 10, 
-             stroke = 3,
+             size = 3, 
+             stroke = 2,
              fill = "white",
              show.legend = FALSE) +
-  theme_void() +
-  annotate("text", x = poll_df$Time, y = poll_df$Rates + c(0.15, -0.15, 0.15, 0.15, 0.15, 0.15, 0.15, 0.15, 0.15, -0.15, -0.15, -0.15), label = poll_df$Rates, size = 10)
+  scale_x_continuous(name = "", 
+                     breaks = 1:6, 
+                     labels = c("오전 6-9시", "오전 9-11시", "오전11시-오후1시", "오후 1-3시", "오후 3-4시", "오후 4-5시")) +
+  scale_y_continuous(labels = NULL, breaks = NULL) +
+  labs(y = NULL) +
+  ggtitle(label = "투표일 시간대별 대선후보 지지율 추이") +
+  theme(plot.title = element_text(family = "KoPubWorldDotum Bold", size = 20, hjust = 0.5),
+        axis.text.x.bottom = element_text(family = "KoPubWorldDotum Bold", size = 15),
+        axis.line.y = element_blank())
+ggsave(file = "../pics/Poll_2016_ggplot.png", dpi = 72, width = 960, height = 480, units = "px", bg = "white")  
 ```
 
