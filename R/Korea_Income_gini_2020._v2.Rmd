@@ -8,8 +8,6 @@ output: html_document
 ```{r include = FALSE}
 library(knitr)
 library(magrittr)
-library(readxl)
-library(extrafont)
 knitr::opts_chunk$set(echo = TRUE, highlight = FALSE)
 ```
 
@@ -18,31 +16,26 @@ knitr::opts_chunk$set(echo = TRUE, highlight = FALSE)
 자료 입력
 
 ```{r, echo = FALSE, out.width = "67%"}
-knitr::include_graphics("../pics/Labor_Income_2020.png")
+knitr::include_graphics("../pics/korea_taxable_income_2020.png")
 ```
 
 ```{r, data, highlight = FALSE}
 income_kr_data <- 
-  read_excel("../data/Labor_Income_2020.xlsx", 
-             range = "A1:E15", 
-             col_names = FALSE)
-income_kr_data %<>% 
-  data.frame
+  read.table("../data/korea_taxable_income_2020.txt", 
+             header = TRUE, 
+             row.names = 1)
 str(income_kr_data)
-income_kr_sum <- cbind(income_kr_data[, 2] + income_kr_data[, 4], income_kr_data[, 3] + income_kr_data[, 5]) 
+income_kr_sum <- cbind(income_kr_data[, 1] + income_kr_data[, 2], income_kr_data[, 3] + income_kr_data[, 4]) 
 N <- 
   sum(income_kr_sum[, 1]) / 1000000 %>%
   round(1)
-(average <- 
-  sum(income_kr_sum[, 2]) / 1000000 / N %>%
-  round(1))
 income_kr <- 
   income_kr_sum %>%
   apply(MARGIN = 2, proportions) %>%
   `*`(100) %>%
   round(2) 
 str(income_kr)
-dimnames(income_kr) <- list(income_kr_data[, 1], c("Earners(%)", "Income(%)"))
+dimnames(income_kr) <- list(rownames(income_kr_data), c("Earners(%)", "Income(%)"))
 income_kr
 ```
 
@@ -513,10 +506,8 @@ library(ggplot2)
                  colour = "red",
                  size = 1))
 (c11 <- c10 +
-  annotate("text", x = 80, y = 25, 
-           label = paste("중위 급여 :", format(med, digits = 3, nsmall = 1), "백만 원"), size = 5, color = "red", srt = 0, family = "KoPubWorldDotum Medium") +
-  annotate("text", x = 100, y = 75, 
-           label = paste("평균 급여 :", format(average, digits = 3, nsmall = 1), "백만 원"), size = 5, color = "red", srt = 0, family = "KoPubWorldDotum Medium"))
+  annotate("text", x = 60, y = 25, 
+           label = "Median Income", size = 5, color = "red", srt = 15)) 
 (c12 <- c11 +
   theme_bw() +
     theme(plot.title = element_text(hjust = 0.5, size = 15),
@@ -563,12 +554,12 @@ ggsave("../pics/cumulative_plot_wage_kr_2020.png", width = 8, height = 8)
 #  scale_y_continuous(breaks = seq(0, 100, by = 25))) 
 (g10 <- g9 +
   annotate("text", x = 30, y = 60, 
-           label = paste("지니계수 :", format(gini, digits = 3, nsmall = 2)), 
-           size = 9, color = "red", srt = 15, family = "KoPubWorldDotum Medium")) 
+           label = paste("Gini = ", format(gini, digits = 3, nsmall = 2)), 
+           size = 9, color = "red", srt = 15)) 
 (g11 <- g10 +
   annotate("text", x = 80, y = 20, 
-           label = paste(format(N, digits = 2, nsmall = 1), "백만 명"), 
-           size = 9, color = "blue", family = "KoPubWorldDotum Medium"))
+           label = paste(format(N, digits = 2, nsmall = 1), "Million"), 
+           size = 9, color = "blue"))
 (g12 <- g11 +
   theme_bw() +
     theme(plot.title = element_text(hjust = 0.5, size = 15),

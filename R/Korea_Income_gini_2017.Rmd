@@ -1,5 +1,5 @@
 ---
-title: "Korea Income Distribution 2020"
+title: "Korea Income Distribution 2017"
 author: "coop711"
 date: "`r Sys.Date()`"
 output: html_document
@@ -18,12 +18,12 @@ knitr::opts_chunk$set(echo = TRUE, highlight = FALSE)
 자료 입력
 
 ```{r, echo = FALSE, out.width = "67%"}
-knitr::include_graphics("../pics/Labor_Income_2020.png")
+knitr::include_graphics("../pics/Labor_Income_2017.png")
 ```
 
 ```{r, data, highlight = FALSE}
 income_kr_data <- 
-  read_excel("../data/Labor_Income_2020.xlsx", 
+  read_excel("../data/Labor_Income_2017.xlsx", 
              range = "A1:E15", 
              col_names = FALSE)
 income_kr_data %<>% 
@@ -390,7 +390,7 @@ axis(side = 2,
      labels = income)
 abline(h = c(0, 100), lty = 3)
 abline(v = c(0, 100), lty = 3)
-title_4 <- "Lorenz Curve of Korea Wage Earners' Income 2020"
+title_4 <- "Lorenz Curve of Korea Wage Earners' Income 2017"
 xlab_4 <- "Wage Earners Cumulated (%)"
 ylab_4 <- "Income Cumulated (%)"
 title(main = title_4, 
@@ -526,7 +526,7 @@ library(ggplot2)
 
 ```{r, fig.width = 6, fig.height = 6}
 c12
-ggsave("../pics/cumulative_plot_wage_kr_2020.png", width = 8, height = 8)
+ggsave("../pics/cumulative_plot_wage_kr_2017.png", width = 8, height = 8)
 ```
 
 <P style = "page-break-before:always">
@@ -577,7 +577,7 @@ ggsave("../pics/cumulative_plot_wage_kr_2020.png", width = 8, height = 8)
 
 ```{r, final output, fig.width = 8, fig.height = 8}
 g12
-ggsave("../pics/lorenz_curve_wage_kr_2020.png", width = 8, height = 8)
+ggsave("../pics/lorenz_curve_wage_kr_2017.png", width = 8, height = 8)
 ```
 
 

@@ -9,7 +9,6 @@ output: html_document
 library(knitr)
 library(magrittr)
 library(readxl)
-library(extrafont)
 knitr::opts_chunk$set(echo = TRUE, highlight = FALSE)
 ```
 
@@ -24,7 +23,7 @@ knitr::include_graphics("../pics/Labor_Income_2020.png")
 ```{r, data, highlight = FALSE}
 income_kr_data <- 
   read_excel("../data/Labor_Income_2020.xlsx", 
-             range = "A1:E15", 
+             range = "A1:E11", 
              col_names = FALSE)
 income_kr_data %<>% 
   data.frame
@@ -33,9 +32,9 @@ income_kr_sum <- cbind(income_kr_data[, 2] + income_kr_data[, 4], income_kr_data
 N <- 
   sum(income_kr_sum[, 1]) / 1000000 %>%
   round(1)
-(average <- 
-  sum(income_kr_sum[, 2]) / 1000000 / N %>%
-  round(1))
+average <- 
+  sum(income_kr_sum[, 2]) / N %>%
+  round(1)
 income_kr <- 
   income_kr_sum %>%
   apply(MARGIN = 2, proportions) %>%
@@ -130,15 +129,15 @@ barplot(height_earners,
 실제 인원은 거의 없는 것처럼 보이는 5억원 이상의 구간을 합쳐야 할 필요. 자료를 재구성하면,
 
 ```{r}
-income_kr_2 <- income_kr[1:13, ]
-income_kr_2[13, ] <- apply(income_kr[13:15, ], 
+income_kr_2 <- income_kr[1:9, ]
+income_kr_2[9, ] <- apply(income_kr[9:11, ], 
                            MARGIN = 2, 
                            FUN = sum)
 income_kr_2
 rownames(income_kr_2)
-rownames(income_kr_2)[13] <- "300 -  "
+rownames(income_kr_2)[9] <- "300 -  "
 income_kr_2
-(income_breaks_2 <- income_breaks[1:14])
+(income_breaks_2 <- income_breaks[1:10])
 income_widths_2 <- diff(income_breaks_2)
 height_earners_2 <- income_kr_2[, 1]/income_widths_2
 names_bar_2 <- rownames(income_kr_2)
@@ -163,10 +162,10 @@ title(main = title_1,
 1억 이상의 구간을 합치기 위하여 자료를 다시 손보면,
 
 ```{r}
-income_kr_3 <- income_kr_2[1:11, ]
-income_kr_3[11, ] <- apply(income_kr_2[11:13, ], 2, sum)
-rownames(income_kr_3)[9] <- "100 -   "
-income_breaks_3 <- income_breaks_2[-(13:14)]
+income_kr_3 <- income_kr_2[1:7, ]
+income_kr_3[7, ] <- apply(income_kr_2[7:9, ], 2, sum)
+rownames(income_kr_3)[7] <- "100 -   "
+income_breaks_3 <- income_breaks_2[-(8:9)]
 income_widths_3 <- diff(income_breaks_3)
 height_earners_3 <- income_kr_3[, 1]/income_widths_3
 names_bar_3 <- rownames(income_kr_3)
@@ -240,7 +239,7 @@ income_class_cum <- strsplit(rownames(income_kr_cum),
 income_class_cum <- sapply(income_class_cum, 
                            FUN = function(x){x[2]})
 income_class_cum <- paste("0 ~", income_class_cum)
-income_class_cum[c(1, 16)] <- c("~ 0", "0 ~ 2000")
+income_class_cum[c(1, 12)] <- c("~ 0", "0 ~ 2000")
 rownames(income_kr_cum) <- income_class_cum
 colnames(income_kr_cum) <- c("Cumulated Wage Earners (%)", "Cumulated Income (%)")
 income_kr_cum
@@ -288,7 +287,7 @@ title(main = title_2,
 여기서 계산해 보면 $\frac{x-20}{30-20} = \frac{50 - 30.1}{52.5-30.1}$로부터 $x = 28.9$가 계산된다.
 
 ```{r, median}
-med <- 20 + 10 * (50 - income_kr_cum[4]) / (income_kr_cum[5] - income_kr_cum[4])
+med <- 10 + 10 * (50 - income_kr_cum[2, 1]) / (income_kr_cum[3, 1] - income_kr_cum[2, 1])
 round(med, digits = 3)
 ```
 
@@ -492,7 +491,7 @@ library(ggplot2)
 (c4 <- c3 +
   geom_vline(xintercept = c(0, 200), linetype = "dotted")) 
 (c5 <- c4 + 
-  geom_polygon(data = poly_df[-(13:16), ], 
+  geom_polygon(data = poly_df[-(9:12), ], 
                mapping = aes(x = x, y = y), 
                alpha = 0.5, fill = "grey")) 
 (c6 <- c5 +
@@ -513,10 +512,8 @@ library(ggplot2)
                  colour = "red",
                  size = 1))
 (c11 <- c10 +
-  annotate("text", x = 80, y = 25, 
-           label = paste("중위 급여 :", format(med, digits = 3, nsmall = 1), "백만 원"), size = 5, color = "red", srt = 0, family = "KoPubWorldDotum Medium") +
-  annotate("text", x = 100, y = 75, 
-           label = paste("평균 급여 :", format(average, digits = 3, nsmall = 1), "백만 원"), size = 5, color = "red", srt = 0, family = "KoPubWorldDotum Medium"))
+  annotate("text", x = 60, y = 25, 
+           label = "Median Income", size = 5, color = "red", srt = 15)) 
 (c12 <- c11 +
   theme_bw() +
     theme(plot.title = element_text(hjust = 0.5, size = 15),
@@ -526,7 +523,7 @@ library(ggplot2)
 
 ```{r, fig.width = 6, fig.height = 6}
 c12
-ggsave("../pics/cumulative_plot_wage_kr_2020.png", width = 8, height = 8)
+ggsave("../pics/cumulative_plot_wage_kr.png", width = 9, height = 9)
 ```
 
 <P style = "page-break-before:always">
@@ -555,20 +552,20 @@ ggsave("../pics/cumulative_plot_wage_kr_2020.png", width = 8, height = 8)
 (g7 <- g6 +
   labs(title = title_4, x = xlab_4, y = ylab_4))
 (g8 <- g7 +
-  scale_x_continuous(breaks = earners[c(1:11, 16)], 
-                     labels = format(earners[c(1:11, 16)], nsmall = 1))) 
+  scale_x_continuous(breaks = earners[c(1:7, 12)], 
+                     labels = format(earners[c(1:7, 12)], nsmall = 1))) 
 (g9 <- g8 +
-  scale_y_continuous(breaks = income[c(1:13, 16)], 
-                     labels = format(income[c(1:13, 16)], digits = 2, nsmall = 1)))
+  scale_y_continuous(breaks = income[c(1:9, 12)], 
+                     labels = format(income[c(1:9, 12)], digits = 2, nsmall = 1)))
 #  scale_y_continuous(breaks = seq(0, 100, by = 25))) 
 (g10 <- g9 +
   annotate("text", x = 30, y = 60, 
-           label = paste("지니계수 :", format(gini, digits = 3, nsmall = 2)), 
-           size = 9, color = "red", srt = 15, family = "KoPubWorldDotum Medium")) 
+           label = paste("Gini = ", format(gini, digits = 3, nsmall = 2)), 
+           size = 9, color = "red", srt = 15)) 
 (g11 <- g10 +
   annotate("text", x = 80, y = 20, 
-           label = paste(format(N, digits = 2, nsmall = 1), "백만 명"), 
-           size = 9, color = "blue", family = "KoPubWorldDotum Medium"))
+           label = paste(format(N, digits = 2, nsmall = 1), "Million"), 
+           size = 9, color = "blue"))
 (g12 <- g11 +
   theme_bw() +
     theme(plot.title = element_text(hjust = 0.5, size = 15),

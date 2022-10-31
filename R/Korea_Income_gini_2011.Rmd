@@ -1,5 +1,5 @@
 ---
-title: "Korea Income Distribution 2020"
+title: "Korea Income Distribution 2011"
 author: "coop711"
 date: "`r Sys.Date()`"
 output: html_document
@@ -18,13 +18,13 @@ knitr::opts_chunk$set(echo = TRUE, highlight = FALSE)
 자료 입력
 
 ```{r, echo = FALSE, out.width = "67%"}
-knitr::include_graphics("../pics/Labor_Income_2020.png")
+knitr::include_graphics("../pics/Labor_Income_2011.png")
 ```
 
 ```{r, data, highlight = FALSE}
 income_kr_data <- 
-  read_excel("../data/Labor_Income_2020.xlsx", 
-             range = "A1:E15", 
+  read_excel("../data/Labor_Income_2011.xlsx", 
+             range = "A1:E14", 
              col_names = FALSE)
 income_kr_data %<>% 
   data.frame
@@ -130,15 +130,15 @@ barplot(height_earners,
 실제 인원은 거의 없는 것처럼 보이는 5억원 이상의 구간을 합쳐야 할 필요. 자료를 재구성하면,
 
 ```{r}
-income_kr_2 <- income_kr[1:13, ]
-income_kr_2[13, ] <- apply(income_kr[13:15, ], 
+income_kr_2 <- income_kr[1:12, ]
+income_kr_2[12, ] <- apply(income_kr[12:14, ], 
                            MARGIN = 2, 
                            FUN = sum)
 income_kr_2
 rownames(income_kr_2)
-rownames(income_kr_2)[13] <- "300 -  "
+rownames(income_kr_2)[12] <- "300 -  "
 income_kr_2
-(income_breaks_2 <- income_breaks[1:14])
+(income_breaks_2 <- income_breaks[1:13])
 income_widths_2 <- diff(income_breaks_2)
 height_earners_2 <- income_kr_2[, 1]/income_widths_2
 names_bar_2 <- rownames(income_kr_2)
@@ -163,10 +163,10 @@ title(main = title_1,
 1억 이상의 구간을 합치기 위하여 자료를 다시 손보면,
 
 ```{r}
-income_kr_3 <- income_kr_2[1:11, ]
-income_kr_3[11, ] <- apply(income_kr_2[11:13, ], 2, sum)
-rownames(income_kr_3)[9] <- "100 -   "
-income_breaks_3 <- income_breaks_2[-(13:14)]
+income_kr_3 <- income_kr_2[1:10, ]
+income_kr_3[10, ] <- apply(income_kr_2[10:12, ], 2, sum)
+rownames(income_kr_3)[8] <- "100 -   "
+income_breaks_3 <- income_breaks_2[-(12:13)]
 income_widths_3 <- diff(income_breaks_3)
 height_earners_3 <- income_kr_3[, 1]/income_widths_3
 names_bar_3 <- rownames(income_kr_3)
@@ -240,7 +240,7 @@ income_class_cum <- strsplit(rownames(income_kr_cum),
 income_class_cum <- sapply(income_class_cum, 
                            FUN = function(x){x[2]})
 income_class_cum <- paste("0 ~", income_class_cum)
-income_class_cum[c(1, 16)] <- c("~ 0", "0 ~ 2000")
+income_class_cum[c(1, 15)] <- c("~ 0", "0 ~ 2000")
 rownames(income_kr_cum) <- income_class_cum
 colnames(income_kr_cum) <- c("Cumulated Wage Earners (%)", "Cumulated Income (%)")
 income_kr_cum
@@ -390,7 +390,7 @@ axis(side = 2,
      labels = income)
 abline(h = c(0, 100), lty = 3)
 abline(v = c(0, 100), lty = 3)
-title_4 <- "Lorenz Curve of Korea Wage Earners' Income 2020"
+title_4 <- "Lorenz Curve of Korea Wage Earners' Income 2011"
 xlab_4 <- "Wage Earners Cumulated (%)"
 ylab_4 <- "Income Cumulated (%)"
 title(main = title_4, 
@@ -412,8 +412,8 @@ axis(side = 1,
      at = earners, 
      labels = format(earners, nsmall = 1))
 axis(side = 2, 
-     at = income[c(1:10, 14)], 
-     labels = format(income[c(1:10, 14)], nsmall = 1), 
+     at = income[c(1:9, 13)], 
+     labels = format(income[c(1:9, 13)], nsmall = 1), 
      las = 1)
 abline(h = c(0, 100), lty = 3)
 abline(v = c(0, 100), lty = 3)
@@ -453,8 +453,8 @@ axis(side = 1,
      at = earners, 
      labels = format(earners, nsmall = 1))
 axis(side = 2, 
-     at = income[c(1:10, 14)], 
-     labels = format(income[c(1:10, 14)], nsmall = 1), 
+     at = income[c(1:9, 13)], 
+     labels = format(income[c(1:9, 13)], nsmall = 1), 
      las = 1)
 abline(h = c(0, 100), lty = 3)
 abline(v = c(0, 100), lty = 3)
@@ -492,7 +492,7 @@ library(ggplot2)
 (c4 <- c3 +
   geom_vline(xintercept = c(0, 200), linetype = "dotted")) 
 (c5 <- c4 + 
-  geom_polygon(data = poly_df[-(13:16), ], 
+  geom_polygon(data = poly_df[-(12:15), ], 
                mapping = aes(x = x, y = y), 
                alpha = 0.5, fill = "grey")) 
 (c6 <- c5 +
@@ -526,7 +526,7 @@ library(ggplot2)
 
 ```{r, fig.width = 6, fig.height = 6}
 c12
-ggsave("../pics/cumulative_plot_wage_kr_2020.png", width = 8, height = 8)
+ggsave("../pics/cumulative_plot_wage_kr_2011.png", width = 8, height = 8)
 ```
 
 <P style = "page-break-before:always">
@@ -555,11 +555,11 @@ ggsave("../pics/cumulative_plot_wage_kr_2020.png", width = 8, height = 8)
 (g7 <- g6 +
   labs(title = title_4, x = xlab_4, y = ylab_4))
 (g8 <- g7 +
-  scale_x_continuous(breaks = earners[c(1:11, 16)], 
-                     labels = format(earners[c(1:11, 16)], nsmall = 1))) 
+  scale_x_continuous(breaks = earners[c(1:10, 15)], 
+                     labels = format(earners[c(1:10, 15)], nsmall = 1))) 
 (g9 <- g8 +
-  scale_y_continuous(breaks = income[c(1:13, 16)], 
-                     labels = format(income[c(1:13, 16)], digits = 2, nsmall = 1)))
+  scale_y_continuous(breaks = income[c(1:12, 15)], 
+                     labels = format(income[c(1:12, 15)], digits = 2, nsmall = 1)))
 #  scale_y_continuous(breaks = seq(0, 100, by = 25))) 
 (g10 <- g9 +
   annotate("text", x = 30, y = 60, 
@@ -577,7 +577,7 @@ ggsave("../pics/cumulative_plot_wage_kr_2020.png", width = 8, height = 8)
 
 ```{r, final output, fig.width = 8, fig.height = 8}
 g12
-ggsave("../pics/lorenz_curve_wage_kr_2020.png", width = 8, height = 8)
+ggsave("../pics/lorenz_curve_wage_kr_2011.png", width = 8, height = 8)
 ```
 
 
