@@ -11,22 +11,25 @@ output: html_document
 
 ```{r}
 library(knitr)
+library(readxl)
 library(magrittr)
 library(printr)
-Gini_b_tax <- read.table(file="../data/Gini_before_tax.txt", 
-                         header = FALSE, 
-                         sep = "\t")
-Gini_a_tax <- read.table(file="../data/Gini_after_tax.txt", 
-                         header = FALSE, 
-                         sep = "\t")
-str(Gini_b_tax)
-str(Gini_a_tax)
-lapply(list(Gini_b_tax, Gini_a_tax), str)
+Gini <-
+  read_excel("../data/GOV-2021-162-EN-G121.xlsx",
+             range = "A38:C71",
+#             range = "A38:C75",
+             col_names = TRUE)
+names(Gini) <- c("Country", "After", "Before")
+Gini %<>%
+  data.frame
+Gini_b_a <-
+  Gini[, c(1, 3, 2)]
+
 ```
 
 * 2000년 후반 자료만 모아서 새로운 data frame 구성
 
-```{r}
+```{r, eval = FALSE}
 (Gini_b_a<-data.frame(Country = Gini_b_tax$V1, 
                       Before = Gini_b_tax$V8, 
                       After = Gini_a_tax$V8))
@@ -268,19 +271,22 @@ ggplot(data = Gini_b_a_order_melt,
              color = "red", 
              linetype = 3, 
              size = 1) +
-  scale_fill_manual(values = c("darkgrey", "blue")) +
+  scale_fill_manual(name = "", 
+#                    limits = c("Before", "After"),
+                    labels = c("세전", "세후"),
+                    values = c("darkgrey", "blue")) +
 #   scale_fill_brewer(type = "qual", palette = "Set1", direction = -1) +
-  labs(title = "OECD Gini Coefficient", 
-       subtitle = "Before and After Tax", 
-       x = "OECD Countries",
+  labs(title = "OECD 지니계수", 
+       subtitle = "세전, 세후 개선도순", 
+       x = "",
        y = "Gini Coefficient") +
   theme_minimal(base_family = "KoPubWorldDotum Medium") +
-  theme(plot.title = element_text(size = 30, hjust = 0.5),
-        axis.text.x = element_text(size = 10, angle = 45, hjust = 1, vjust = 1.2),
+  theme(plot.title = element_text(family = "KoPubWorldDotum Bold", size = 30, hjust = 0.5),
+        axis.text.x = element_text(size = 10, angle = 0, hjust = 0.5, vjust = 0.5),
         plot.subtitle = element_text(size = 18, hjust = 0.5)) 
 # +
 # coord_flip()
-ggsave(file = "../pics/OECD_gini_ggplot.png", dpi = 72)
+ggsave(file = "../pics/OECD_gini_ggplot_2018.png", dpi = 72)
 ```
 
 * 한글 제목 등의 세부 작업은 차후에
@@ -288,5 +294,5 @@ ggsave(file = "../pics/OECD_gini_ggplot.png", dpi = 72)
 #### 뒷 마무리
 
 ```{r}
-save.image(file = "Gini_OECD1801.RData")
+save.image(file = "Gini_OECD_2018.RData")
 ```
