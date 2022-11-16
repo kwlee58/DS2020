@@ -36,6 +36,7 @@ plot(Population / 10000 ~ Years,
      type = "b", 
      pch = 21, 
      col = "blue", 
+     lwd = 2,
      bg = "white",
      ylim = c(0, 800), 
      xaxt = "n", 
@@ -45,7 +46,8 @@ lines(Households / 10000 ~ Years,
       data = chosun_df, 
       type = "b",
       pch = 21, 
-      col = "red", 
+      col = "red",
+      lwd = 2,
       bg = "white")
 Years_ticks <- c(1395, 1432, 1543, 1639, 1669, 1678, 1721, 1774, 1807)
 Years %in% Years_ticks
@@ -95,7 +97,7 @@ title(xlab = x_lab,
       family = "KoPubWorldDotum Bold")
 mtext(y4_lab, side = 4, line = 2, 
       family = "KoPubWorldDotum Bold")
-dev.copy(png, file = "../pics/chosun_demo.png", width = 800, height = 450)
+dev.copy(png, file = "../pics/chosun_demo_v2.png", width = 800, height = 450)
 dev.off()
 ```
 
