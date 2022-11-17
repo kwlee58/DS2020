@@ -269,24 +269,33 @@ ggplot(data = Gini_b_a_order_melt,
            na.rm = TRUE) +
   geom_hline(yintercept = 0.4, 
              color = "red", 
-             linetype = 3, 
-             size = 1) +
+             linetype = "dotted", 
+             linewidth = 2) +
   scale_fill_manual(name = "", 
 #                    limits = c("Before", "After"),
                     labels = c("세전", "세후"),
                     values = c("darkgrey", "blue")) +
 #   scale_fill_brewer(type = "qual", palette = "Set1", direction = -1) +
+  geom_text(mapping = aes(x = Country_order,
+                          y = -0.02,
+                          label = Country_order),
+            size = 5,
+            angle = 45,
+            family = "KoPubWorldDotum Medium") +
   labs(title = "OECD 지니계수", 
-       subtitle = "세전, 세후 개선도순", 
+       subtitle = "세전, 세후 개선도 낮은순", 
        x = "",
        y = "Gini Coefficient") +
   theme_minimal(base_family = "KoPubWorldDotum Medium") +
-  theme(plot.title = element_text(family = "KoPubWorldDotum Bold", size = 30, hjust = 0.5),
-        axis.text.x = element_text(size = 10, angle = 0, hjust = 0.5, vjust = 0.5),
+  theme(plot.title = element_text(size = 30, hjust = 0.5, 
+                                  family = "KoPubWorldDotum Bold"),
+        axis.text.y = element_text(size = 12),
+        axis.text.x = element_blank(),
+        legend.text = element_text(size = 12),
         plot.subtitle = element_text(size = 18, hjust = 0.5)) 
 # +
 # coord_flip()
-ggsave(file = "../pics/OECD_gini_ggplot_2018.png", dpi = 72)
+ggsave(file = "../pics/OECD_gini_ggplot_2018.png", dpi = 72, bg = "white")
 ```
 
 * 한글 제목 등의 세부 작업은 차후에
