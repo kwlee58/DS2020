@@ -13,7 +13,7 @@ output: html_document
 library(knitr)
 library(readxl)
 library(magrittr)
-library(printr)
+library(extrafont)
 Gini <-
   read_excel("../data/GOV-2021-162-EN-G121.xlsx",
              range = "A38:C71",
