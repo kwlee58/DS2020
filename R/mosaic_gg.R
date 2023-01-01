@@ -42,12 +42,12 @@ N <- length(levels(tbl_df[, 1]))
 #> 
 #> breaks and labels
   tbl_p_m <- tapply(tbl_p_df[, 3], tbl_p_df[, 2], sum)
-  x_breaks <- c(0, ifelse(cumsum(tbl_p_m) < 0.1, 0.0, cumsum(tbl_p_m)))
+  x_breaks <- c(0, ifelse(cumsum(tbl_p_m) < 0.01, 0.0, cumsum(tbl_p_m)))
   x_label <- format(x_breaks * 100, 
-                    digits = 3, 
+                    digits = 2, 
                     nsmall = 1)
   y_breaks <- tbl_p_df$y_breaks
-  delta <- (max(y_breaks) - min(y_breaks)) / 20
+  delta <- (max(y_breaks) - min(y_breaks)) / 100
   y_breaks_sort <- sort(y_breaks)
   diff(y_breaks_sort) < delta 
   index <- which(diff(y_breaks_sort)  > delta)
