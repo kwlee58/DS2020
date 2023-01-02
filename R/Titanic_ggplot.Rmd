@@ -9,7 +9,6 @@ output: html_document
 
 # Data
 
-
 ```{r}
 library(magrittr)
 library(knitr)
