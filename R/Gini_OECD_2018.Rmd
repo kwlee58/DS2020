@@ -295,7 +295,7 @@ ggplot(data = Gini_b_a_order_melt,
         plot.subtitle = element_text(size = 18, hjust = 0.5)) 
 # +
 # coord_flip()
-ggsave(file = "../pics/OECD_gini_ggplot_2018.png", dpi = 72, bg = "white")
+ggsave(file = "../pics/OECD_gini_ggplot_2018.png", dpi = 300, bg = "white")
 ```
 
 * 한글 제목 등의 세부 작업은 차후에

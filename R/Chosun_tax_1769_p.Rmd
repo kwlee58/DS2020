@@ -133,6 +133,7 @@ g8 <- g7 +
                                   size = 24, 
                                   family = "KoPubWorldDotum Bold"), 
         plot.subtitle = element_text(family = "KoPubWorldDotum Medium"),
+        axis.text.x = element_text(family = "KoPubWorldDotum Medium"),
         axis.title.x = element_text(family = "KoPubWorldDotum Medium"),
         axis.title.y = element_text(family = "KoPubWorldDotum Medium"),
         legend.position = c(0.9, 0.8))
