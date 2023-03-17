@@ -80,7 +80,7 @@ kable(field_melt)
 
 ## ggplot
 
-```{r, ggplot, warning = FALSE, message = FALSE, fig.width = 9, fig.height = 5}
+```{r, ggplot, warning = FALSE, message = FALSE, fig.width = 12, fig.height = 5}
 library(ggplot2)
 # showtext_auto()
 # font_add(family = "KoPubWorld Dotum Medium", regular = "KoPubWorld/KoPubWorld  Dotum Medium.ttf")
@@ -195,7 +195,7 @@ text_df <- data.frame(x = (Year[3] + Year[4]) / 2,
 
 <P style = "page-break-before:always">
 
-```{r, warning = FALSE, message = FALSE, fig.width = 9, fig.height = 6.75}
+```{r, warning = FALSE, message = FALSE, fig.width = 9, fig.height = 5}
 g10 <- g9 +
   guides(fill = FALSE) +
   geom_text(data = text_df, 
@@ -216,6 +216,6 @@ g10 <- g9 +
 
 g10
 
-ggsave("../pics/chosun_field_ggplot.png", dpi = 72)
+ggsave("../pics/chosun_field_ggplot_v2.png", dpi = 72)
 ```
 
