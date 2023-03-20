@@ -71,12 +71,13 @@ kable(class_roll[sample(1:nrow(class_roll), size = 25), ])
 str(class_roll)
 ```
 
-<!--
+
 ```{r, save}
-write.table(class_roll, file ="../data/class_roll_masked.txt")
-save.image("../R/class_roll_170303_data_masked.RData")
+write.table(class_roll, 
+            file ="../data/class_roll_masked.txt")
+save.image("./class_roll_170303_data_masked.RData")
+saveRDS(class_roll, "./class_roll_170303_masked.RDS")
 ```
--->
 
 ## Comments
 
