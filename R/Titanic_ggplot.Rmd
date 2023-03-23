@@ -7,8 +7,7 @@ output: html_document
 
 타이타닉호의 침몰 과정에서 **여성과 어린이를 먼저 구한다**는 원칙은 지켜졌는가?
 
-## Data
-
+# Data
 
 ```{r}
 library(magrittr)
@@ -23,14 +22,14 @@ load("Titanic_Base.RData")
 ls()
 ```
 
-## Source User Defined Functions
+# Source User Defined Functions
 
 ```{r}
 source("barplot_gg.R")
 source("mosaic_gg.R")
 ```
 
-## Data Manipulation
+# Data Manipulation
 
 ```{r}
 Surv_Class %>% 
@@ -54,231 +53,236 @@ Child_Class %>%
   str
 ```
 
-## Plots 
+# Plots 
 
-### By Class
+## By Class
 
-#### Barplots
+## Barplots
 
-```{r, fig.width = 12, fig.height = 6, warning = FALSE, message = FALSE}
-b1_stack <- barplot_gg_stack(as.data.frame(as.table(Surv_Class)[2:1, ])) + 
+```{r, fig.width = 12, fig.height = 5, warning = FALSE, message = FALSE}
+b1_stack <- barplot_gg_stack(as.data.frame(as.table(Surv_Class)[1:2, ])) + 
   theme_bw() +
   labs(x = "객실 등급", y = "인원(명)") +
   scale_fill_manual(name = "", 
-                    labels = c("생존", "사망"), 
-                    values = rainbow(2)[2:1]) +
+                    labels = c("사망", "생존"), 
+                    values = rainbow(2)[1:2]) +
   theme(axis.title.x = element_text(family = "KoPubWorldDotum Light"),
         axis.title.y = element_text(family = "KoPubWorldDotum Light"),
         legend.text = element_text(family = "KoPubWorldDotum Light"))
-b1_fill <- barplot_gg_fill(as.data.frame(as.table(Surv_Class)[2:1, ])) + 
+b1_fill <- barplot_gg_fill(as.data.frame(as.table(Surv_Class)[1:2, ])) + 
   theme_bw() +
   labs(x = "객실 등급", y = "백분율(%)") + 
   scale_fill_manual(name = "", 
-                    labels = c("생존", "사망"), 
-                    values = rainbow(2)[2:1]) +
+                    labels = c("사망", "생존"), 
+                    values = rainbow(2)[1:2]) +
   theme(axis.title.x = element_text(family = "KoPubWorldDotum Light"),
         axis.title.y = element_text(family = "KoPubWorldDotum Light"),
         legend.text = element_text(family = "KoPubWorldDotum Light"))
 top1 <- textGrob("객실 등급별 생존/사망", 
                  gp = gpar(cex = 1.5, fontfamily = "KoPubWorldDotum Bold"))
-grid.arrange(b1_stack, b1_fill, ncol = 2, top = top1)
+b1 <- grid.arrange(b1_stack, b1_fill, ncol = 2, top = top1)
+ggsave("../pics/Titanic_geom_bar01.png", b1, width = 12, height = 5, dpi = 300)
 ```
 
-#### Mosaic Plots
+## Mosaic Plots
 
-```{r, fig.width = 7.2, fig.height = 6, warning = FALSE, message = FALSE}
-mosaic_gg(as.table(Surv_Class)[2:1, ])$m +
+```{r, fig.width = 6, fig.height = 5, warning = FALSE, message = FALSE}
+mosaic_gg(as.table(Surv_Class)[1:2, ])$m +
   theme_bw() +
   labs(x = "객실 등급 누적(%)", y = "백분율(%)") + 
   ggtitle("객실 등급별 생존/사망") + 
   scale_fill_manual(name = "", 
-                    labels = c("생존", "사망"), 
-                    values = rainbow(2)[2:1]) +
+                    labels = c("사망", "생존"), 
+                    values = rainbow(2)[1:2]) +
   theme(axis.title.x = element_text(family = "KoPubWorldDotum Light"),
         axis.title.y = element_text(family = "KoPubWorldDotum Light"),
         legend.text = element_text(family = "KoPubWorldDotum Light"),
         plot.title = element_text(hjust = 0.5, family = "KoPubWorldDotum Bold"))
-ggsave("../pics/Titanic_mosaic_ggplot01.png", width = 8, height = 6, dpi = 72)
+ggsave("../pics/Titanic_mosaic_ggplot01.png", width = 6, height = 5, dpi = 300)
 ```
 
-### By Sex
+## By Sex
 
-#### Barplots
+## Barplots
 
-```{r, fig.width = 12, fig.height = 6, warning = FALSE, message = FALSE}
-b2_stack <- barplot_gg_stack(as.data.frame(as.table(Surv_Sex)[2:1, ])) + 
+```{r, fig.width = 12, fig.height = 5, warning = FALSE, message = FALSE}
+b2_stack <- barplot_gg_stack(as.data.frame(as.table(Surv_Sex)[1:2, ])) + 
   theme_bw() +
   labs(x = "남녀", y = "인원(명)") +
   scale_fill_manual(name = "", 
-                    labels = c("생존", "사망"), 
-                    values = rainbow(2)[2:1]) +
+                    labels = c("사망", "생존"), 
+                    values = rainbow(2)[1:2]) +
   theme(axis.title.x = element_text(family = "KoPubWorldDotum Light"),
         axis.title.y = element_text(family = "KoPubWorldDotum Light"),
         legend.text = element_text(family = "KoPubWorldDotum Light"))
-b2_fill <- barplot_gg_fill(as.data.frame(as.table(Surv_Sex)[2:1, ])) + 
+b2_fill <- barplot_gg_fill(as.data.frame(as.table(Surv_Sex)[1:2, ])) + 
   theme_bw() +
   labs(x = "남녀", y = "백분율(%)") + 
   scale_fill_manual(name = "", 
-                    labels = c("생존", "사망"), 
-                    values = rainbow(2)[2:1]) +
+                    labels = c("사망", "생존"), 
+                    values = rainbow(2)[1:2]) +
   theme(axis.title.x = element_text(family = "KoPubWorldDotum Light"),
         axis.title.y = element_text(family = "KoPubWorldDotum Light"),
         legend.text = element_text(family = "KoPubWorldDotum Light"))
 top2 <- textGrob("남녀별 생존/사망", 
                  gp = gpar(cex = 1.5, fontfamily = "KoPubWorldDotum Bold"))
-grid.arrange(b2_stack, b2_fill, ncol = 2, top = top2)
+b2 <- grid.arrange(b2_stack, b2_fill, ncol = 2, top = top2)
+ggsave("../pics/Titanic_geom_bar02.png", b2, width = 12, height = 5, dpi = 300)
 ```
 
-#### Mosaic Plots
+## Mosaic Plots
 
-```{r, fig.width = 7.2, fig.height = 6, warning = FALSE, message = FALSE}
-mosaic_gg(as.table(Surv_Sex)[2:1, ])$m +
+```{r, fig.width = 6, fig.height = 5, warning = FALSE, message = FALSE}
+mosaic_gg(as.table(Surv_Sex)[1:2, ])$m +
   theme_bw() +
   labs(x = "남녀별 누적(%)", y = "백분율(%)") + 
   ggtitle("남녀별 생존/사망") + 
   scale_fill_manual(name = "", 
-                    labels = c("생존", "사망"), 
-                    values = rainbow(2)[2:1]) +
+                    labels = c("사망", "생존"), 
+                    values = rainbow(2)[1:2]) +
   theme(axis.title.x = element_text(family = "KoPubWorldDotum Light"),
         axis.title.y = element_text(family = "KoPubWorldDotum Light"),
         legend.text = element_text(family = "KoPubWorldDotum Light"),
         plot.title = element_text(hjust = 0.5, family = "KoPubWorldDotum Bold"))
-ggsave("../pics/Titanic_mosaic_ggplot02.png", width = 8, height = 6, dpi = 72)
+ggsave("../pics/Titanic_mosaic_ggplot02.png", width = 6, height = 5, dpi = 300)
 ```
 
-### By Age
+## By Age
 
-#### Barplots
+## Barplots
 
-```{r, fig.width = 12, fig.height = 6, warning = FALSE, message = FALSE}
-b3_stack <- barplot_gg_stack(as.data.frame(as.table(Surv_Age)[2:1, ])) + 
+```{r, fig.width = 12, fig.height = 5, warning = FALSE, message = FALSE}
+b3_stack <- barplot_gg_stack(as.data.frame(as.table(Surv_Age)[1:2, ])) + 
   theme_bw() +
   labs(x = "어린이와 어른", y = "인원(명)") +
   scale_fill_manual(name = "", 
-                    labels = c("생존", "사망"), 
-                    values = rainbow(2)[2:1]) +
+                    labels = c("사망", "생존"), 
+                    values = rainbow(2)[1:2]) +
   theme(axis.title.x = element_text(family = "KoPubWorldDotum Light"),
         axis.title.y = element_text(family = "KoPubWorldDotum Light"),
         legend.text = element_text(family = "KoPubWorldDotum Light"))
-b3_fill <- barplot_gg_fill(as.data.frame(as.table(Surv_Age)[2:1, ])) + 
+b3_fill <- barplot_gg_fill(as.data.frame(as.table(Surv_Age)[1:2, ])) + 
   theme_bw() +
   labs(x = "어린이와 어른", y = "백분율(%)") + 
   scale_fill_manual(name = "", 
-                    labels = c("생존", "사망"), 
-                    values = rainbow(2)[2:1]) +
+                    labels = c("사망", "생존"), 
+                    values = rainbow(2)[1:2]) +
   theme(axis.title.x = element_text(family = "KoPubWorldDotum Light"),
         axis.title.y = element_text(family = "KoPubWorldDotum Light"),
         legend.text = element_text(family = "KoPubWorldDotum Light"))
 top3 <- textGrob("어린이와 어른의 생존/사망", 
                  gp = gpar(cex = 1.5, fontfamily = "KoPubWorldDotum Bold"))
-grid.arrange(b3_stack, b3_fill, ncol = 2, top = top3)
+b3 <- grid.arrange(b3_stack, b3_fill, ncol = 2, top = top3)
+ggsave("../pics/Titanic_geom_bar03.png", b3, width = 12, height = 5, dpi = 300)
 ```
 
-#### Mosaic Plots
+## Mosaic Plots
 
-```{r, fig.width = 7.2, fig.height = 6, warning = FALSE, message = FALSE}
-mosaic_gg(as.table(Surv_Age)[2:1, ])$m +
+```{r, fig.width = 6, fig.height = 5, warning = FALSE, message = FALSE}
+mosaic_gg(as.table(Surv_Age)[1:2, ])$m +
   theme_bw() +
   labs(x = "어린이/어른 누적(%)", y = "백분율(%)") + 
   ggtitle("어린이/어른 생존/사망") + 
   scale_fill_manual(name = "", 
-                    labels = c("생존", "사망"), 
-                    values = rainbow(2)[2:1]) +
+                    labels = c("사망", "생존"), 
+                    values = rainbow(2)[1:2]) +
   theme(axis.title.x = element_text(family = "KoPubWorldDotum Light"),
         axis.title.y = element_text(family = "KoPubWorldDotum Light"),
         legend.text = element_text(family = "KoPubWorldDotum Light"),
         plot.title = element_text(hjust = 0.5, family = "KoPubWorldDotum Bold"))
-ggsave("../pics/Titanic_mosaic_ggplot03.png", width = 8, height = 6, dpi = 72)
+ggsave("../pics/Titanic_mosaic_ggplot03.png", width = 6, height = 5, dpi = 300)
 ```
 
-### Female by Class
+## Female by Class
 
-#### Barplots
+## Barplots
 
-```{r, fig.width = 12, fig.height = 6, warning = FALSE, message = FALSE}
-b4_stack <- barplot_gg_stack(as.data.frame(as.table(Female_Class)[2:1, ])) + 
+```{r, fig.width = 12, fig.height = 5, warning = FALSE, message = FALSE}
+b4_stack <- barplot_gg_stack(as.data.frame(as.table(Female_Class)[1:2, ])) + 
   theme_bw() +
   labs(x = "객실 등급", y = "인원(명)") +
   scale_fill_manual(name = "", 
-                    labels = c("생존", "사망"), 
-                    values = rainbow(2)[2:1]) +
+                    labels = c("사망", "생존"), 
+                    values = rainbow(2)[1:2]) +
   theme(axis.title.x = element_text(family = "KoPubWorldDotum Light"),
         axis.title.y = element_text(family = "KoPubWorldDotum Light"),
         legend.text = element_text(family = "KoPubWorldDotum Light"))
-b4_fill <- barplot_gg_fill(as.data.frame(as.table(Female_Class)[2:1, ])) + 
+b4_fill <- barplot_gg_fill(as.data.frame(as.table(Female_Class)[1:2, ])) + 
   theme_bw() +
   labs(x = "객실 등급", y = "백분율(%)") + 
   scale_fill_manual(name = "", 
-                    labels = c("생존", "사망"), 
-                    values = rainbow(2)[2:1]) +
+                    labels = c("사망", "생존"), 
+                    values = rainbow(2)[1:2]) +
   theme(axis.title.x = element_text(family = "KoPubWorldDotum Light"),
         axis.title.y = element_text(family = "KoPubWorldDotum Light"),
         legend.text = element_text(family = "KoPubWorldDotum Light"))
 top4 <- textGrob("객실 등급별 여성 생존/사망", 
                  gp = gpar(cex = 1.5, fontfamily = "KoPubWorldDotum Bold"))
-grid.arrange(b4_stack, b4_fill, ncol = 2, top = top4)
+b4 <- grid.arrange(b4_stack, b4_fill, ncol = 2, top = top4)
+ggsave("../pics/Titanic_geom_bar04.png", b4, width = 12, height = 5, dpi = 300)
 ```
 
-#### Mosaic Plots
+## Mosaic Plots
 
-```{r, fig.width = 7.2, fig.height = 6, warning = FALSE, message = FALSE}
-mosaic_gg(as.table(Female_Class)[2:1, ])$m +
+```{r, fig.width = 6, fig.height = 5, warning = FALSE, message = FALSE}
+mosaic_gg(as.table(Female_Class)[1:2, ])$m +
   theme_bw() +
   labs(x = "객실 등급 누적(%)", y = "백분율(%)")$m + 
   ggtitle("객실 등급별 여성 생존/사망") + 
   scale_fill_manual(name = "", 
-                    labels = c("생존", "사망"), 
-                    values = rainbow(2)[2:1]) +
+                    labels = c("사망", "생존"), 
+                    values = rainbow(2)[1:2]) +
   theme(axis.title.x = element_text(family = "KoPubWorldDotum Light"),
         axis.title.y = element_text(family = "KoPubWorldDotum Light"),
         legend.text = element_text(family = "KoPubWorldDotum Light"),
         plot.title = element_text(hjust = 0.5, family = "KoPubWorldDotum Bold"))
-ggsave("../pics/Titanic_mosaic_ggplot04.png", width = 8, height = 6, dpi = 72)
+ggsave("../pics/Titanic_mosaic_ggplot04.png", width = 6, height = 5, dpi = 300)
 ```
 
-### Children by Class
+## Children by Class
 
-#### Barplots
+## Barplots
 
-```{r, fig.width = 12, fig.height = 6, warning = FALSE}
-b5_stack <- barplot_gg_stack(as.data.frame(as.table(Child_Class)[2:1, ])) + 
+```{r, fig.width = 12, fig.height = 5, warning = FALSE}
+b5_stack <- barplot_gg_stack(as.data.frame(as.table(Child_Class)[1:2, ])) + 
   theme_bw() +
   labs(x = "객실 등급", y = "인원(명)") +
   scale_fill_manual(name = "", 
-                    labels = c("생존", "사망"), 
-                    values = rainbow(2)[2:1]) +
+                    labels = c("사망", "생존"), 
+                    values = rainbow(2)[1:2]) +
   theme(axis.title.x = element_text(family = "KoPubWorldDotum Light"),
         axis.title.y = element_text(family = "KoPubWorldDotum Light"),
         legend.text = element_text(family = "KoPubWorldDotum Light"))
-b5_fill <- barplot_gg_fill(as.data.frame(as.table(Child_Class)[2:1, ])) + 
+b5_fill <- barplot_gg_fill(as.data.frame(as.table(Child_Class)[1:2, ])) + 
   theme_bw() +
   labs(x = "객실 등급", y = "백분율(%)") + 
   scale_fill_manual(name = "", 
-                    labels = c("생존", "사망"), 
-                    values = rainbow(2)[2:1]) +
+                    labels = c("사망", "생존"), 
+                    values = rainbow(2)[1:2]) +
   theme(axis.title.x = element_text(family = "KoPubWorldDotum Light"),
         axis.title.y = element_text(family = "KoPubWorldDotum Light"),
         legend.text = element_text(family = "KoPubWorldDotum Light"))
 top5 <- textGrob("객실 등급별 어린이 생존/사망", 
                  gp = gpar(cex = 1.5, fontfamily = "KoPubWorldDotum Bold"))
-grid.arrange(b5_stack, b5_fill, ncol = 2, top = top5)
+b5 <- grid.arrange(b5_stack, b5_fill, ncol = 2, top = top5)
+ggsave("../pics/Titanic_geom_bar05.png", b5, width = 12, height = 5, dpi = 300)
 ```
 
-#### Mosaic Plots
+## Mosaic Plots
 
-```{r, fig.width = 7.2, fig.height = 6}
-mosaic_gg(as.table(Child_Class)[2:1, -4])$m +
+```{r, fig.width = 6, fig.height = 5}
+mosaic_gg(as.table(Child_Class)[1:2, -4])$m +
   theme_bw() +
   labs(x = "객실 등급 누적(%)", y = "백분율(%)") + 
   ggtitle("객실 등급별 어린이 생존/사망") + 
   scale_fill_manual(name = "", 
-                    labels = c("생존", "사망"), 
-                    values = rainbow(2)[2:1]) +
+                    labels = c("사망", "생존"), 
+                    values = rainbow(2)[1:2]) +
   theme(axis.title.x = element_text(family = "KoPubWorldDotum Light"),
         axis.title.y = element_text(family = "KoPubWorldDotum Light"),
         legend.text = element_text(family = "KoPubWorldDotum Light"),
         plot.title = element_text(hjust = 0.5, family = "KoPubWorldDotum Bold"))
-ggsave("../pics/Titanic_mosaic_ggplot05.png", width = 8, height = 6, dpi = 72)
+ggsave("../pics/Titanic_mosaic_ggplot05.png", width = 6, height = 5, dpi = 300)
 ```
 
 

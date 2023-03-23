@@ -478,7 +478,7 @@ text(x = 30, y = 60,
 
 ### Cumulative Distribution
 
-```{r, fig.width = 6, fig.height = 6, fig.keep = 'none', warning = TRUE}
+```{r, fig.width = 7, fig.height = 7, fig.keep = 'none', warning = TRUE}
 library(ggplot2)
 (c1 <- ggplot() +
   geom_line(data = earners_kor_cum_df, 
@@ -520,20 +520,20 @@ library(ggplot2)
 (c12 <- c11 +
   theme_bw() +
     theme(plot.title = element_text(hjust = 0.5, size = 15),
-          axis.text.x = element_text(angle = 270)))
+          axis.text.x = element_text(angle = 90)))
 ```
 
 
 ```{r, fig.width = 6, fig.height = 6}
 c12
-ggsave("../pics/cumulative_plot_wage_kr_2020.png", width = 8, height = 8)
+ggsave("../pics/cumulative_plot_wage_kr_2020.png", width = 8, height = 8, dpi = 300)
 ```
 
 <P style = "page-break-before:always">
 
 ### Lorenz Curve
 
-```{r, fig.width = 6, fig.height = 6, fig.keep = 'none', warning = FALSE}
+```{r, fig.width = 7, fig.height = 7, fig.keep = 'none', warning = FALSE}
 (g1 <- ggplot() +
   geom_line(data = earners_income_df, 
             mapping = aes(x = earners, y = income))) 
@@ -572,12 +572,12 @@ ggsave("../pics/cumulative_plot_wage_kr_2020.png", width = 8, height = 8)
 (g12 <- g11 +
   theme_bw() +
     theme(plot.title = element_text(hjust = 0.5, size = 15),
-          axis.text.x = element_text(angle = 270)))
+          axis.text.x = element_text(angle = 90)))
 ```
 
 ```{r, final output, fig.width = 8, fig.height = 8}
 g12
-ggsave("../pics/lorenz_curve_wage_kr_2020.png", width = 8, height = 8)
+ggsave("../pics/lorenz_curve_wage_kr_2020.png", width = 8, height = 8, dpi = 300)
 ```
 
 

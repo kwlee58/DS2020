@@ -39,7 +39,7 @@ kable(head(class_roll))
 `substring() <-`을 이용하면 각 이름의 2번째 글자 이후를 모두 "ㅇㅇ"으로 대체할 수 있다.
 
 ```{r}
-substring(class_roll$name, 2) <- "ㅇㅇ"
+substring(class_roll$name, first = 2) <- "ㅇㅇ"
 kable(head(class_roll))
 ```
 
@@ -48,7 +48,7 @@ kable(head(class_roll))
 모바일 폰 번호의 끝 네 자리를 "xxxx" 로 대체한다. 정상적으로 번호가 나올 경우 열번째 글자부터 열세번째글자에 해당한다.
 
 ```{r, cell_no}
-substring(class_roll$cell_no, 10, 13) <- "xxxx"
+substring(class_roll$cell_no, first = 10, last = 13) <- "xxxx"
 kable(head(class_roll))
 ```
 
@@ -71,14 +71,12 @@ kable(class_roll[sample(1:nrow(class_roll), size = 25), ])
 str(class_roll)
 ```
 
-````{=html}
 <!--
 ```{r, save}
 write.table(class_roll, file ="../data/class_roll_masked.txt")
 save.image("../R/class_roll_170303_data_masked.RData")
 ```
 -->
-````
 
 ## Comments
 
