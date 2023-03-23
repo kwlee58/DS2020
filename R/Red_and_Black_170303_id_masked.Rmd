@@ -14,10 +14,12 @@ library(knitr)
 ### Data
 
 ```{r, data}
-class_roll <- read.table("../data/class_roll_masked.txt", 
-                         header = TRUE,
-                         encoding = "CP949",
-                         stringsAsFactors = FALSE)
+class_roll <- readRDS("./class_roll_170303_masked.RDS")
+# load("./class_roll_170303_data_masked.RData")
+# class_roll <- read.table("../data/class_roll_masked.txt", 
+#                          header = TRUE,
+#                          encoding = "CP949",
+#                          stringsAsFactors = FALSE)
 str(class_roll)
 ```
 
@@ -58,14 +60,13 @@ kable(table("그룹" = class_roll$group,
             "13학번 기준" = ID_13))
 ```
 
-<!--
 ### 학번 홀짝
 
 ```{r, odd or even}
-odd.even <- as.numeric(class_roll$id) %% 2
-kable(table("odd_even" = odd.even, "Group"= class_roll$group))
+odd_even <- as.numeric(class_roll$id) %% 2
+kable(table("odd_even" = odd_even, "Group"= class_roll$group))
 ```
--->
+
 
 ### email 서비스업체
 
