@@ -162,8 +162,24 @@ plot(graunt, ann = FALSE, xaxt = "n", yaxt = "n", type = "b")
 axis(side = 1, at = graunt$x, labels = graunt$x)
 axis(side = 2, at = graunt$xPo_g, labels = graunt$xPo_g)
 abline(v = c(0, 76), lty = 2)
-polygon(graunt_poly, density = 15)
+polygon(graunt_poly, density = 15, angle = 45)
 abline(v = graunt$x, lty = 2)
+points(graunt, pch = 21, col = "black", bg = "white")
+main_title <- "Graunt's Survival Function"
+x_lab <- "Age (years)"
+y_lab <- "Proportion of Survival (%)"
+title(main = main_title, xlab = x_lab, ylab = y_lab)
+```
+
+7. Horizontal Grids
+
+```{r, fig.width = 6, fig.height = 6}
+plot(graunt, ann = FALSE, xaxt = "n", yaxt = "n", type = "b")
+axis(side = 1, at = graunt$x, labels = graunt$x)
+axis(side = 2, at = graunt$xPo_g, labels = graunt$xPo_g)
+abline(v = c(0, 76), lty = 2)
+polygon(graunt_poly, density = 15, angle = 45)
+abline(h = graunt$xPo_g, lty = 2)
 points(graunt, pch = 21, col = "black", bg = "white")
 main_title <- "Graunt's Survival Function"
 x_lab <- "Age (years)"
