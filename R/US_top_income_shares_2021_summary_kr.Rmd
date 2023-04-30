@@ -133,11 +133,13 @@ text(x = c(1924, 2007, 2021),
      pos = 3)
 text(x = c(1935, 1965, 2015), 
      y = c(22, 8, 25), 
-     labels = times_label, 
+     labels = c("(가)", "(나)", "(다)"),
+#     labels = times_label, 
      cex = 1.5, 
      col = "red")
 dev.copy(png, 
-         file = "../pics/US_top_income_share_1-4-5_2021_kr.png", 
+#         file = "../pics/US_top_income_share_1-4-5_2021_kr.png", 
+         file = "../pics/US_top_income_share_1-4-5_2021_kr_Q.png", 
          width = 960, 
          height = 540)
 dev.off()
