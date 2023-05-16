@@ -107,7 +107,7 @@ text(x = 1964, y = 0.2,
 #> 외부 그림 파일로 저장.
 # dev.copy(png, file ="../pics/US_Top_Income_Share_vs_MTR_kr.png", width = 960, height = 540)
 dev.copy(png, 
-         file ="../pics/US_Top_Income_Share_vs_MTR_kr_wide.png",
+         file ="../pics/US_Top_Income_Share_vs_MTR_kr_wide_2018.png",
          width = 960, 
          height = 540)
 dev.off()
@@ -185,7 +185,7 @@ text(x = 1998,
      labels = "상위 1% 소득점유율", 
      cex = 1.2)
 dev.copy(png, 
-         file ="../pics/US_Top_Income_Share_vs_inverse_MTR_kr.png",
+         file ="../pics/US_Top_Income_Share_vs_inverse_MTR_kr_2018.png",
          width = 960, 
          height = 540)
 dev.off()
@@ -278,7 +278,7 @@ text(x = 1925,
      labels = "최고 한계세율", 
      cex = 1.2)
 dev.copy(png, 
-         file ="../pics/US_Income_Growth_vs_MTR_kr.png", 
+         file ="../pics/US_Income_Growth_vs_MTR_kr_2018.png", 
          width = 960, 
          height = 540)
 dev.off()
@@ -366,7 +366,7 @@ text(x = 1925,
      labels = "최고 한계세율", 
      cex = 1.2)
 dev.copy(png, 
-         file ="../pics/US_Income_Growth_vs_MTR_K_kr.png", 
+         file ="../pics/US_Income_Growth_vs_MTR_K_kr_2018.png", 
          width = 960, 
          height = 540)
 dev.off()

@@ -47,7 +47,7 @@ N <- length(levels(tbl_df[, 1]))
                     digits = 2, 
                     nsmall = 1)
   y_breaks <- tbl_p_df$y_breaks
-  delta <- (max(y_breaks) - min(y_breaks)) / 100
+  delta <- (max(y_breaks) - min(y_breaks)) / 20
   y_breaks_sort <- sort(y_breaks)
   diff(y_breaks_sort) < delta 
   index <- which(diff(y_breaks_sort)  > delta)
