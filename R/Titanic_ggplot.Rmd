@@ -227,7 +227,7 @@ ggsave("../pics/Titanic_geom_bar04.png", b4, width = 12, height = 5, dpi = 300)
 ```{r, fig.width = 6, fig.height = 5, warning = FALSE, message = FALSE}
 mosaic_gg(as.table(Female_Class)[1:2, ])$m +
   theme_bw() +
-  labs(x = "객실 등급 누적(%)", y = "백분율(%)")$m + 
+  labs(x = "객실 등급 누적(%)", y = "백분율(%)") + 
   ggtitle("객실 등급별 여성 생존/사망") + 
   scale_fill_manual(name = "", 
                     labels = c("사망", "생존"), 
