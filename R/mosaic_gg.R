@@ -66,10 +66,10 @@ m <-
            col = "white", 
            size = 1, 
            position = position_stack(reverse = TRUE)) +
-#  geom_text(aes(x = center, 
-#                y = 1.05), 
-#            family = "KoPubWorldDotum Medium",
-#            label = tbl_p_df[, 2]) +
+  geom_text(aes(x = center, 
+                y = 1.05), 
+            family = "KoPubWorldDotum Medium",
+            label = tbl_p_df[, 2]) +
   geom_text(aes(x = center, 
                 y = label_height), 
             label = format(ifelse(tbl_df[, 3] == 0, "", tbl_df[, 3]), 
