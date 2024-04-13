@@ -25,11 +25,7 @@ knitr::include_graphics("../pics/poll_2017_JTBC.jpg")
 ## Data Setup
 
 ```{r, data}
-<<<<<<< HEAD
-# library(extrafont)
-=======
-library(extrafont) ## KoPubWOrld 폰트를 등록하기 위하여 필요함.
->>>>>>> dc2e2354c2aa757508924d6d0c160c19f41490e7
+library(extrafont) 
 library(showtext)
 candidates <- c("문재인", "안희정", "황교안", "안철수", "이재명", "유승민") 
 rates <- c(33, 22, 9, 9, 5, 2)
@@ -53,7 +49,6 @@ barplot(rates)
 
 ```{r, fig.width = 8, fig.height = 4}
 showtext_auto()
-<<<<<<< HEAD
 ## World와 Dotum을 띄어쓰면 악명높은 Error in grid.call(C_textBounds ...) 가 나오게 되어 ttf 파일 이름과는 달리 붙여쓰게 되었음.
 font_add(family = "KoPubWorldDotum Medium", regular =
            "/System/Library/Fonts/Supplemental/KoPubWorld Dotum Medium.ttf")
@@ -63,7 +58,6 @@ font_add(family = "KoPubWorldDotum Bold", regular =
            "/System/Library/Fonts/Supplemental/KoPubWorld Dotum Medium.ttf")
 #          "System/Library/Fonts/KoPubWorld Dotum Bold.ttf") 
 #          "/Users/kwlee/Library/Fonts//KoPubWorld Dotum Bold.ttf")
-=======
 font_families()
 font_paths()
 ## regular 에서 kwlee 를 자신의 사용자 이름으로 바꿔줘야 함.
@@ -76,7 +70,6 @@ font_add(family = "KoPubWorldDotum Medium",
 font_add(family = "KoPubWorldDotum Bold", 
 #         regular = "C:/Windows/Fonts/KoPubWorld Dotum Medium.ttf") ## 작동하지 않음.
          regular = "C:/Users/kwlee/AppData/Local/Microsoft/Windows/Fonts/KoPubWorld Dotum Bold.ttf")
->>>>>>> dc2e2354c2aa757508924d6d0c160c19f41490e7
 par(family = "KoPubWorldDotum Medium")
 b1 <- barplot(rates, 
               axes = FALSE, 
@@ -137,7 +130,7 @@ g0 <- ggplot(data = rates_df,
 ```{r, fig.height = 4, fig.width = 8, show.text = TRUE}
 (g6 <- g5 +
   theme(plot.title = element_text(family = "KoPubWorldDotum Bold", 
-                                  size = 25, 
+                                  size = 20, 
                                   hjust = 0.5)))
 (g7 <- g6 +
   scale_y_continuous(breaks = rates, labels = rates))
@@ -160,7 +153,7 @@ g0 <- ggplot(data = rates_df,
     geom_text(mapping = aes(x = candidates,
                             y = -1,
                             label = candidates),
-              size = 8,
+              size = 5,
               family = "KoPubWorldDotum Medium"))
 ```
 <P style = "page-break-before:always">
@@ -173,7 +166,7 @@ g0 <- ggplot(data = rates_df,
              y = Inf, 
              label = main_title, 
              vjust = 1.5, 
-             size = 12,
+             size = 8,
              family = "KoPubWorldDotum Bold"))
 ```
 

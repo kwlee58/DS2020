@@ -46,6 +46,7 @@ barplot(rates)
 
 ```{r, fig.width = 8, fig.height = 4}
 par(family = "")
+# par(family = "AppleGothic")
 b1 <- barplot(rates, 
               axes = FALSE, 
               col = candidates_colour, 
@@ -89,7 +90,8 @@ g0 <- ggplot(data = rates_df,
   geom_bar(stat = "identity", 
            fill = candidates_colour))
 (g3 <- g2 +
-  theme_bw(base_family = ""))
+    theme_bw(base_family = ""))
+#   theme_bw(base_family = "AppleGothic"))
 (g4 <- g3 +
   geom_text(mapping = aes(x = candidates, 
                           y = rates + c(rep(-3, 4), rep(2, 2)), 
@@ -104,7 +106,8 @@ g0 <- ggplot(data = rates_df,
 
 ```{r, fig.height = 4, fig.width = 8}
 (g6 <- g5 +
-  theme(plot.title = element_text(family = "", 
+   theme(plot.title = element_text(family = "",    
+#   theme(plot.title = element_text(family = "AppleGothic", 
                                   size = 15, 
                                   hjust = 0.5)))
 (g7 <- g6 +
@@ -129,6 +132,7 @@ g0 <- ggplot(data = rates_df,
                             y = -1,
                             label = candidates),
               size = 5,
+#               family = "AppleGothic"
               family = ""))
 ```
 <P style = "page-break-before:always">
@@ -142,6 +146,7 @@ g0 <- ggplot(data = rates_df,
              label = main_title, 
              vjust = 1.5, 
              size = 6,
+#              family = "AppleGothic"
              family = ""))
 ```
 
