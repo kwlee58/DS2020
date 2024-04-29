@@ -1,11 +1,10 @@
 horsekick %T>%
   plot(Cum ~ Deaths, data = .,
        xlim = c(-0.5, 4.5), ylim = c(50, 100), 
-       xlab = "사망자수", ylab = "누적백분율(%)", 
+       xlab = "사망자 수", ylab = "누적 백분률(%)", 
        yaxt = "n")
-#> `axis()` ?Լ??? ?̿??Ͽ? `y`?? ??��. `las = 2`?? ???ҿ? ��??
-horsekick %$%
-  axis(side = 2,
+#> `axis()` 함수를 이용하여 `y`축 설정. `las = 2`의 역할에 유의
+horsekickxis(side = 2,
        at = Cum, 
        labels = format(Cum, digits = 1, nsmall = 1),
        las = 2)
