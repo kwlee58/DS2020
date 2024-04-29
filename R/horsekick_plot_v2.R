@@ -1,9 +1,9 @@
 horsekick %T>%
   plot(Cum ~ Deaths, data = .,
        xlim = c(-0.5, 4.5), ylim = c(50, 100), 
-       xlab = "»ç¸ÁÀÚ ¼ö", ylab = "´©Àû ¹éºÐ·ü(%)", 
+       xlab = "ì‚¬ë§ìžìˆ˜", ylab = "ëˆ„ì ë°±ë¶„ìœ¨(%)", 
        yaxt = "n")
-#> `axis()` ÇÔ¼ö¸¦ ÀÌ¿ëÇÏ¿© `y`Ãà ¼³Á¤. `las = 2`ÀÇ ¿ªÇÒ¿¡ À¯ÀÇ
+#> `axis()` ?Ô¼??? ?Ì¿??Ï¿? `y`?? ??Á¤. `las = 2`?? ???Ò¿? À¯??
 horsekick %$%
   axis(side = 2,
        at = Cum, 
