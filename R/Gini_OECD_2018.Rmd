@@ -25,15 +25,6 @@ Gini %<>%
 Gini_b_a <-
   Gini[, c(1, 3, 2)]
 ```
-
-* 2000년 후반 자료만 모아서 새로운 data frame 구성
-
-```{r, eval = FALSE}
-(Gini_b_a<-data.frame(Country = Gini_b_tax$V1, 
-                      Before = Gini_b_tax$V8, 
-                      After = Gini_a_tax$V8))
-```
-
 * 세전과 세후의 Gini 계수 차이를 개선도(Improvement)라고 명명.
 
 ```{r}
