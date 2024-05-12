@@ -76,11 +76,11 @@ text(x = c(1935, 1965, 2015),
      label = times_label, 
      cex = 1.5, 
      col = "red")
-dev.copy(png, 
-         file = "../pics/US_top_income_share_10_2022_kr.png", 
-         width = 960, 
-         height = 540)
-dev.off()
+# dev.copy(png, 
+#          file = "../pics/US_top_income_share_10_2022_kr.png", 
+#          width = 960, 
+#          height = 540)
+# dev.off()
 ```
 
 ### Top 10% 분할
@@ -137,12 +137,12 @@ text(x = c(1935, 1965, 2015),
 #     labels = times_label, 
      cex = 1.5, 
      col = "red")
-dev.copy(png, 
-#         file = "../pics/US_top_income_share_1-4-5_2022_kr.png", 
-         file = "../pics/US_top_income_share_1-4-5_2022_kr_Q.png", 
-         width = 960, 
-         height = 540)
-dev.off()
+# dev.copy(png, 
+##         file = "../pics/US_top_income_share_1-4-5_2022_kr.png", 
+#          file = "../pics/US_top_income_share_1-4-5_2022_kr_Q.png", 
+#          width = 960, 
+#          height = 540)
+# dev.off()
 ```
 
 <P style="page-break-before:always">
@@ -204,11 +204,11 @@ text(x = c(1935, 1965, 2015),
      label = times_label, 
      cex = 1.5, 
      col = "red")
-dev.copy(png, 
-         file = "../pics/US_top_income_share_0.1-0.4-0.5_2022_kr.png", 
-         width = 960, 
-         height = 540)
-dev.off()
+# dev.copy(png, 
+#          file = "../pics/US_top_income_share_0.1-0.4-0.5_2022_kr.png", 
+#          width = 960, 
+#          height = 540)
+# dev.off()
 ```
 
 ### Top 0.1% 분할
@@ -258,11 +258,11 @@ text(x = c(1935, 1965, 2015),
      label = times_label, 
      cex = 1.5, 
      col = "red")
-dev.copy(png, 
-         file = "../pics/US_top_income_share_0.01-0.09_2022_kr.png", 
-         width = 960, 
-         height = 540)
-dev.off()
+# dev.copy(png, 
+#          file = "../pics/US_top_income_share_0.01-0.09_2022_kr.png", 
+#          width = 960, 
+#          height = 540)
+# dev.off()
 ```
 
 <P style = "page-break-before:always">
