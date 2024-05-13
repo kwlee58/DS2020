@@ -40,9 +40,9 @@ options(digits = 3)
 #> 한글 폰트 설정
 par(family = "")
 #> 백분율로 표시
-horsekick_p <- n_corps / sum(n_corps)
+horsekick_p <- n_corps / sum(n_corps) * 100
 #> 누적백분율
-horsekick_cum <- cumsum(horsekick_p) * 100
+horsekick_cum <- cumsum(horsekick_p) 
 #> 백분율과 누적백분율 비교
 cbind(horsekick_p, horsekick_cum)
 #> 누적백분율을 점으로 표시. `yaxt = "n"` 의 효과 확인
@@ -165,11 +165,11 @@ lapply(data.frame(poly_xy),
 ```{r fig.width = 5.5, fig.height = 5.5, message = FALSE}
 par(family = "")
 source("horsekick_plot.R")
-# apply(h_xy, MARGIN = 1, FUN = l_xy)
+apply(h_xy, MARGIN = 1, FUN = l_xy)
 mapply(polygon, 
        lapply(data.frame(poly_xy), 
               FUN = function(v) cbind(v[1:4], v[5:8])), 
-       density = 20, angle = c(45, 135, 45, 135), border = NA)
+       density = 20, angle = c(45, 135, 45, 135), border = "black")
 points(x = n_deaths, y = horsekick_cum,
        pch = 21, bg = "black", col = "black")
 points(x = n_deaths[2:5], y = horsekick_cum[1:4],
@@ -194,7 +194,7 @@ apply(h_xy, MARGIN = 1, FUN = l_xy)
 mapply(polygon, 
        lapply(data.frame(poly_xy_2), 
               function(v) cbind(v[1:4], v[5:8])), 
-       density = 20, angle = c(45, 135, 45, 135), border = NA)
+       density = 20, angle = c(45, 135, 45, 135), border = "black")
 points(x = n_deaths, y = horsekick_cum,
        pch = 21, bg = "black", col = "black")
 points(x = n_deaths[2:5], y = horsekick_cum[1:4],

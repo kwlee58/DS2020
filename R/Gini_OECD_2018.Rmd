@@ -24,17 +24,7 @@ Gini %<>%
   data.frame
 Gini_b_a <-
   Gini[, c(1, 3, 2)]
-
 ```
-
-* 2000년 후반 자료만 모아서 새로운 data frame 구성
-
-```{r, eval = FALSE}
-(Gini_b_a<-data.frame(Country = Gini_b_tax$V1, 
-                      Before = Gini_b_tax$V8, 
-                      After = Gini_a_tax$V8))
-```
-
 * 세전과 세후의 Gini 계수 차이를 개선도(Improvement)라고 명명.
 
 ```{r}
@@ -198,7 +188,7 @@ par(old_par)
 ```{r fig.width = 5, fig.height = 10}
 old_par <- par(no.readonly = TRUE)
 par("mai")
-par("mai" = c(1.0, 1.5, 0.8, 0.8))
+par("mai" = c(1.0, 1.5, 0.8, 1.2))
 barplot(as.matrix(t(Gini_b_a[order(Gini_b_a$Improvement, 
                                    na.last = FALSE), 2:3])), 
         beside = TRUE, 
@@ -206,7 +196,7 @@ barplot(as.matrix(t(Gini_b_a[order(Gini_b_a$Improvement,
         names.arg = Gini_b_a$Country[order(Gini_b_a$Improvement, 
                                            na.last = FALSE)],
         legend.text = c("Before Tax", "After Tax"), 
-        args.legend = list(x = 0.67, y = 110), 
+        args.legend = list(x = 0.7, y = 106.5), 
         las = 1)
 abline(v = 0.4, lty = 2, col = "red")
 title(main = "Gini Coefficients of OECD Countries")
