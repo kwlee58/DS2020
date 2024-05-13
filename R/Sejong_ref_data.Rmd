@@ -31,7 +31,7 @@ options(width = 180)
 
 ```{r, reading data}
 sejong_ref <- read.table("../data/sejong_ref.txt", 
-                         header = TRUE, 
+                         header = TRUE,
                          stringsAsFactors = FALSE)
 str(sejong_ref)
 kable(sejong_ref[4:1])
