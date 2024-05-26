@@ -3,7 +3,7 @@ title: "Chosun Tax : Province"
 output: html_document
 ---
 
-```{r, echo = FALSE}
+```{r, echo = FALSE,message = FALSE}
 options(warn = -1)
 library(knitr)
 library(magrittr)
@@ -73,11 +73,12 @@ library(reshape2)
 tax_df$province_f <- factor(province, levels = province)
 tax_df
 str(tax_df)
-tax_df_melt <- melt(tax_df[, 2:4], 
-                    id.vars = "province_f", 
-                    measure.vars = c("expected", "collected"), 
-                    variable.name = "tax", 
-                    value.name = "amount")
+tax_df_melt <- 
+  melt(tax_df[, 2:4], 
+       id.vars = "province_f", 
+       measure.vars = c("expected", "collected"), 
+       variable.name = "tax", 
+       value.name = "amount")
 #> tax_df_melt
 str(tax_df_melt)
 ```
@@ -88,10 +89,11 @@ str(tax_df_melt)
 
 ```{r, fig.width = 12, fig.height = 6, fig.keep = 'all'}
 library(ggplot2)
-g0 <- ggplot(data = tax_df_melt, 
-             mapping = aes(x = province_f, 
-                           y = amount, 
-                           fill = tax)) 
+g0 <- 
+  ggplot(data = tax_df_melt, 
+         mapping = aes(x = province_f, 
+                       y = amount, 
+                       fill = tax)) 
 g1 <- g0 + 
   geom_bar(stat = "identity", position = position_dodge()) 
 #> g1
