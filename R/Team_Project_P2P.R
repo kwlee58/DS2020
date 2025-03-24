@@ -1,5 +1,6 @@
 library(readxl)
 library(magrittr)
+getwd()
 data <- 
   read_excel("./data/Team_Project_P2P.xlsx", 
              range = "B1:H158",
