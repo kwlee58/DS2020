@@ -22,10 +22,11 @@ library(knitr)
 `str`은 `R` object의 구조를 보여준다. 당초 ID가리기 파일에서 모두 글자(character)로 설정하였으나 텍스트 파일을 읽어들이는 과정에서는 학번과 학년이 정수(integer)로 바뀌어 있음에 유의하여야 한다.
 
 ```{r, data}
-class_roll <- read.table("../data/class_roll_masked.txt", 
-                         header = TRUE, 
-                         stringsAsFactors = FALSE,
-                         encoding = "CP949")
+class_roll <- readRDS("./class_roll_170303_masked.RDS")
+# class_roll <- read.table("../data/class_roll_masked.txt", 
+#                          header = TRUE, 
+#                          stringsAsFactors = FALSE,
+#                          encoding = "CP949")
 str(class_roll)
 ```
 

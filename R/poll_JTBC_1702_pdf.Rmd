@@ -1,6 +1,14 @@
 ---
 title: "JTBC 1702"
-output: html_document
+output:
+  pdf_document:
+    latex_engine: xelatex
+    dev: cairo_pdf
+    highlight: pygments
+    keep_tex: true
+header-includes:
+  - \usepackage{fontspec}
+  - \setmainfont{NanumGothic}
 ---
 
 ## Problem
@@ -23,7 +31,7 @@ knitr::include_graphics("../pics/poll_2017_JTBC.jpg")
 ## Data Setup
 
 ```{r, data, message = FALSE}
-# library(extrafont)
+library(extrafont)
 candidates <- c("문재인", "안희정", "황교안", "안철수", "이재명", "유승민") 
 rates <- c(33, 22, 9, 9, 5, 2)
 party <- c("더불어민주당", "자유한국당", "국민의당", "바른정당")
@@ -44,9 +52,13 @@ barplot(rates)
 
 <P style = "page-break-before:always">
 
-```{r, fig.width = 8, fig.height = 4}
-# par(family = "")
-par(family = "AppleGothic")
+```{r, fig.width = 8, fig.height = 4, message = FALSE}
+library(showtext)
+# font_add(family = "noto", regular = "/Users/kwlee/Library/Fonts/NotoSansKR-VariableFont_wght.ttf")
+# showtext_auto()
+font_add(family = "Apple", regular = "/System/Library/Fonts/AppleSDGothicNeo.ttc")
+showtext_auto()
+par(family = "Apple")
 b1 <- barplot(rates, 
               axes = FALSE, 
               col = candidates_colour, 
@@ -90,8 +102,7 @@ g0 <- ggplot(data = rates_df,
   geom_bar(stat = "identity", 
            fill = candidates_colour))
 (g3 <- g2 +
-#     theme_bw(base_family = ""))
-  theme_bw(base_family = "AppleGothic"))
+    theme_bw(base_family = "Apple"))
 (g4 <- g3 +
   geom_text(mapping = aes(x = candidates, 
                           y = rates + c(rep(-3, 4), rep(2, 2)), 
@@ -106,8 +117,7 @@ g0 <- ggplot(data = rates_df,
 
 ```{r, fig.height = 4, fig.width = 8}
 (g6 <- g5 +
-#    theme(plot.title = element_text(family = "",    
-  theme(plot.title = element_text(family = "AppleGothic", 
+   theme(plot.title = element_text(family = "Apple",    
                                   size = 15, 
                                   hjust = 0.5)))
 (g7 <- g6 +
@@ -132,8 +142,7 @@ g0 <- ggplot(data = rates_df,
                             y = -1,
                             label = candidates),
               size = 5,
-              family = "AppleGothic"))
-#               family = ""))
+              family = "Apple"))
 ```
 <P style = "page-break-before:always">
 
@@ -146,8 +155,7 @@ g0 <- ggplot(data = rates_df,
              label = main_title, 
              vjust = 1.5, 
              size = 6,
-             family = "AppleGothic"))
-#              family = ""))
+             family = "Apple"))
 ```
 
 ```{r, fig.height = 16, fig.width = 10}

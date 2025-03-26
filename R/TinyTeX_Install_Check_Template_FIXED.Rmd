@@ -1,0 +1,60 @@
+---
+title: "TinyTeX 설치 및 확인 테스트 (수정본)"
+author: "Kee-Won Lee"
+date: "`r format(Sys.time(), '%Y-%m-%d %H:%M:%S')`"
+output:
+  pdf_document:
+    latex_engine: xelatex
+    dev: cairo_pdf
+header-includes:
+  - \usepackage{fontspec}
+  - \setmainfont{NanumGothic}
+---
+
+## 1. TinyTeX 설치 코드
+
+```{r install-tinytex, eval=FALSE}
+install.packages("tinytex")
+tinytex::install_tinytex()
+```
+
+## 2. 설치 확인
+
+```{r check-tinytex}
+library(tinytex)
+tinytex::tinytex_root()
+tinytex::is_tinytex()
+```
+
+## 3. 간단한 LaTeX 테스트 (pdflatex 사용)
+
+```{r test-xelatex}
+library(tinytex)
+cat("
+\\documentclass{article}
+\\usepackage{kotex}
+\\begin{document}
+TinyTeX 한글 테스트 성공!
+\\end{document}
+", file = "test_xelatex.tex")
+tinytex::xelatex("test_xelatex.tex")
+```
+
+## 4. 그래프 테스트 (폰트는 system 기본)
+
+```{r plot-test}
+plot(1:10, main = "TinyTeX + xelatex 테스트")
+```
+
+## 5. 그래프 테스트 (showtext 폰트 추가)
+
+```{r showtext-test}
+library(showtext)
+font_add(family = "noto", regular = "/Users/kwlee/Library/Fonts/NotoSansKR-VariableFont_wght.ttf")
+showtext_auto()
+plot(1:10, main = "폰트 테스트 - Noto Sans KR", family = "noto")
+```
+
+## 끝 :)
+TinyTeX 설치와 확인을 마쳤습니다.
+이제 R Markdown → PDF로의 흐름이 안정적으로 이어질 수 있습니다.
