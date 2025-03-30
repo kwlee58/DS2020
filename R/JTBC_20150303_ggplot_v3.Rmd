@@ -74,15 +74,20 @@ kable(t(as.matrix(poll)), caption = "김영란법 국회 통과")
 ## `pie()`
 
 ```{r, out.width = "67%", fig.align = "center", fig.showtext = TRUE}
-# font_add(family = "NanumGothic", regular = "NanumFont/NanumGothic.ttf")
+# system("fc-list | grep KoPub")
+# system("fc-list | grep Nanum")
+font_add(family = "kopub", 
+         regular = "/Users/kwlee/Library/Fonts/KoPubWorld Dotum Medium.ttf",
+         bold = "/Users/kwlee/Library/Fonts/KoPubWorld Dotum Bold.ttf",
+         italic  = "/Users/kwlee/Library/Fonts/KoPubWorld Dotum Light.ttf")
 showtext_auto()
-# par(family = "NanumGothic")
-font_add(family = "KoPubWorld Dotum Medium", 
-         regular = "C:/Users/kwlee/AppData/Local/Microsoft/Windows/Fonts/KoPubWorld Dotum Medium.ttf")
-font_add(family = "KoPubWorld Dotum Bold", 
-         regular = "C:/Users/kwlee/AppData/Local/Microsoft/Windows/Fonts/KoPubWorld Dotum Medium.ttf")
-# showtext_auto()
-par(family = "KoPubWorld Dotum Medium")
+font_add(family = "nanum", 
+         regular = "/Users/kwlee/Library/Fonts/NanumGothic-Regular.ttf",
+         bold = "/Users/kwlee/Library/Fonts/NanumGothic-Bold.ttf")
+showtext_auto()
+suppressMessages({
+par(family = "nanum")
+# par(family = "kopub")
 pie(poll, 
     labels = "", 
     radius = 1,
@@ -111,10 +116,11 @@ text(x = 2.1 * x_text0, y = 2.1 * y_text0,
      labels = names(poll), 
      col = "white", 
      cex = 1.5)
-title(main = "김영란법\n국회 통과", cex.main = 2, family = "KoPubWorld Dotum Bold")
+title(main = "김영란법\n국회 통과", cex.main = 2, family = "nanum")
 box(which = "figure", lwd = 3)
 dev.copy(png, "../pics/jtbc150303.png", width = 480, height = 480)
-dev.off()
+invisible(dev.off())
+})
 ```
 
 ## `coord_polar()`
@@ -145,9 +151,10 @@ ggplot(data = poll_tbl,
   theme_void() +
   theme(axis.ticks = element_blank(),
         axis.text = element_blank(),
-        legend.text = element_text(family = "KoPubWorld Dotum Medium"),
+        legend.text = element_text(family = "nanum"),
         panel.background = element_rect(colour = "black"),
-        plot.title = element_text(family = "KoPubWorld Dotum Bold", 
+        plot.title = element_text(family = "kopub",
+                                  face = "bold",
                                   size = 20, 
                                   vjust = -10,
                                   hjust = 0.5)) +
