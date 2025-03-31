@@ -92,7 +92,8 @@ kable(t(as.matrix(poll)), caption = "김영란법 국회 통과")
 ## `pie()`
 
 ```{r, fig.width = 6, fig.height = 6}
-par(family = "")
+# par(family = "")
+par(family = "AppleGothic")
 pie(poll, 
     labels = names(poll), 
     radius = 1,
@@ -132,7 +133,7 @@ poll_tbl <- data.frame(key = names(poll),
 ggplot(data = poll_tbl, 
        mapping = aes(x = 2, y = value, fill = key)) +
   geom_bar(stat = "identity") +
-  geom_text(aes(y = pos2, label = poll), 
+  geom_text(aes(y = pos2, label = format(poll, nsmall = 1)), 
             size = 8, 
             colour = "white") +
   annotate("text", x = 0.5, y = 0, label = "%",size = 10) +
@@ -141,12 +142,14 @@ ggplot(data = poll_tbl,
   scale_fill_manual(values = c("gray", "red", "blue")) +
 #  scale_y_continuous(breaks = NULL) +
   guides(fill = guide_legend(title = "", reverse = TRUE)) +
-  theme_void(base_family = "") +
+#  theme_void(base_family = "") +
+  theme_void(base_family = "AppleGothic") +
   theme(axis.ticks = element_blank(),
         axis.text = element_blank(),
         legend.text = element_text(),
         plot.background = element_rect(colour = "black"),
-        plot.title = element_text(family = "", 
+#        plot.title = element_text(family = "",
+        plot.title = element_text(family = "AppleGothic", 
                                   size = 20, 
                                   hjust = 0.5 )) +
   ggtitle("김영란법\n국회통과") + 
@@ -155,4 +158,4 @@ ggplot(data = poll_tbl,
 
 ## Comments
 
-Cheating Charts 를 학습하고 느낀 점을 간단히 기술합니다.  
+Cheating Charts를 학습하고 느낀 점과 code에 대하여 학습한 바를 상세히 기술합니다.  

@@ -146,7 +146,7 @@ poll_tbl <- data.frame(key = names(poll),
 ggplot(data = poll_tbl, 
        mapping = aes(x = 2, y = value, fill = key)) +
   geom_bar(stat = "identity") +
-  geom_text(aes(y = pos2, label = poll), 
+  geom_text(aes(y = pos2, label = format(poll, nsmall = 1)), 
             size = 5, 
             colour = "white") +
   geom_label(aes(x = 3.0, y = pos, label = key), 
