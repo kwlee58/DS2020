@@ -74,19 +74,21 @@ kable(t(as.matrix(poll)), caption = "김영란법 국회 통과")
 ## `pie()`
 
 ```{r, out.width = "67%", fig.align = "center", fig.showtext = TRUE}
-# system("fc-list | grep KoPub")
-# system("fc-list | grep Nanum")
+library(systemfonts)
+subset(system_fonts(), grepl("KoPub", family))
+system_fonts()[214:219, "path"]
+subset(system_fonts(), grepl("Malgun", family))
 font_add(family = "kopub", 
-         regular = "/Users/kwlee/Library/Fonts/KoPubWorld Dotum Medium.ttf",
-         bold = "/Users/kwlee/Library/Fonts/KoPubWorld Dotum Bold.ttf",
-         italic  = "/Users/kwlee/Library/Fonts/KoPubWorld Dotum Light.ttf")
+         regular = "c:/Users/kwlee/AppData/Local/Microsoft/Windows/Fonts/KoPubWorld Dotum Medium.ttf",
+         bold = "c:/Users/kwlee/AppData/Local/Microsoft/Windows/Fonts/KoPubWorld Dotum Bold.ttf",
+         italic  = "c:/Users/kwlee/AppData/Local/Microsoft/Windows/Fonts/KoPubWorld Dotum Light.ttf")
 showtext_auto()
-font_add(family = "nanum", 
-         regular = "/Users/kwlee/Library/Fonts/NanumGothic-Regular.ttf",
-         bold = "/Users/kwlee/Library/Fonts/NanumGothic-Bold.ttf")
+font_add(family = "malgun", 
+         regular = "C:/Windows/Fonts/malgun.ttf",
+         bold = "C:/Windows/Fonts/malgunbd.ttf")
 showtext_auto()
 suppressMessages({
-par(family = "nanum")
+par(family = "malgun")
 # par(family = "kopub")
 pie(poll, 
     labels = "", 
@@ -116,7 +118,7 @@ text(x = 2.1 * x_text0, y = 2.1 * y_text0,
      labels = names(poll), 
      col = "white", 
      cex = 1.5)
-title(main = "김영란법\n국회 통과", cex.main = 2, family = "nanum")
+title(main = "김영란법\n국회 통과", cex.main = 2, family = "malgun")
 box(which = "figure", lwd = 3)
 dev.copy(png, "../pics/jtbc150303.png", width = 480, height = 480)
 invisible(dev.off())
@@ -151,7 +153,7 @@ ggplot(data = poll_tbl,
   theme_void() +
   theme(axis.ticks = element_blank(),
         axis.text = element_blank(),
-        legend.text = element_text(family = "nanum"),
+        legend.text = element_text(family = "malgun"),
         panel.background = element_rect(colour = "black"),
         plot.title = element_text(family = "kopub",
                                   face = "bold",
