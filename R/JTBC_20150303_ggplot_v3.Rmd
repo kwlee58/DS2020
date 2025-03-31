@@ -75,20 +75,28 @@ kable(t(as.matrix(poll)), caption = "김영란법 국회 통과")
 
 ```{r, out.width = "67%", fig.align = "center", fig.showtext = TRUE}
 library(systemfonts)
-subset(system_fonts(), grepl("KoPub", family))
-system_fonts()[214:219, "path"]
-subset(system_fonts(), grepl("Malgun", family))
-font_add(family = "kopub", 
-         regular = "c:/Users/kwlee/AppData/Local/Microsoft/Windows/Fonts/KoPubWorld Dotum Medium.ttf",
-         bold = "c:/Users/kwlee/AppData/Local/Microsoft/Windows/Fonts/KoPubWorld Dotum Bold.ttf",
-         italic  = "c:/Users/kwlee/AppData/Local/Microsoft/Windows/Fonts/KoPubWorld Dotum Light.ttf")
-showtext_auto()
-font_add(family = "malgun", 
-         regular = "C:/Windows/Fonts/malgun.ttf",
-         bold = "C:/Windows/Fonts/malgunbd.ttf")
+# Font 경로를 알아내는 코드
+# Windows 용이니 mac 사용자는 "C:/"를 지우고 자신의 환경에 맞게 설정.
+# subset(system_fonts(), grepl("KoPub", family))
+# system_fonts()[214:219, "path"]
+# subset(system_fonts(), grepl("Malgun", family))
+# font_add(family = "kopub", 
+#          regular = "c:/Users/kwlee/AppData/Local/Microsoft/Windows/Fonts/KoPubWorld Dotum Medium.ttf",
+#          bold = "c:/Users/kwlee/AppData/Local/Microsoft/Windows/Fonts/KoPubWorld Dotum Bold.ttf",
+#          italic  = "c:/Users/kwlee/AppData/Local/Microsoft/Windows/Fonts/KoPubWorld Dotum Light.ttf")
+# showtext_auto()
+# font_add(family = "malgun", 
+#          regular = "C:/Windows/Fonts/malgun.ttf",
+#          bold = "C:/Windows/Fonts/malgunbd.ttf")
+# showtext_auto()
+# mac 용
+system("fc-list | grep Nanum")
+font_add(family = "nanum", 
+         regular = "/Users/kwlee/Library/Fonts/NanumGothic-Regular.ttf",
+         bold = "/Users/kwlee/Library/Fonts/NanumGothic-Bold.ttf")
 showtext_auto()
 suppressMessages({
-par(family = "malgun")
+par(family = "nanum")
 # par(family = "kopub")
 pie(poll, 
     labels = "", 
@@ -118,7 +126,7 @@ text(x = 2.1 * x_text0, y = 2.1 * y_text0,
      labels = names(poll), 
      col = "white", 
      cex = 1.5)
-title(main = "김영란법\n국회 통과", cex.main = 2, family = "malgun")
+title(main = "김영란법\n국회 통과", cex.main = 2, family = "nanum")
 box(which = "figure", lwd = 3)
 dev.copy(png, "../pics/jtbc150303.png", width = 480, height = 480)
 invisible(dev.off())
@@ -138,7 +146,7 @@ poll_tbl <- data.frame(key = names(poll),
 ggplot(data = poll_tbl, 
        mapping = aes(x = 2, y = value, fill = key)) +
   geom_bar(stat = "identity") +
-  geom_text(aes(y = pos2, label = poll), 
+  geom_text(aes(y = pos2, label = format(poll, nsmall = 1)), 
             size = 5, 
             colour = "white") +
   geom_label(aes(x = 3.0, y = pos, label = key), 
@@ -153,9 +161,9 @@ ggplot(data = poll_tbl,
   theme_void() +
   theme(axis.ticks = element_blank(),
         axis.text = element_blank(),
-        legend.text = element_text(family = "malgun"),
+        legend.text = element_text(family = "nanum"),
         panel.background = element_rect(colour = "black"),
-        plot.title = element_text(family = "kopub",
+        plot.title = element_text(family = "nanum",
                                   face = "bold",
                                   size = 20, 
                                   vjust = -10,
