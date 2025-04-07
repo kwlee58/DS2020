@@ -131,15 +131,16 @@ library(systemfonts)
 # Windows 용이니 mac 사용자는 "C:/"를 지우고 자신의 환경에 맞게 설정.
 # subset(system_fonts(), grepl("KoPub", family))
 # system_fonts()[214:219, "path"]
-# subset(system_fonts(), grepl("Malgun", family))
+subset(system_fonts(), grepl("Malgun", family))
 font_add(family = "kopub", 
-         regular = "c:/Users/kwlee/AppData/Local/Microsoft/Windows/Fonts/KoPubWorld Dotum Medium.ttf",
-         bold = "c:/Users/kwlee/AppData/Local/Microsoft/Windows/Fonts/KoPubWorld Dotum Bold.ttf",
-         italic  = "c:/Users/kwlee/AppData/Local/Microsoft/Windows/Fonts/KoPubWorld Dotum Light.ttf")
+         regular = "c:/Users/hallym/AppData/Local/Microsoft/Windows/Fonts/KoPubWorld Dotum Medium.ttf",
+         bold = "c:/Users/hallym/AppData/Local/Microsoft/Windows/Fonts/KoPubWorld Dotum Bold.ttf",
+         italic  = "c:/Users/hallym/AppData/Local/Microsoft/Windows/Fonts/KoPubWorld Dotum Light.ttf")
 showtext_auto()
 font_add(family = "malgun", 
-         regular = "C:/Windows/Fonts/malgun.ttf",
-         bold = "C:/Windows/Fonts/malgunbd.ttf")
+         regular = "C:\\Windows\\Fonts\\malgun.ttf",
+         bold = "C:\\Windows\\Fonts\\malgunbd.ttf",
+         italic = "C:\\Windows\\Fonts\\malgunsl.ttf")
 showtext_auto()
 suppressMessages({
 par(family = "malgun")
