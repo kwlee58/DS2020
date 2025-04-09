@@ -541,6 +541,7 @@ Reuse `us_graunt` which contains `x = us_graunt_x` and `y = us_graunt_y` for `po
 
 ```{r, fig.width = 6, fig.height = 6}
 (gu5 <- gu4 + 
+   theme(legend.position = "inside") +
    theme(legend.position.inside = c(0.8, 0.5)))
 ```
 
