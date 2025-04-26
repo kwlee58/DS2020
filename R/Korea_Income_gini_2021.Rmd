@@ -505,13 +505,13 @@ library(ggplot2)
 (c8 <- c7 +
   scale_y_continuous(breaks = seq(0, 100, by = 25), labels = seq(0, 100, by = 25)))
 (c9 <- c8 +
-    annotate("segment", x = 0, xend = med, y = 50, yend = 50, colour = "red", size = 1))
+    annotate("segment", x = 0, xend = med, y = 50, yend = 50, colour = "red", linewidth = 1))
 (c10 <- c9 +
     geom_segment(data = data.frame(x1 = med, x2 = med, y1 = 50, y2 = 0),
                  aes(x = x1, y = y1, xend = x2, yend = y2), 
                  arrow = arrow(),
                  colour = "red",
-                 size = 1))
+                 linewidth = 1))
 (c11 <- c10 +
   annotate("text", x = 80, y = 25, 
            label = paste("중위 급여 :", format(med, digits = 3, nsmall = 1), "백만 원"), size = 5, color = "red", srt = 0, family = "KoPubWorldDotum Medium") +
