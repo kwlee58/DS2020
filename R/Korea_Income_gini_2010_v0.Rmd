@@ -420,7 +420,7 @@ source("area.R")
 gini <- 2 * (1/2 - area_R(x = earners, y = income)/10000)
 ```
 
-계산된 지니계수를 그림 안에 텍스트로 넣어주려면 `paste()`를 이용하여 입력토록한다.
+계산된 지니계수를 그림 안에 텍스트로 넣어주려면 `paste()`를 이용하여 입력한다.
 
 ```{r, fig.width = 7, fig.height = 7}
 plot(earners_income_df, 
@@ -485,13 +485,13 @@ library(ggplot2)
 (c8 <- c7 +
   scale_y_continuous(breaks = seq(0, 100, by = 25), labels = seq(0, 100, by = 25)))
 (c9 <- c8 +
-    annotate("segment", x = 0, xend = 18.2, y = 50, yend = 50, colour = "red", size = 1))
+    annotate("segment", x = 0, xend = 18.2, y = 50, yend = 50, colour = "red", linewidth = 1))
 (c10 <- c9 +
     geom_segment(data = data.frame(x1 = 18.2, x2 = 18.2, y1 = 50, y2 = 0),
                  aes(x = x1, y = y1, xend = x2, yend = y2), 
                  arrow = arrow(),
                  colour = "red",
-                 size = 1))
+                 linewidth = 1))
 (c11 <- c10 +
   annotate("text", x = 55, y = 25, 
            label = "Median Income", size = 5, color = "red", srt = 15)) 
