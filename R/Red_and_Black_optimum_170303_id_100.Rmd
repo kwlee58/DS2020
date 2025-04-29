@@ -70,7 +70,6 @@ lines(x, dchisq(x, df = 5), col = "red")
 legend("topright", inset = 0.05, legend = c("Xsum", "Chi-square(5)"), col = c("black", "red"), lty = 1)
 ```
 
-<!--
 ## Randomization
 
 ```{r, randomization}
@@ -83,6 +82,7 @@ class_roll$group <-
 red_and_black(Xmin)
 ```
 
+<!--
 ### 학년
 
 ```{r, year, eval = FALSE}

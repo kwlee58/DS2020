@@ -458,7 +458,7 @@ text(x = 30, y = 60,
 
 ### Cumulative Distribution
 
-```{r, fig.width = 6, fig.height = 6, fig.keep = 'all', warning = TRUE}
+```{r, fig.width = 6, fig.height = 6, fig.keep = 'none', warning = TRUE}
 library(ggplot2)
 (c1 <- ggplot() +
   geom_line(data = earners_kor_cum_df, 
@@ -510,7 +510,7 @@ ggsave("../pics/cumulative_plot_wage_kr.png", width = 9, height = 9)
 
 ### Lorenz Curve
 
-```{r, fig.width = 6, fig.height = 6, fig.keep = 'all', warning = FALSE}
+```{r, fig.width = 6, fig.height = 6, fig.keep = 'none', warning = FALSE}
 (g1 <- ggplot() +
   geom_line(data = earners_income_df, 
             mapping = aes(x = earners, y = income))) 
