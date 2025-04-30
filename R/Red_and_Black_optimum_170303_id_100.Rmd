@@ -33,8 +33,8 @@ source("./RnB_2023_id.R")
 ## Search for Best Configuration
 
 ```{r}
-M1 <- 10001
-M2 <- 20000
+M1 <- 101
+M2 <- 600
 Xsum <- sapply(M1:M2, red_and_black)
 names(Xsum) <- M1:M2
 ```
