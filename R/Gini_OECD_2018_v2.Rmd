@@ -48,7 +48,7 @@ Gini_b_a[order(Gini_b_a$Improvement, decreasing = TRUE), ]
 
 ## Graphic representation
 
-* 세전 세후 Gini 계수를 시각적으로 비교하려면 `barplot()`이 적합함. `barplot(height, ...)`에서 `height`가 매트릭스일 때는 막대는 열의 각 요소를 크기대로 쌓아놓은 형태가 되므로, `t()`를 이용하여 transpose시킨 후 `barplot()`을 적용. 또한 transpose를 시켜도 여전히 data frame 이기 때문에 매트릭스로 강제 변환함. 세전, 세후 비교를 위해 쌓아 놓기 보다는 옆에 늘어세우는 게 나으므로  `beside=TRUE`를 적용하고 각 막대의 이름으로 나라이름을 사용. 
+* 세전 세후 Gini 계수를 시각적으로 비교하려면 `barplot()`이 적합함. `barplot(height, ...)`에서 `height`가 매트릭스일 때는 막대는 열의 각 요소를 크기대로 쌓아놓은 형태가 되므로, `t()`를 이용하여 transpose시킨 후 `barplot()`을 적용. 또한 transpose를 시켜도 여전히 data frame 이기 때문에 매트릭스로 강제 변환함. 세전, 세후 비교를 위해 쌓아 놓기 보다는 옆에 늘어세우는 게 나으므로  `beside = TRUE`를 적용하고 각 막대의 이름으로 나라이름을 사용. 
 
 ```{r fig.width = 10, fig.height = 5}
 barplot(as.matrix(t(Gini_b_a[, 2:3])), 
@@ -215,7 +215,7 @@ Gini_b_a_melt <- Gini_b_a %>%
   mutate(Tax = factor(Tax, levels = c("Before", "After")))
 ```
 
-* `ggplot2` 등록 후 `geom_bar()`
+* `ggplot2` 등록 후 `geom_bar()`. `x = Country` 라고 설정함에 따라 나라 이름 약자의 알파벳 순서로 아래부터 올라오는 점에 유의. 
 
 ```{r, fig.width = 7, fig.height = 9}
 library(ggplot2)
