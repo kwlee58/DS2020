@@ -9,7 +9,7 @@ output: html_document
 
 * OECD 국가들의 Gini계수 읽어들이기. 세전과 세후로 구분. 
 
-```{r}
+```{r, message = FALSE}
 library(knitr)
 library(readxl)
 library(magrittr)
