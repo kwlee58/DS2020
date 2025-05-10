@@ -32,7 +32,7 @@ Gini_b_a$Improvement <- Gini_b_a[, 2] - Gini_b_a[, 3]
 Gini_b_a
 ```
 
-* 개선도가 낮은 순서로 나열.
+* 개선도가 낮은 순서로 나열. 
 
 ```{r}
 Gini_b_a[order(Gini_b_a$Improvement), ]
