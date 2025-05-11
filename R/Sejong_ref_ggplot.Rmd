@@ -975,7 +975,7 @@ m5
 
 #### mosaic_gg_new
 
-```{r mosaic_gg_new, fig.width = 6, fig_height = 4.5}
+```{r mosaic_gg_new, fig.width = 6, fig_height = 4.5, eval = FALSE}
 mosaic_gg_new <- function(tbl_df){
 #  tbl_df <- tbl %>%
 #  as.data.frame
