@@ -19,6 +19,7 @@ library(ggplot2)
 library(grid)
 library(gridExtra)
 library(extrafont)
+library(dplyr)
 load("sejong_ref_tbl.RData")
 str(sejong_ref)
 ```
@@ -133,7 +134,8 @@ p6_2
 
 ```{r, message = FALSE, fig.width = 3.2, fig.height = 3.2}
 p7_2 <- p6_2 +
-  theme(legend.position = c(0.25, 0.75))
+  theme(legend.position = "inside") +
+  theme(legend.position.inside = c(0.25, 0.75))
 p7_2
 p8_2 <- p5_2 +
   guides(fill = "none") +
@@ -180,7 +182,8 @@ p6
 
 ```{r, message = FALSE, fig.width = 3.2, fig.height = 3.2}
 p7 <- p6 +
-  theme(legend.position = c(0.75, 0.75))
+  theme(legend.position = "inside") +
+  theme(legend.position.inside = c(0.75, 0.75))
 p7
 p8 <- p5 + 
   guides(fill = "none") +
@@ -915,7 +918,7 @@ m1 <- ggplot(Vote_seoul_Class_p_df,
   geom_bar(aes(fill = Vote_seoul_Class_p_df[, 1]), 
            stat = "identity", 
            col = "white", 
-           size = 2, 
+           linewidth = 2, 
            position = position_stack(reverse = TRUE))
 m1
 ```
@@ -975,7 +978,7 @@ m5
 
 #### mosaic_gg_new
 
-```{r mosaic_gg_new, fig.width = 6, fig_height = 4.5, eval = FALSE}
+```{r mosaic_gg_new, fig.width = 6, fig_height = 4.5, eval = TRUE}
 mosaic_gg_new <- function(tbl_df){
 #  tbl_df <- tbl %>%
 #  as.data.frame
@@ -985,7 +988,7 @@ mosaic_gg_new <- function(tbl_df){
     cumsum(x) - x / 2
   }
   tbl_p_df <- tbl_df %>%
-  `[`(, 3) %>%
+  select(3) %>%
   proportions %>%
   data.frame(tbl_df[1:2], "Prop" = .)
   tbl_p_df$width <- tapply(tbl_p_df[, 3], tbl_p_df[, 2], sum) %>% 
