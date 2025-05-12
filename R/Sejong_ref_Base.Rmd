@@ -385,3 +385,9 @@ title(main = "충청도의 찬반")
 save.image(file = "sejong_Base.RData")
 ```
 
+## Comments 
+
+What I have learned ...
+
+
+
