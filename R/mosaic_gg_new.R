@@ -29,7 +29,7 @@ function (tbl_df)
     y_label <- format(y_breaks * 100, digits = 2, nsmall = 1)
     m <- ggplot(tbl_p_df, aes(x = center, y = height, width = width)) + 
         geom_bar(aes(fill = tbl_df[, 1]), stat = "identity", 
-            col = "white", size = 1, position = position_stack(reverse = TRUE)) + 
+            col = "white", linewidth = 1, position = position_stack(reverse = TRUE)) + 
         geom_text(aes(x = center, y = label_height), label = format(ifelse(tbl_df[, 
             3] == 0, "", tbl_df[, 3]), big.mark = ","), position = position_identity()) + 
         scale_x_continuous(breaks = x_breaks, label = x_label) + 
