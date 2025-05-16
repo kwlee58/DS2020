@@ -68,7 +68,7 @@ text(x = 18, y = 60000, main_text, cex = 1.6, adj = 0.5)
 
 ### Data for ggplot
 
-```{r, data reshaping}
+```{r, data reshaping, eval = FALSE}
 library(reshape2)
 tax_df$province_f <- factor(province, levels = province)
 tax_df
@@ -79,6 +79,23 @@ tax_df_melt <-
        measure.vars = c("expected", "collected"), 
        variable.name = "tax", 
        value.name = "amount")
+#> tax_df_melt
+str(tax_df_melt)
+```
+
+```{r, tidy data}
+library(tidyr)
+library(dplyr)
+tax_df <- tax_df %>%
+  mutate(province_f = factor(province, levels = province))
+tax_df
+str(tax_df)
+tax_df_melt <- tax_df %>%
+  pivot_longer(
+    cols = c(expected, collected),
+    names_to = "tax",
+    values_to = "amount"
+  )
 #> tax_df_melt
 str(tax_df_melt)
 ```

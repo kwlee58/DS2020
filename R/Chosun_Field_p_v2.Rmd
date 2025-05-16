@@ -58,20 +58,35 @@ prop_field <- field %>%
   {colMeans(., na.rm = TRUE) / sum(colMeans(., na.rm = TRUE))} %>%
   `*`(100) %>%
   round(digits = 2)
+str(field)
 ```
 
 <!--
 <P style = "page-break-before:always">
 -->
 
-## Reshape
+## Tidy Data
 
 `matrix` (array)에 특화된 `melt` 사용
 
-```{r, reshape}
+```{r, reshape, eval = FALSE}
 library(reshape2)
 field_melt <- field %>%
   melt(varnames = c("Year", "Province"), value.name = "Area")
+field_melt %>% str
+kable(field_melt)
+```
+
+```{r, tidy, eval = TRUE}
+library(tidyr)
+library(dplyr)
+field_melt <- field %>%
+  as.table %>%
+  as.data.frame %>%
+  rename(Year = Var1,
+         Province = Var2,
+         Area = Freq) %>%
+  mutate(Year = as.numeric(as.character(Year)))
 field_melt %>% str
 kable(field_melt)
 ```

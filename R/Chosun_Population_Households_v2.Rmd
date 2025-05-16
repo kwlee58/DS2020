@@ -30,6 +30,7 @@ str(chosun_df)
 
 ```{r, base plot, fig.width = 9, fig.height = 6.75}
 library(extrafont)
+suppressMessages({
 par(mar = c(5, 5, 4, 5) + 0.1, family = "KoPubWorldDotum Medium")
 plot(Population / 10000 ~ Years, 
      data = chosun_df, 
@@ -98,7 +99,8 @@ title(xlab = x_lab,
 mtext(y4_lab, side = 4, line = 2, 
       family = "KoPubWorldDotum Bold")
 dev.copy(png, file = "../pics/chosun_demo_v2.png", width = 800, height = 450)
-dev.off()
+invisible(dev.off())
+})
 ```
 
 <!--
@@ -116,16 +118,24 @@ library(reshape2)
 chosun_melt <- melt(chosun_df, 
                     id.vars = "Years", 
                     measure.vars = c("Households", "Population"),
-                    variable.name = "Variable", 
+                    variable.name = "DemoType", 
                     value.name = "Counts")
 str(chosun_melt)
 ## tidy 한 데이터 만들기 
 Counts <- c(as.matrix(chosun_df[, 2:3]))
 N <- length(Counts)
 Years <- rep(chosun_df[, 1], length.out = N)
-Variable <- gl(2, length(chosun_df[, 1]), N, 
+DemoType <- gl(2, length(chosun_df[, 1]), N, 
                labels = c("Households", "Population")) 
-chosun_tbl <- data.frame(Years, Counts, Variable)
+chosun_tbl <- data.frame(Years, Counts, DemoType)
+str(chosun_tbl)
+## tidyr 패키지 활용
+chosun_tbl <- chosun_df %>%
+  pivot_longer(cols = c(Households, Population),
+               names_to = "DemoType",
+               values_to = "Counts") %>%
+  mutate(DemoType = factor(DemoType))
+str(chosun_tbl)
 ```
 
 ### geom_line(), geom_point(), ...
@@ -136,7 +146,7 @@ g1 <- ggplot(data = chosun_tbl,
 #              data = chosun_melt,
              mapping = aes(x = Years, 
                            y = Counts / 10000, 
-                           colour = Variable)) + 
+                           colour = DemoType)) + 
   geom_line() + 
   geom_point(shape = 21, 
              fill = "white", 
