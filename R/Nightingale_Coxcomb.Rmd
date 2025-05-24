@@ -127,3 +127,7 @@ grid.arrange(cxc1, cxc2,
              respect = TRUE,
              top = "Nightingale Rose Diagram")
 ```
+
+## Comments
+
+나이팅게일이 통계학에 끼친 영향은 ...
