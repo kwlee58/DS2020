@@ -96,6 +96,7 @@ tax_df_melt <- tax_df %>%
     names_to = "tax",
     values_to = "amount"
   )
+tax_df_melt$tax <- factor(tax_df_melt$tax, levels = c("expected", "collected"))
 #> tax_df_melt
 str(tax_df_melt)
 ```
@@ -162,3 +163,9 @@ g8
 ```{r}
 ggsave("../pics/chosun_tax_ggplot.png", dpi = 72)
 ```
+
+## Comments
+
+조선시대 세금은 ...
+
+영조시대에 ... <br><br> 상납액은 징수액의 2/3
