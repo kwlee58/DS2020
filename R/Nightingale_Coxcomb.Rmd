@@ -71,8 +71,9 @@ cxc_b <-
            stat = "identity", 
            position = "stack", 
            colour = "black") +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1),
+  theme(axis.text.x = element_text(angle = 90, hjust = 0.5),
         axis.ticks.x = element_blank(),
+        legend.position = "inside",
         legend.position.inside = c(0.8, 0.8)) +
   scale_fill_brewer(type = "qual", 
                     palette = "Pastel1")
