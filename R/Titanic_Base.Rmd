@@ -71,6 +71,7 @@ Surv_Class %>%
 이를 `barplot`으로 나타내는 데 있어서 각 `argument`가 왜  필요한지 시행착오를 거쳐 파악해 볼 것.
 
 ```{r, fig.width = 12, fig.height = 6}
+suppressMessages({
 par(mfrow = c(1, 2), family = "KoPubWorldDotum Medium")
 #> Titanic %>% 
 #>   apply(MARGIN = c(4, 1), FUN = sum)
@@ -123,18 +124,21 @@ legend("topleft", inset = 0.05, fill = rainbow(2), legend = c("사망", "생존"
 title(main = "객실 등급별 생존/사망", line = -1, outer = TRUE, cex.main = 1.5,
       family = "KoPubWorldDotum Bold")
 dev.copy(png, "../pics/Titanic_barplot01.png", width = 840, height = 420)
-dev.off()
+invisible(dev.off())
+})
 ```
 
 ### Mosaic Plot
 
 ```{r, fig.width = 6, fig.height = 6, fig.align = "center"}
+suppressMessages({
 par(mfrow = c(1, 1), family = "KoPubWorldDotum Medium")
 mosaicplot(t(Surv_Class), main = "객실 등급별 생존/사망",
            xlab = "객실 등급", ylab = "생존/사망",
            col = rainbow(2))
 dev.copy(png, "../pics/Titanic_mosaicplot01.png", width = 320, height = 320)
-dev.off()
+invisible(dev.off())
+})
 ```
 
 ## 성별 생존/사망
@@ -162,6 +166,7 @@ Surv_Sex %>%
 이를 `barplot`으로 나타내는 데 있어서 각 `argument`가 왜  필요한지 시행착오를 겪어 볼 것.
 
 ```{r, fig.width = 12, fig.height = 6}
+suppressMessages({
 par(mfrow = c(1, 2), family = "KoPubWorldDotum Medium")
 b2 <- Surv_Sex %>% 
   barplot(yaxt = "n", col = rainbow(2))
@@ -205,18 +210,21 @@ legend("topright", inset = 0.15, fill = rainbow(2), legend = c("사망", "생존
 title(main = "성별 생존/사망", line = -1, outer = TRUE, cex.main = 1.5,
       family = "KoPubWorldDotum Bold")
 dev.copy(png, "../pics/Titanic_barplot02.png", width = 840, height = 420)
-dev.off()
+invisible(dev.off())
+})
 ```
 
 ### Mosaic Plot
 
 ```{r, fig.width = 6, fig.height = 6, fig.align = "center"}
+suppressMessages({
 par(mfrow = c(1, 1), family = "KoPubWorldDotum Medium")
 mosaicplot(t(Surv_Sex), main = "성별 생존/사망", 
            xlab = "남/여", ylab = "생존/사망",
            col = rainbow(2))
 dev.copy(png, "../pics/Titanic_mosaicplot02.png", width = 320, height = 320)
-dev.off()
+invisible(dev.off())
+})
 ```
 
 ## 연령별 생존/사망
@@ -244,6 +252,7 @@ Surv_Age %>%
 이를 `barplot`으로 나타내는 데 있어서 각 `argument`가 왜  필요한지 시행착오를 겪어 볼 것.
 
 ```{r, fig.width = 12, fig.height = 6}
+suppressMessages({
 par(mfrow = c(1, 2), family = "KoPubWorldDotum Medium")
 b3 <- Surv_Age %>% 
   barplot(yaxt = "n", col = rainbow(2))
@@ -287,18 +296,21 @@ legend(x = 0.5, y = 0.95, fill = rainbow(2), legend = c("사망", "생존"))
 title(main = "연령별 생존/사망", line = -1, outer = TRUE, cex.main = 1.5,
       family = "KoPubWorldDotum Bold")
 dev.copy(png, "../pics/Titanic_barplot03.png", width = 840, height = 420)
-dev.off()
+invisible(dev.off())
+})
 ```
 
 ### Mosaic Plot
 
 ```{r, fig.width = 6, fig.height = 6, fig.align = "center"}
+suppressMessages({
 par(mfrow = c(1, 1), family = "KoPubWorldDotum Medium")
 mosaicplot(t(Surv_Age), main = "연령별 생존/사망",
            xlab = "어린이/어른", ylab = "생존/사망", 
            col = rainbow(2))
 dev.copy(png, "../pics/Titanic_mosaicplot03.png", width = 320, height = 320)
-dev.off()
+invisible(dev.off())
+})
 ```
 
 ## 어린이들의 객실 등급별 생존/사망 
@@ -323,6 +335,7 @@ Child_Class %>%
 ### Plots
 
 ```{r, fig.width = 12, fig.height = 6}
+suppressMessages({
 par(mfrow = c(1, 2), family = "KoPubWorldDotum Medium")
 b4 <- Child_Class %>% 
   barplot(yaxt = "n", col = rainbow(2))
@@ -368,18 +381,21 @@ legend("topright", inset = 0.05, fill = rainbow(2), legend = c("사망", "생존
 title(main = "어린이들의 객실 등급별 생존/사망", line = -1, outer = TRUE, cex.main = 1.5,
       family = "KoPubWorldDotum Bold")
 dev.copy(png, "../pics/Titanic_barplot04.png", width = 840, height = 420)
-dev.off()
+invisible(dev.off())
+})
 ```
 
 ### Mosaic Plot
 
 ```{r, fig.width = 6, fig.height = 6, fig.align = "center"}
+suppressMessages({
 par(mfrow = c(1, 1), family = "KoPubWorldDotum Medium")
 mosaicplot(t(Child_Class), main = "어린이들의 객실 등급별 생존/사망",
            xlab = "객실 등급", ylab = "생존/사망", 
            col = rainbow(2))
 dev.copy(png, "../pics/Titanic_mosaicplot04.png", width = 320, height = 320)
-dev.off()
+invisible(dev.off())
+})
 ```
 
 ## 여성들의 등급별 생존/사망
@@ -404,6 +420,7 @@ Female_Class %>%
 ### Plots
 
 ```{r, fig.width = 12, fig.height = 6}
+suppressMessages({
 par(mfrow = c(1, 2), family = "KoPubWorldDotum Medium")
 b5 <- Female_Class %>% 
   barplot(yaxt = "n", col = rainbow(2))
@@ -449,23 +466,32 @@ legend("topright", inset = 0.05, fill = rainbow(2), legend = c("사망", "생존
 title(main = "여성들의 객실 등급별 생존/사망", line = -1, outer = TRUE, cex.main = 1.5,
       family = "KoPubWorldDotum Bold")
 dev.copy(png, "../pics/Titanic_barplot05.png", width = 840, height = 420)
-dev.off()
+invisible(dev.off())
+})
 ```
 
 ### Mosaic Plot
 
 ```{r, fig.width = 6, fig.height = 6, fig.align = "center"}
+suppressMessages({
 par(mfrow = c(1, 1), family = "KoPubWorldDotum Medium")
 mosaicplot(t(Female_Class), 
            main = "여성들의 객실 등급별 생존/사망", xlab = "객실 등급", ylab = "생존/사망", 
            col = rainbow(2))
 dev.copy(png, "../pics/Titanic_mosaicplot05.png", width = 320, height = 320)
-dev.off()
+invisible(dev.off())
+})
 ```
 
+<!--
 ## Save
 
 ```{r, echo = FALSE}
 save.image("./Titanic_Base.RData")
 ```
+-->
+
+## Comments
+
+1912년 타이타닉호의 첫 출항은 비극으로 끝났는데, ...
 
