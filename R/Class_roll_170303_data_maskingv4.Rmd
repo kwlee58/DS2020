@@ -55,7 +55,7 @@ kable(head(class_roll))
 
 ### 전공 단위 이름 가리기
 
-전공 단위 이름은 "학과", "과", "학", "전공" 등 매우 다양한 명칭이 있으므로 `gsub()` 함수의 정규표현(regulasr expression)을 활용하여 "ㅇㅇ학과" 와 같은 방식으로 이름을 가릴 수 있다.
+전공 단위 이름은 "학과", "과", "학", "전공" 등 매우 다양한 명칭이 있으므로 `gsub()` 함수의 정규표현(regular expression)을 활용하여 "ㅇㅇ학과" 와 같은 방식으로 이름을 가릴 수 있다.
 
 ```{r, dept}
 class_roll$dept <- sub("^.+$", "ㅇㅇ학과", class_roll$dept)
@@ -75,9 +75,9 @@ str(class_roll)
 <!--
 ```{r, save}
 write.table(class_roll, 
-            file ="../data/class_roll_masked.txt")
-save.image("./class_roll_170303_data_masked.RData")
-saveRDS(class_roll, "./class_roll_170303_masked.RDS")
+            file ="../data/class_roll_masked.txt")  # class_roll 을 table 구조의 txt파일로 출력
+save.image("./class_roll_170303_data_masked.RData")  # 작업공간의 object 들을 RData 파일로 저장
+saveRDS(class_roll, "./class_roll_170303_masked.RDS")  # class_roll 을 RDS 포맷 파일로 저장
 ```
 -->
 

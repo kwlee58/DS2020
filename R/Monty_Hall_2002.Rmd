@@ -183,7 +183,7 @@ monty_ggplot(30)$p_wins
 
 ## Repetitions
 
-```{r}
+```{r, warning = FALSE, message = FALSE}
 x <- 10
 m <- list()
 while (x > 0) {
