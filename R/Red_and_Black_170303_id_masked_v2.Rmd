@@ -13,11 +13,7 @@ library(knitr)
 
 ## Data
 
-`Class_roll_170303_data_maskingv2.Rmd`에서 생성한 `class_roll_masked.txt`를 읽어들인다  윈도우 시스템에서 작업을 하기 때문에 `encoding = "CP949"`가 들어가 있다. 
-파일 경로에 나오는 텍스트 파일을 열었을 때 글자들이 깨져 보이면  File > `Reopen with Encoding = `을 `CP949`로 설정한다.
-이도저도 잘 안되면 위의 Rmd 파일을 다시 실행하여 `CP949`로 encoding한 텍스트 파일을 생성하여 읽어들인다.
-
-`header = TRUE`는 텍스트 파일의 첫 줄을 변수 이름으로 읽어들이라는 설정이고, `stringsAsFactors = FALSE`는 글자들이 `factor`로 변환되는 것을 방지하고 글자 속성을 유지하도록 한다.
+`Class_roll_170303_data_maskingv4.Rmd`에서 생성한 `class_roll_170303_masked.RDS`를 읽어들인다. txt 파일을 읽어들일 때 발생하는 인코딩 관련 문제들을 해결하는 가장 R 사용자다운 방법이다.
 
 `str`은 `R` object의 구조를 보여준다. 당초 ID가리기 파일에서 모두 글자(character)로 설정하였으나 텍스트 파일을 읽어들이는 과정에서는 학번과 학년이 정수(integer)로 바뀌어 있음에 유의하여야 한다.
 
