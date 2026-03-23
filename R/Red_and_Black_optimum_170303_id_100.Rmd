@@ -17,7 +17,7 @@ panderOptions('table.split.table', Inf)
 
 ## Data
 
-```{r, data, echo = FALSE, results = 'hide'}
+```{r, data, echo = TRUE, results = 'hide'}
 class_roll <- read_excel("../data/class_roll0303_deid.xlsx", 
                         range = "C2:I162")
 str(class_roll)
@@ -61,11 +61,11 @@ Xmin
 ## Plot
 
 ```{r, echo = FALSE}
-hist(Xsum, prob = TRUE, nclass = 30, xlim = c(0, 25), ylim = c(0, 0.15))
+hist(Xsum, prob = TRUE, nclass = 30, xlim = c(0, 25), ylim = c(0, 0.2))
 x <- seq(0, 25, by = 0.1)
 lines(x, dchisq(x, df = 5), col = "red")
 legend("topright", inset = 0.05, legend = c("Xsum", "Chi-square(5)"), col = c("black", "red"), lty = 1)
-plot(density(Xsum), xlim = c(0, 25), ylim = c(0, 0.15), main = "Density Estimation of Xsum")
+plot(density(Xsum), xlim = c(0, 25), ylim = c(0, 0.2), main = "Density Estimation of Xsum")
 lines(x, dchisq(x, df = 5), col = "red")
 legend("topright", inset = 0.05, legend = c("Xsum", "Chi-square(5)"), col = c("black", "red"), lty = 1)
 ```

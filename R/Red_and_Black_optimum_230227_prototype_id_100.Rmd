@@ -14,7 +14,7 @@ library(magrittr)
 panderOptions('table.split.table', Inf)
 ```
 
-<!--
+
 ## Data
 
 ```{r, data, echo = FALSE, results = 'hide'}
@@ -27,7 +27,6 @@ str(class_roll)
 source("./RnB_2023_id.R")
 ```
 
-
 ## Search for Best Configuration
 
 ```{r}
@@ -36,7 +35,6 @@ M2 <- 100
 Xsum <- sapply(M1:M2, red_and_black)
 names(Xsum) <- M1:M2
 ```
--->
 
 ## Summary
 
@@ -68,7 +66,6 @@ lines(x, dchisq(x, df = 6), col = "red")
 legend("topright", inset = 0.05, legend = c("Xsum", "Chi-square(6)"), col = c("black", "red"), lty = 1)
 ```
 
-<!--
 ## Randomization
 
 ```{r, randomization}
@@ -93,7 +90,6 @@ X0min <- tbl0 %>%
   `[[`(1)
 X0min
 ```
--->
 
 ### 학번
 
@@ -142,6 +138,7 @@ X3min <- tbl3 %>%
   `[[`(1)
 X3min
 ```
+-->
 
 ## e-mail 서비스업체
 
