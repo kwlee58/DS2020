@@ -1,5 +1,5 @@
 ---
-title: "Cheating Chart: TBC 201702"
+title: "Cheating Chart: JTBC 201702"
 author: "Kee-Won Lee"
 date: "`r Sys.Date()`"
 output: html_document
@@ -41,7 +41,7 @@ df <- data.frame(
   party = c("더불어민주당", "더불어민주당", "자유한국당", "국민의당", "더불어민주당", "바른정당")
 )
 
-# 정당별 색상 정의 (교수님께서 지정하신 색상 기준)
+# 정당별 색상 정의 
 party_colors <- c(
   "더불어민주당" = "skyblue", 
   "자유한국당" = "lightgrey", 
