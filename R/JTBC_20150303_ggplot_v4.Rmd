@@ -9,12 +9,9 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 library(knitr)
 library(showtext)
-# system(command = "wget http://cdn.naver.com/naver/NanumFont/fontfiles/NanumFont_TTF_ALL.zip")
-# system(command = "unzip NanumFont_TTF_ALL.zip -d NanumFont")
-# system(command = "rm -f NanumFont_TTF_ALL.zip")
-# system(command = "wget http://www.kopus.org/download/KOPUBWORLD_TTF_FONTS.zip")
-# system(command = "unzip KOPUBWORLD_TTF_FONTS.zip -d KoPubWorld")
-# system(command = "rm -f KOPUBWORLD_TTF_FONTS.zip")
+library(showtext)
+font_add_google("Nanum Gothic", "nanum")
+showtext_auto()
 ```
 
 # Problem,
@@ -73,23 +70,11 @@ kable(t(as.matrix(poll)), caption = "김영란법 국회 통과")
 
 ## `pie()`
 
-```{r, mac_pie, out.width = "67%", fig.align = "center", fig.showtext = TRUE, eval = FALSE}
+```{r, mac_pie, out.width = "67%", fig.align = "center", fig.showtext = TRUE, eval = TRUE}
 library(systemfonts)
 # mac 용
-system("fc-list | grep KoPub")
-system("fc-list | grep Nanum")
-font_add(family = "kopub", 
-         regular = "/Users/kwlee/Library/Fonts/KoPubWorld Dotum Medium.ttf",
-         bold = "/Users/kwlee/Library/Fonts/KoPubWorld Dotum Bold.ttf",
-         italic  = "/Users/kwlee/Library/Fonts/KoPubWorld Dotum Light.ttf")
-showtext_auto()
-font_add(family = "nanum", 
-         regular = "/Users/kwlee/Library/Fonts/NanumGothic-Regular.ttf",
-         bold = "/Users/kwlee/Library/Fonts/NanumGothic-Bold.ttf")
-showtext_auto()
 suppressMessages({
 par(family = "nanum")
-# par(family = "kopub")
 pie(poll, 
     labels = "", 
     radius = 1,
@@ -119,61 +104,6 @@ text(x = 2.1 * x_text0, y = 2.1 * y_text0,
      col = "white", 
      cex = 1.5)
 title(main = "김영란법\n국회 통과", cex.main = 2, family = "nanum")
-box(which = "figure", lwd = 3)
-dev.copy(png, "../pics/jtbc150303.png", width = 480, height = 480)
-invisible(dev.off())
-})
-```
-
-```{r, windows_pie, out.width = "67%", fig.align = "center", fig.showtext = TRUE, eval = TRUE}
-library(systemfonts)
-# Font 경로를 알아내는 코드
-# Windows 용이니 mac 사용자는 "C:/"를 지우고 자신의 환경에 맞게 설정.
-# subset(system_fonts(), grepl("KoPub", family))
-# system_fonts()[214:219, "path"]
-subset(system_fonts(), grepl("Malgun", family))
-font_add(family = "kopub", 
-         regular = "c:/Users/hallym/AppData/Local/Microsoft/Windows/Fonts/KoPubWorld Dotum Medium.ttf",
-         bold = "c:/Users/hallym/AppData/Local/Microsoft/Windows/Fonts/KoPubWorld Dotum Bold.ttf",
-         italic  = "c:/Users/hallym/AppData/Local/Microsoft/Windows/Fonts/KoPubWorld Dotum Light.ttf")
-showtext_auto()
-font_add(family = "malgun", 
-         regular = "C:\\Windows\\Fonts\\malgun.ttf",
-         bold = "C:\\Windows\\Fonts\\malgunbd.ttf",
-         italic = "C:\\Windows\\Fonts\\malgunsl.ttf")
-showtext_auto()
-suppressMessages({
-par(family = "malgun")
-# par(family = "kopub")
-pie(poll, 
-    labels = "", 
-    radius = 1,
-    clockwise = TRUE, 
-    init.angle = 90, 
-    cex = 1.5,
-    col = c("blue", "red", "grey"))
-par(new = TRUE)
-pie(1,
-    labels = "",
-    radius = 0.5,
-    border = NA,
-    col = "white")
-text(x = 0, y = 0, 
-     labels = "%", 
-     cex = 1.5)
-text(x = x_text, y = y_text, 
-     labels = format(poll, nsmall = 1), 
-     col = "white", 
-     cex = 1.5)
-rect(2.1 * x_text0 - 0.6, 2.1 * y_text0 - 0.1, 
-     2.1 * x_text0 + 0.6, 2.1 * y_text0 + 0.1,
-     col = c("blue", "red", "grey"),
-     border = "black")
-text(x = 2.1 * x_text0, y = 2.1 * y_text0, 
-     labels = names(poll), 
-     col = "white", 
-     cex = 1.5)
-title(main = "김영란법\n국회 통과", cex.main = 2, family = "malgun")
 box(which = "figure", lwd = 3)
 dev.copy(png, "../pics/jtbc150303.png", width = 480, height = 480)
 invisible(dev.off())
@@ -244,9 +174,9 @@ ggplot(data = poll_tbl,
   theme_void() +
   theme(axis.ticks = element_blank(),
         axis.text = element_blank(),
-        legend.text = element_text(family = "malgun"),
+        legend.text = element_text(family = "nanum"),
         panel.background = element_rect(colour = "black"),
-        plot.title = element_text(family = "malgun",
+        plot.title = element_text(family = "nanum",
                                   face = "bold",
                                   size = 20, 
                                   vjust = -10,
