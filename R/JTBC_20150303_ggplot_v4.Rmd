@@ -112,42 +112,6 @@ invisible(dev.off())
 
 ## `coord_polar()`
 
-```{r, out.width = "75%", fig.align = "center", eval = FALSE}
-library(ggplot2)
-pos <- cumsum(poll) - poll / 2
-pos2 <- pos
-pos2[1] <- 25
-poll_tbl <- data.frame(key = names(poll), 
-                       value = poll, 
-                       row.names = NULL)
-ggplot(data = poll_tbl, 
-       mapping = aes(x = 2, y = value, fill = key)) +
-  geom_bar(stat = "identity") +
-  geom_text(aes(y = pos2, label = format(poll, nsmall = 1)), 
-            size = 5, 
-            colour = "white") +
-  geom_label(aes(x = 3.0, y = pos, label = key), 
-             colour = "white") +
-  xlim(0.5, 3.5) +
-  annotate("text", x = 0.5, y = 0, label = "%", size = 6) +
-  labs(title = "김영란법\n국회통과", x = NULL, y = NULL) +
-  scale_fill_manual(values = c("gray", "red", "blue")) +
-#  scale_y_continuous(breaks = NULL) +
-#  guides(fill = guide_legend(title = "", reverse = TRUE)) +
-  guides(fill = "none") +
-  theme_void() +
-  theme(axis.ticks = element_blank(),
-        axis.text = element_blank(),
-        legend.text = element_text(family = "nanum"),
-        panel.background = element_rect(colour = "black"),
-        plot.title = element_text(family = "nanum",
-                                  face = "bold",
-                                  size = 20, 
-                                  vjust = -10,
-                                  hjust = 0.5)) +
-  coord_polar(theta = "y")
-```
-
 ```{r, out.width = "75%", fig.align = "center", eval = TRUE}
 library(ggplot2)
 pos <- cumsum(poll) - poll / 2
