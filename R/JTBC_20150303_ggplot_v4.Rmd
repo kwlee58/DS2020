@@ -120,11 +120,10 @@ ggplot(data = poll_tbl,
   labs(title = "김영란법\n국회통과", x = NULL, y = NULL) +
   scale_fill_manual(values = c("gray", "red", "blue")) +
   guides(fill = "none") +
-  theme_void() +
-  theme(legend.text = element_text(family = "nanum"),
+  theme_void(base_family = "nanum") +
+  theme(legend.text = element_text(),
         plot.background = element_rect(colour = "black", fill = NA, linewidth = 1),
-        plot.title = element_text(family = "nanum",
-                                  face = "bold",
+        plot.title = element_text(face = "bold",
                                   size = 20, 
                                   vjust = -10,
                                   hjust = 0.5)) +
