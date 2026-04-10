@@ -8,6 +8,7 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(knitr)
+library(pander)
 library(here)
 library(systemfonts)
 library(showtext)
@@ -35,7 +36,7 @@ Base R의 `pie()`함수를 활용한다.
 
 또는 텍스트 라벨 7.3의 위치를 25% + 27.8% 에서 7.3%의 반을 더한 것으로 이해하여도 된다. 이 때의 식은 $(25 + 28.7 + 7.3/2)\times\frac{1}{100}\times2\pi$으로 표현할 수 있다. 텍스트 라벨 28.7의 위치는 25%에서 28.7%의 반을 더한 위치, $(25 + 28.7/2)\times\frac{1}{100}\times2\pi$이 된다.
 
-# Programming
+<!--# Programming-->
 
 ## Data
 
@@ -50,7 +51,7 @@ x_text0 <- x_text #> 범례 박스 위치용 (파이 바깥쪽))
 y_text0 <- y_text #> 파이 안쪽 숫자 라벨 위치 (64% 라벨은 수동조정) 
 x_text[1] <- 0.75
 y_text[1] <- 0
-kable(t(as.matrix(poll)), caption = "김영란법 국회 통과")
+pander(t(as.matrix(poll)), caption = "김영란법 국회 통과")
 ```
 
 <P style ="page-break-before: always">

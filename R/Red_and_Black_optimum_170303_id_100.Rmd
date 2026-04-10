@@ -14,7 +14,6 @@ library(magrittr)
 panderOptions('table.split.table', Inf)
 ```
 
-
 ## Data
 
 ```{r, data, echo = TRUE, results = 'hide'}
@@ -29,7 +28,6 @@ str(class_roll)
 source("./RnB_2023_id.R")
 ```
 
-
 ## Search for Best Configuration
 
 ```{r}
@@ -38,7 +36,6 @@ M2 <- 100
 Xsum <- sapply(M1:M2, red_and_black)
 names(Xsum) <- M1:M2
 ```
-
 
 ## Summary
 
@@ -61,11 +58,11 @@ Xmin
 ## Plot
 
 ```{r, echo = FALSE}
-hist(Xsum, prob = TRUE, nclass = 30, xlim = c(0, 25), ylim = c(0, 0.2))
+hist(Xsum, prob = TRUE, nclass = 30, xlim = c(0, 25), ylim = c(0, 0.25))
 x <- seq(0, 25, by = 0.1)
 lines(x, dchisq(x, df = 5), col = "red")
 legend("topright", inset = 0.05, legend = c("Xsum", "Chi-square(5)"), col = c("black", "red"), lty = 1)
-plot(density(Xsum), xlim = c(0, 25), ylim = c(0, 0.2), main = "Density Estimation of Xsum")
+plot(density(Xsum), xlim = c(0, 25), ylim = c(0, 0.25), main = "Density Estimation of Xsum")
 lines(x, dchisq(x, df = 5), col = "red")
 legend("topright", inset = 0.05, legend = c("Xsum", "Chi-square(5)"), col = c("black", "red"), lty = 1)
 ```
