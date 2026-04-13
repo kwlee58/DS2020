@@ -30,7 +30,6 @@ knitr::include_graphics("../pics/poll_2017_JTBC.jpg")
 
 제대로 된 막대그래프를 그리면서 R Base plot과 ggplot에 대하여 학습.
 
-
 ## Data 
 
 ```{r, data, message = FALSE}
@@ -59,11 +58,7 @@ party_levels <- c("더불어민주당", "자유한국당", "국민의당", "바�
 df$party <- factor(df$party, levels = party_levels)
 ```
 
-<P style = "page-break-before:always">
-
 ## Barplot (R Base)
-
-<P style = "page-break-before:always">
 
 ```{r, fig.width = 8, fig.height = 4}
 # 1. 색상 매핑을 df에 미리 넣어두면 더 편리합니다.

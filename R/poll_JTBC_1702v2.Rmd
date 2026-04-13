@@ -45,8 +45,8 @@ barplot(rates)
 <P style = "page-break-before:always">
 
 ```{r, fig.width = 8, fig.height = 4}
-# par(family = "")
-par(family = "AppleGothic")
+par(family = "")
+# par(family = "AppleGothic")
 b1 <- barplot(rates, 
               axes = FALSE, 
               col = candidates_colour, 
