@@ -16,7 +16,13 @@ library(pscl)
 library(magrittr)
 library(knitr)
 library(pander)
-library(extrafont)
+library(showtext)
+font_add_google("Nanum Gothic", "nanum")
+showtext_auto()
+```
+
+
+```{r}
 data(prussian)
 str(prussian)
 head(prussian)
@@ -50,7 +56,7 @@ horsekick %$%
 ```{r fig.width = 5.5, fig.height = 5.5}
 options(digits = 3)
 #> 한글 폰트 설정
-par(family = "KoPubWorldDotum Medium")
+par(family = "nanum")
 #> 백분율로 표시
 # horsekick$Perc <- prussian$y %>%
 #   table %>%
@@ -112,7 +118,7 @@ points(x = Deaths[2:5], y = Cum[1:4],
 
 ```{r fig.width = 5.5, fig.height = 5.5}
 options(digits = 3)
-par(family = "KoPubWorldDotum Medium")
+# par(family = "KoPubWorldDotum Medium")
 plot(x = horsekick$Deaths, y = horsekick$Cum, 
      xlim = c(-0.5,4.5), ylim = c(50, 100), 
      xlab = "사망자 수", ylab = "누적 백분률(%)", 
@@ -156,7 +162,7 @@ h_xy
 격자선을 놓는 과정까지를 두 줄로 줄일 수 있다.
 
 ```{r fig.width = 5.5, fig.height = 5.5}
-par(family = "KoPubWorldDotum Medium")
+# par(family = "KoPubWorldDotum Medium")
 source("horsekick_plot_v2.R", echo = TRUE)
 apply(h_xy, MARGIN = 1, 
       FUN = function(h) lines(x = h[1:2], y = h[3:4], lty = 3))
