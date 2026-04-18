@@ -163,7 +163,7 @@ h_xy
 
 ```{r fig.width = 5.5, fig.height = 5.5}
 # par(family = "KoPubWorldDotum Medium")
-source("horsekick_plot_v2.R", echo = TRUE)
+source("horsekick_plot_v3.R", echo = TRUE)
 apply(h_xy, MARGIN = 1, 
       FUN = function(h) lines(x = h[1:2], y = h[3:4], lty = 3))
 l_xy <- function(h) lines(x = h[1:2], y = h[3:4], lty = 3)
@@ -178,10 +178,10 @@ $= 0\times0.514 + 1\times(0.839-0.514) + 2\times(0.954-0.839) + 3\times(0.993-0.
 을 계산한 것과 같다. 이는 누적도표 위에서 막대의 면적들을 합한 것과 같다.
 
 ```{r fig.width = 5.5, fig.height = 5.5, message = FALSE}
-par(family = "KoPubWorldDotum Medium")
+# par(family = "KoPubWorldDotum Medium")
 library(RColorBrewer)
 h_pal <- brewer.pal(4, name = "Purples")
-source("horsekick_plot_v2.R", echo = FALSE)
+source("horsekick_plot_v3.R", echo = FALSE)
 apply(h_xy, MARGIN = 1, FUN = l_xy)
 polygon(c(0, 1, 1, 0), c(rep(horsekick$Cum[1], 2), rep(horsekick$Cum[2], 2)), 
         col = h_pal[1])
@@ -213,8 +213,8 @@ lapply(data.frame(poly_xy),
 `sapply()`, `lapply()`, `mapply()`를 적재적소에 활용하여 분량을 줄여보자. 빗금친 부분들의 합이 평균임을 알 수 있다.
 
 ```{r fig.width = 5.5, fig.height = 5.5, message = FALSE}
-par(family = "KoPubWorldDotum Medium")
-source("horsekick_plot_v2.R")
+# par(family = "KoPubWorldDotum Medium")
+source("horsekick_plot_v3.R")
 # apply(h_xy, MARGIN = 1, FUN = l_xy)
 mapply(polygon, 
        lapply(data.frame(poly_xy), 
@@ -249,8 +249,8 @@ lapply(data.frame(poly_xy_2),
 ```
 
 ```{r fig.width = 5.5, fig.height = 5.5, message = FALSE}
-par(family = "KoPubWorldDotum Medium")
-source("horsekick_plot_v2.R")
+# par(family = "KoPubWorldDotum Medium")
+source("horsekick_plot_v3.R")
 apply(h_xy, MARGIN = 1, FUN = l_xy)
 mapply(polygon, 
        lapply(data.frame(poly_xy_2), function(v) cbind(v[1:4], v[5:8])), 
@@ -265,8 +265,8 @@ points(x = horsekick$Deaths[2:5], y = horsekick$Cum[1:4],
 
 ```{r fig.width = 5.5, fig.height = 5.5, message = FALSE}
 options(digits = 3)
-par(family = "KoPubWorldDotum Medium")
-source("horsekick_plot_v2.R", echo = FALSE)
+# par(family = "KoPubWorldDotum Medium")
+source("horsekick_plot_v3.R", echo = FALSE)
 apply(h_xy, MARGIN = 1, FUN = l_xy)
 polygon(c(0, 1, 1, 0), c(rep(horsekick$Cum[1], 2), rep(horsekick$Cum[5], 2)), 
         col = h_pal[1])

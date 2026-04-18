@@ -1,0 +1,181 @@
+---
+title: "Bortkewitsch의 말발굽 사고 자료와 기대값"
+author: "Kee-Won Lee"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, message=FALSE, warning=FALSE}
+options(digits = 4)
+library(tidyverse)
+library(pscl)
+```
+
+## 1. 자료
+
+프러시아 14개 연대에서 20년 동안 관찰된 말발굽 사고 사망자 수 자료이다.  
+원시자료는 `pscl` 패키지의 `prussian` 데이터에 들어 있다.
+
+```{r}
+data(prussian)
+
+horsekick <- prussian %>%
+  count(y, name = "Corps") %>%
+  rename(Deaths = y) %>%
+  mutate(
+    p = Corps / sum(Corps),
+    F = cumsum(p)
+  )
+
+horsekick
+```
+
+이 자료의 평균 사망자 수는 다음과 같다.
+
+```{r}
+mean(prussian$y)
+```
+
+## 2. 분포표와 누적분포
+
+확률질량함수와 누적분포함수를 함께 적어 보면 다음과 같다.
+
+```{r}
+horsekick %>%
+  transmute(
+    Deaths,
+    Corps,
+    Probability = round(p, 3),
+    CDF = round(F, 3)
+  )
+```
+
+누적분포함수를 계단함수로 그리면 다음과 같다.
+
+```{r fig.width=6, fig.height=5}
+plot(F ~ Deaths, data = horsekick,
+     xlim = c(-0.5, 4.5), ylim = c(0.5, 1.02),
+     xlab = "사망자 수", ylab = "누적확률 F(x)",
+     yaxt = "n")
+axis(2, at = horsekick$F,
+     labels = format(round(horsekick$F, 3), nsmall = 3),
+     las = 2)
+abline(v = 0:4, lty = 3, col = "gray70")
+segments(x0 = 0:4, y0 = horsekick$F, x1 = 1:5, y1 = horsekick$F, lwd = 2)
+points(horsekick$Deaths, horsekick$F, pch = 21, bg = "black")
+points(1:4, horsekick$F[1:4], pch = 21, bg = "white")
+```
+
+## 3. 기대값을 보통 방식으로 계산하기
+
+기대값은
+
+\[
+E(X)=\sum_x xP(X=x)
+\]
+
+로 계산된다.
+
+```{r}
+EX1 <- sum(horsekick$Deaths * horsekick$p)
+EX1
+```
+
+즉,
+
+\[
+E(X)=0\times P(X=0)+1\times P(X=1)+2\times P(X=2)+3\times P(X=3)+4\times P(X=4)
+\]
+
+이다.
+
+## 4. 기대값을 윗부분 면적으로 계산하기
+
+음이 아닌 정수값 확률변수에 대해서는
+
+\[
+E(X)=\sum_{k=1}^{\infty}P(X\ge k)
+\]
+
+가 성립한다.
+
+이 자료에서는 최대값이 4이므로
+
+\[
+E(X)=P(X\ge 1)+P(X\ge 2)+P(X\ge 3)+P(X\ge 4)
+\]
+
+만 계산하면 된다.
+
+```{r}
+tail_prob <- tibble(
+  k = 1:max(horsekick$Deaths),
+  tail = sapply(k, function(k) sum(horsekick$p[horsekick$Deaths >= k]))
+)
+
+tail_prob
+```
+
+```{r}
+EX2 <- sum(tail_prob$tail)
+EX2
+```
+
+두 결과는 서로 같다.
+
+```{r}
+c(EX1 = EX1, EX2 = EX2)
+```
+
+## 5. 왜 윗부분 면적인가?
+
+누적분포함수의 각 계단 위에 남아 있는 높이는 다음과 같다.
+
+- 첫 번째 직사각형의 높이: \(P(X\ge 1)\)
+- 두 번째 직사각형의 높이: \(P(X\ge 2)\)
+- 세 번째 직사각형의 높이: \(P(X\ge 3)\)
+- 네 번째 직사각형의 높이: \(P(X\ge 4)\)
+
+폭이 모두 1이므로, 이 직사각형들의 넓이 합은 곧
+
+\[
+P(X\ge1)+P(X\ge2)+P(X\ge3)+P(X\ge4)=E(X)
+\]
+
+가 된다.
+
+```{r fig.width=6, fig.height=5}
+plot(F ~ Deaths, data = horsekick,
+     xlim = c(-0.5, 4.5), ylim = c(0.5, 1.02),
+     xlab = "사망자 수", ylab = "누적확률 F(x)",
+     yaxt = "n")
+axis(2, at = horsekick$F,
+     labels = format(round(horsekick$F, 3), nsmall = 3),
+     las = 2)
+abline(v = 0:4, lty = 3, col = "gray70")
+segments(x0 = 0:4, y0 = horsekick$F, x1 = 1:5, y1 = horsekick$F, lwd = 2)
+
+for (k in 1:4) {
+  rect(xleft = k - 1,
+       ybottom = horsekick$F[k],
+       xright = k,
+       ytop = 1,
+       density = 20,
+       angle = ifelse(k %% 2 == 1, 45, 135),
+       border = NA)
+}
+
+points(horsekick$Deaths, horsekick$F, pch = 21, bg = "black")
+points(1:4, horsekick$F[1:4], pch = 21, bg = "white")
+```
+
+## 6. 정리
+
+이 자료에서 평균 사망자 수는 약 `r round(EX1, 3)`명이다.
+
+이 값은 두 가지 방식으로 똑같이 계산된다.
+
+1. \(\sum xP(X=x)\) 로 계산한 기대값
+2. \(\sum_{k\ge1} P(X\ge k)\) 로 계산한 누적분포 윗부분 면적
+
+따라서 **음이 아닌 정수값 확률변수의 기대값은 누적분포의 윗부분 면적의 합으로 해석할 수 있다.**
