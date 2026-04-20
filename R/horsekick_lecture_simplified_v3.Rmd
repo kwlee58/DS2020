@@ -12,7 +12,7 @@ knitr::opts_chunk$set(
   warning = FALSE,
   fig.align = "center",
   fig.width = 5.5,
-  fig.height = 4.2
+  fig.height = 5.5
   )
 options(digits = 4)
 library(tidyverse)
@@ -65,7 +65,7 @@ horsekick %>%
 
 누적분포함수를 계단함수로 그리면 다음과 같다.
 
-```{r fig.width=6, fig.height=5}
+```{r}
 plot(F ~ Deaths, data = horsekick,
      xlim = c(-0.5, 4.5), ylim = c(0.5, 1.02),
      xlab = "사망자 수", ylab = "누적확률 F(x)",
@@ -106,7 +106,7 @@ E(X)=0\times P(X=0)+1\times P(X=1)+2\times P(X=2)+3\times P(X=3)+4\times P(X=4)
 같은 총면적을 **세로 막대의 합**으로도, **가로 막대의 합**으로도 볼 수 있다.  
 아래 그림은 \(\sum xP(X=x)\) 에 해당하는 면적을 가로로 다시 쌓아 본 것이다.
 
-```{r fig.width=6, fig.height=5, message=FALSE, warning=FALSE}
+```{r message = FALSE, warning = FALSE}
 library(RColorBrewer)
 
 h_pal <- brewer.pal(4, "Purples")
@@ -194,7 +194,7 @@ P(X\ge1)+P(X\ge2)+P(X\ge3)+P(X\ge4)=E(X)
 
 가 된다.
 
-```{r fig.width=6, fig.height=5}
+```{r}
 plot(F ~ Deaths, data = horsekick,
      xlim = c(-0.5, 4.5), ylim = c(0.5, 1.02),
      xlab = "사망자 수", ylab = "누적확률 F(x)",
