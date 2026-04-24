@@ -19,7 +19,7 @@ library(tidyverse)
 library(pscl)
 library(showtext)
 library(sysfonts)
-font_add_google("Nanum Gothic", "nanum")
+font_add_google(name = "Nanum Gothic", family = "nanum")
 showtext_auto()
 par(family = "nanum")
 ```
