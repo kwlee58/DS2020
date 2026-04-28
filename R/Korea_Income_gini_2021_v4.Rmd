@@ -153,11 +153,35 @@ ylab_4  <- "Income Cumulated (%)"
 ## Cumulative Distribution
 
 ```{r cum_plot, fig.width = 7, fig.height = 7, fig.keep = 'none', warning = TRUE}
-# 누적분포가 처음으로 100% 에 도달하는 index — 그 이후는 음영영역에서 제외
-# (반올림 때문에 정확히 100 에 못 닿는 경우를 대비해 약간의 허용오차 사용)
-k_full <- which(earners_kor_cum_df$y >= 99.99)[1]
-if (is.na(k_full)) k_full <- nrow(earners_kor_cum_df)
-poly_df <- rbind(earners_kor_cum_df[seq_len(k_full), ], c(0, 100))
+# 누적도표의 "윗 부분 면적 = 평균" 을 시각화하기 위해 곡선 위쪽(곡선 ~ y = 100)
+# 영역을 폴리곤으로 칠한다.
+#
+# 주의 : earners_kor_cum_df 에는 표시범위(0–200) 밖의 좌표(x = 300, 500,
+# 1000, 2000) 가 포함돼 있어서, scale_x_continuous(limits = …) 가 이 점들을
+# 그리기 직전에 제거하면 폴리곤 정점 순서가 깨져 (0, 100) 꼭지점이 누락된 채
+# 닫힘이 일어난다 → 의도와 반대로 곡선 아래쪽이 칠해진다. 이를 막기 위해
+# 폴리곤 좌표를 표시범위 안에서 명시적으로 구성한다.
+xmax_plot <- 200
+
+in_view       <- earners_kor_cum_df$x <= xmax_plot
+visible_curve <- earners_kor_cum_df[in_view, ]
+i_last        <- max(which(in_view))
+# 표시범위 끝(x = xmax_plot) 너머에 점이 있으면 x = xmax_plot 에서 선형보간한
+# 끝점을 곡선 끝에 덧붙여 놓는다(2021 자료에선 x = 200 이 자료점이라 보간 불필요).
+if (i_last < nrow(earners_kor_cum_df)) {
+  x0 <- earners_kor_cum_df$x[i_last];     y0 <- earners_kor_cum_df$y[i_last]
+  x1 <- earners_kor_cum_df$x[i_last + 1]; y1 <- earners_kor_cum_df$y[i_last + 1]
+  y_at_xmax <- y0 + (y1 - y0) * (xmax_plot - x0) / (x1 - x0)
+  visible_curve <- rbind(visible_curve,
+                         data.frame(x = xmax_plot, y = y_at_xmax))
+}
+
+# 폴리곤 정점 : (0,0) → 곡선 → (xmax, y_xmax) → (xmax, 100) → (0, 100) → close
+poly_df <- rbind(
+  visible_curve,
+  data.frame(x = xmax_plot, y = 100),
+  data.frame(x = 0,          y = 100)
+)
 
 (c1 <- ggplot() +
     geom_line(data = earners_kor_cum_df,
