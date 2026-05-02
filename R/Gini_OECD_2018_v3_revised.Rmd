@@ -1,0 +1,242 @@
+---
+title: "OECD 국가들의 Gini 계수 비교"
+author: "coop711"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  message = FALSE,
+  warning = FALSE,
+  fig.align = "center"
+)
+```
+
+## Data 작업
+
+OECD 자료에서 세전·세후 Gini 계수를 읽어들입니다. 원자료에는 `After taxes and transfers`, `Before taxes and transfers` 순서로 들어 있으므로, 분석에서는 `Before`, `After` 순서로 다시 정리합니다.
+
+```{r load-packages}
+library(readxl)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+```
+
+```{r read-data}
+# Rmd 파일과 엑셀 파일이 같은 폴더에 있을 때와
+# RStudio 프로젝트의 data 폴더에 있을 때를 모두 고려한 경로 설정
+xlsx_path <- if (file.exists("GOV-2021-162-EN-G121.xlsx")) {
+  "GOV-2021-162-EN-G121.xlsx"
+} else {
+  "../data/GOV-2021-162-EN-G121.xlsx"
+}
+
+Gini_raw <- read_excel(
+  path = xlsx_path,
+  sheet = "13.7 Graph",
+  range = "A38:C72",
+  col_names = TRUE
+)
+
+names(Gini_raw) <- c("Country", "After", "Before")
+
+Gini_all <- Gini_raw %>%
+  filter(!is.na(Country)) %>%
+  mutate(
+    Country = recode(Country, SLV = "SVN"),  # 원자료의 SLV는 Slovenia(SVN)로 보는 것이 자연스러움
+    Improvement = Before - After
+  )
+
+# OECD 평균은 국가가 아니므로 별도 보관
+OECD_avg <- Gini_all %>%
+  filter(Country == "OECD")
+
+Gini_b_a <- Gini_all %>%
+  filter(Country != "OECD") %>%
+  select(Country, Before, After, Improvement)
+```
+
+세전 Gini 계수에서 세후 Gini 계수를 뺀 값을 개선도(`Improvement`)라고 부릅니다. 값이 클수록 조세와 이전지출을 거친 뒤 불평등이 더 많이 완화되었다는 뜻입니다.
+
+```{r show-data}
+Gini_b_a
+```
+
+개선도가 낮은 순서로 나열하면 다음과 같습니다.
+
+```{r low-improvement}
+Gini_b_a %>%
+  arrange(Improvement)
+```
+
+개선도가 높은 순서로 나열하면 다음과 같습니다.
+
+```{r high-improvement}
+Gini_b_a %>%
+  arrange(desc(Improvement))
+```
+
+한국의 위치만 따로 확인해 봅니다.
+
+```{r korea-position}
+Gini_b_a %>%
+  arrange(desc(Improvement)) %>%
+  mutate(rank_improvement = row_number()) %>%
+  filter(Country == "KOR")
+```
+
+## Base R graphic representation
+
+세전·세후 Gini 계수를 막대그래프로 비교합니다. `barplot()`에서 `height`가 행렬일 때 행별 값이 서로 다른 막대가 되므로, `t()`를 이용해 자료를 전치한 뒤 그립니다.
+
+```{r base-barplot-basic, fig.width=10, fig.height=5}
+barplot(
+  as.matrix(t(Gini_b_a[, c("Before", "After")])),
+  beside = TRUE,
+  names.arg = Gini_b_a$Country,
+  legend.text = c("Before Tax", "After Tax")
+)
+```
+
+개선도 순서대로 막대를 늘어세우기 위해 정렬 순서를 저장합니다.
+
+```{r order-improvement}
+o_improvement <- order(Gini_b_a$Improvement, decreasing = TRUE)
+Gini_b_a$Country[o_improvement]
+```
+
+```{r base-barplot-ordered, fig.width=10, fig.height=5}
+old_par <- par(no.readonly = TRUE)
+par(mar = c(8, 4, 4, 6), xpd = TRUE)
+
+barplot(
+  as.matrix(t(Gini_b_a[o_improvement, c("Before", "After")])),
+  beside = TRUE,
+  names.arg = Gini_b_a$Country[o_improvement],
+  las = 2,
+  col = c("darkgrey", "steelblue"),
+  ylim = c(0, 0.55),
+  main = "Gini Coefficients of OECD Countries",
+  ylab = "Gini coefficient"
+)
+abline(h = 0.4, lty = 2, col = "red")
+legend(
+  "topright",
+  inset = c(-0.18, 0),
+  legend = c("Before Tax", "After Tax"),
+  fill = c("darkgrey", "steelblue"),
+  bty = "n"
+)
+
+par(old_par)
+```
+
+나라 이름이 많을 때는 가로 막대그래프가 더 읽기 쉽습니다.
+
+```{r base-barplot-horizontal, fig.width=7, fig.height=10}
+low_to_high <- order(Gini_b_a$Improvement)
+
+old_par <- par(no.readonly = TRUE)
+par(mar = c(4, 7, 4, 2))
+
+barplot(
+  as.matrix(t(Gini_b_a[low_to_high, c("Before", "After")])),
+  beside = TRUE,
+  horiz = TRUE,
+  names.arg = Gini_b_a$Country[low_to_high],
+  las = 1,
+  col = c("darkgrey", "steelblue"),
+  xlim = c(0, 0.55),
+  main = "Gini Coefficients of OECD Countries",
+  xlab = "Gini coefficient"
+)
+abline(v = 0.4, lty = 2, col = "red")
+legend(
+  "bottomright",
+  legend = c("Before Tax", "After Tax"),
+  fill = c("darkgrey", "steelblue"),
+  bty = "n"
+)
+
+par(old_par)
+```
+
+## ggplot
+
+### Tidy data
+
+`ggplot2`를 사용하려면 세전과 세후를 하나의 변수(`Tax`)로 모은 긴 형태의 자료가 편리합니다.
+
+```{r tidy-data}
+Gini_long <- Gini_b_a %>%
+  pivot_longer(
+    cols = c(Before, After),
+    names_to = "Tax",
+    values_to = "Gini_Coef"
+  ) %>%
+  mutate(
+    Tax = factor(Tax, levels = c("Before", "After")),
+    Country_ordered = reorder(Country, Improvement)
+  )
+```
+
+```{r ggplot-horizontal, fig.width=7, fig.height=10}
+p <- ggplot(
+  data = Gini_long,
+  aes(x = Country_ordered, y = Gini_Coef, fill = Tax)
+) +
+  geom_col(position = position_dodge(width = 0.75), width = 0.65) +
+  coord_flip() +
+  geom_hline(yintercept = 0.4, color = "red", linetype = "dotted", linewidth = 1) +
+  scale_fill_manual(
+    name = "",
+    labels = c("세전", "세후"),
+    values = c("Before" = "darkgrey", "After" = "steelblue")
+  ) +
+  labs(
+    title = "OECD 국가들의 Gini 계수",
+    subtitle = "세전·세후 비교: 개선도 낮은 순",
+    x = "",
+    y = "Gini coefficient"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    plot.title = element_text(size = 22, hjust = 0.5, face = "bold"),
+    plot.subtitle = element_text(size = 15, hjust = 0.5),
+    legend.position = "top"
+  )
+
+p
+```
+
+그림 파일로 저장하려면 저장 폴더를 먼저 만든 뒤 `ggsave()`를 실행합니다.
+
+```{r save-plot, eval=FALSE}
+dir.create("../pics", showWarnings = FALSE, recursive = TRUE)
+ggsave(
+  filename = "../pics/OECD_gini_ggplot_2018.png",
+  plot = p,
+  width = 7,
+  height = 10,
+  dpi = 300,
+  bg = "white"
+)
+```
+
+## 수업에서 강조할 점
+
+1. 세전 Gini 계수는 시장소득 기준의 불평등을 보여 줍니다.
+2. 세후 Gini 계수는 조세와 이전지출 이후의 불평등을 보여 줍니다.
+3. `Improvement = Before - After`는 조세·이전지출을 통한 불평등 완화 정도로 해석할 수 있습니다.
+4. 한국은 세전 불평등도 자체가 매우 높은 편은 아니지만, 세전과 세후의 차이가 작아 재분배를 통한 개선도는 낮은 편으로 나타납니다.
+5. OECD 평균은 개별 국가가 아니므로 순위 비교에서는 제외하고, 필요하면 기준선이나 참고값으로 따로 활용하는 편이 좋습니다.
+
+## Comments
+
+R 코드를 설명에 포함하려면 `class_roll %$%`처럼 backtick(`` ` ``)으로 시작과 끝을 묶어줍니다. `$`는 LaTeX에서 수식을 나타낼 때 사용하는 특수 문자이기 때문에, R 코드에서 `%$%`를 설명하고 싶을 때는 반드시 backtick으로 묶어 주세요.
