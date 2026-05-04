@@ -1,0 +1,122 @@
+---
+title: "Gini_OECD_2018"
+author: "coop711"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(message = FALSE, warning = FALSE)
+```
+
+## Data 작업
+
+* OECD 국가들의 Gini 계수 읽어들이기. 세전과 세후로 구분.
+* 데이터 출처 : OECD, *Government at a Glance 2021*, Figure 13.7  
+  (시트 `13.7 Graph`의 38행은 헤더, 39~71행은 OECD 32개국 + OECD 평균(R56)으로 33개 항목. 72행은 빈 행이고 73~75행은 비OECD 국가(ROU, RUS, CRI)이므로 `range = "A38:C71"` 로 한정.)
+
+```{r}
+library(knitr)
+library(readxl)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+
+Gini_b_a <- read_excel("../data/GOV-2021-162-EN-G121.xlsx",
+                       sheet = "13.7 Graph",
+                       range = "A38:C71") %>%
+  rename(Country = 1, After = 2, Before = 3) %>%
+  mutate(Improvement = Before - After) %>%
+  select(Country, Before, After, Improvement) %>%
+  as.data.frame()
+
+Gini_b_a
+```
+
+* 개선도(`Before - After`)가 낮은 순서, 높은 순서로 정렬.
+
+```{r}
+Gini_b_a %>% arrange(Improvement)
+Gini_b_a %>% arrange(desc(Improvement))
+```
+
+<P style = "page-break-before:always">
+
+## Base R `barplot()`
+
+* 세전/세후 Gini 계수를 한눈에 비교하려면 매트릭스를 transpose해서 `beside = TRUE`로 옆에 늘어세움. 막대 이름은 나라 이름. 알파벳 순.
+
+```{r fig.width = 10, fig.height = 5}
+barplot(as.matrix(t(Gini_b_a[, c("Before", "After")])),
+        beside = TRUE,
+        names.arg = Gini_b_a$Country)
+```
+
+* 개선도 내림차순 + 막대 이름 눕히기(`las = 2`) + 여백 조정 + 임계선(0.4) + 범례 + 제목까지 한 번에. 좌표는 시행착오로 결정.
+
+```{r fig.width = 10, fig.height = 5}
+o <- order(Gini_b_a$Improvement, decreasing = TRUE)
+
+old_par <- par(no.readonly = TRUE)
+par(mai = c(1.5, 0.8, 0.8, 0.4))
+barplot(as.matrix(t(Gini_b_a[o, c("Before", "After")])),
+        beside = TRUE,
+        names.arg = Gini_b_a$Country[o],
+        las = 2,
+        legend.text = c("Before Tax", "After Tax"),
+        args.legend = list(x = 105, y = 0.62))
+abline(h = 0.4, lty = 2, col = "red")
+title(main = "Gini Coefficients of OECD Countries")
+par(old_par)
+```
+
+* `barplot()`에는 ggplot의 `position = "identity"`에 직접 대응하는 인자가 없음 (`beside`만 stack/dodge 전환). 같은 위치에 겹쳐 그리려면 `add = TRUE`로 두 번 호출해야 하는데, 그건 다음 절의 `ggplot`이 훨씬 깔끔함.
+
+<P style = "page-break-before:always">
+
+## ggplot
+
+* 깔끔한 데이터로 변환 후, `reorder()`로 개선도 내림차순 정렬, `geom_col(position = "identity")`로 세전(회색) 위에 세후(파랑)을 덧씌워 개선 폭이 한눈에 들어오게 함.
+
+```{r}
+Gini_b_a_long <- Gini_b_a %>%
+  pivot_longer(cols = c(Before, After),
+               names_to = "Tax",
+               values_to = "Gini_Coef") %>%
+  mutate(Tax = factor(Tax, levels = c("Before", "After")))
+```
+
+```{r fig.width = 16, fig.height = 8}
+if (!dir.exists("../pics")) dir.create("../pics", recursive = TRUE)
+
+p <- ggplot(Gini_b_a_long,
+            aes(x = reorder(Country, -Improvement),
+                y = Gini_Coef, fill = Tax)) +
+  geom_col(position = "identity", na.rm = TRUE) +
+  geom_hline(yintercept = 0.4,
+             color = "red", linetype = "dotted", linewidth = 2) +
+  geom_text(aes(y = -0.02, label = Country),
+            size = 5, angle = 45,
+            family = "KoPubWorldDotum Medium") +
+  scale_fill_manual(name = "",
+                    labels = c("세전", "세후"),
+                    values = c("darkgrey", "blue")) +
+  labs(title = "OECD 지니계수",
+       subtitle = "세전, 세후 개선도 낮은순",
+       x = "", y = "Gini Coefficient") +
+  theme_minimal(base_family = "KoPubWorldDotum Medium") +
+  theme(plot.title    = element_text(size = 30, hjust = 0.5,
+                                     family = "KoPubWorldDotum Bold"),
+        plot.subtitle = element_text(size = 18, hjust = 0.5),
+        axis.text.x   = element_blank(),
+        axis.text.y   = element_text(size = 12),
+        legend.text   = element_text(size = 12))
+
+print(p)
+ggsave("../pics/OECD_gini_ggplot_2018.png",
+       plot = p, width = 16, height = 8, dpi = 300, bg = "white")
+```
+
+## Comments
+
+R 코드를 설명에 포함하려면 `class_roll %$%`처럼 backtick(`` ` ``) 으로 시작과 끝을 묶어줍니다. `$`는 LaTeX 으로 수식을 나타낼 때 사용하는 특수 문자이기 때문에 R 코드에서 `%$%` 를 설명하고 싶을 때 그대로 사용하면 수식으로 바뀔 수 있으니까 반드시 `` ` `` 으로 묶어 주세요. <= 이 내용을 지우고 OECD 국가들의 지니계수 비교로부터 파악할 수 있는 시사점과 우리나라 지니계수의 특징 등에 대하여 구체적으로 기술하세요. 스마트리드의 OECD 지니계수 비교 (2026버전)은 필수 시청하여야 합니다.
