@@ -7,6 +7,10 @@ output: html_document
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(message = FALSE, warning = FALSE)
+library(showtext)
+library(sysfonts)
+font_add_google(name = "Nanum Gothic", family = "nanum")
+showtext_auto()
 ```
 
 ## Data 작업
@@ -97,16 +101,16 @@ p <- ggplot(Gini_b_a_long,
              color = "red", linetype = "dotted", linewidth = 2) +
   geom_text(aes(y = -0.02, label = Country),
             size = 5, angle = 45,
-            family = "KoPubWorldDotum Medium") +
+            family = "nanum") +
   scale_fill_manual(name = "",
                     labels = c("세전", "세후"),
                     values = c("darkgrey", "blue")) +
   labs(title = "OECD 지니계수",
        subtitle = "세전, 세후 개선도 낮은순",
        x = "", y = "Gini Coefficient") +
-  theme_minimal(base_family = "KoPubWorldDotum Medium") +
+  theme_minimal(base_family = "nanum") +
   theme(plot.title    = element_text(size = 30, hjust = 0.5,
-                                     family = "KoPubWorldDotum Bold"),
+                                     face = "bold"),
         plot.subtitle = element_text(size = 18, hjust = 0.5),
         axis.text.x   = element_blank(),
         axis.text.y   = element_text(size = 12),
