@@ -136,14 +136,14 @@ g <- ggplot(chosun_tbl,
            colour = "red", family = "nanum", size = 5) +
   theme_bw(base_family = "nanum") +
   theme(
-    plot.title             = element_text(hjust = 0.5, size = 18,
-                                          margin = margin(b = 12),
-                                          face = "bold"),
-    axis.text.x            = element_text(angle = 90, vjust = 0.5),
-    legend.position        = "inside",
+    plot.title = element_text(hjust = 0.5, size = 18,
+                              margin = margin(b = 12),
+                              face = "bold"),
+    axis.text.x = element_text(angle = 90, vjust = 0.5),
+    legend.position = "inside",
     legend.position.inside = c(0.15, 0.8),
-    legend.background      = element_rect(colour = "black", linetype = "solid"),
-    legend.title           = element_blank()
+    legend.background = element_rect(colour = "black", linetype = "solid"),
+    legend.title = element_blank()
   )
 g
 

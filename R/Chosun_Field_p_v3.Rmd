@@ -53,7 +53,7 @@ rownames(field) <- Year
 colnames(field) <- Province
 
 ## stacked area 의 아래쪽에 면적이 큰 지역(전라·경상)을 두기 위해 컬럼 재배열
-field    <- field[, c(3, 4, 1, 2, 5:8)]
+field <- field[, c(3, 4, 1, 2, 5:8)]
 Province <- colnames(field)
 
 ## 평균 면적과 비율(통계 라벨용)
@@ -84,8 +84,8 @@ kable(head(field_long, 12))
 
 ```{r ggplot, warning = FALSE, message = FALSE, fig.width = 12, fig.height = 7, fig.keep = "last"}
 ## 축 눈금/라벨 — 인덱스 대신 연도 기반
-year_levels    <- as.numeric(rownames(field))
-visible_years  <- setdiff(year_levels, 1786)         # 1786 은 1784 와 너무 가까워 제외
+year_levels <- as.numeric(rownames(field))
+visible_years <- setdiff(year_levels, 1786)         # 1786 은 1784 와 너무 가까워 제외
 
 ## y축 누적 눈금: 1432 년 행을 기준으로 누적 (지역별 누적 면적 가늠)
 ref_year <- "1432"
@@ -94,7 +94,7 @@ y_breaks <- cumsum(rev(field[ref_year, ]))
 ## 평균면적 라벨을 area chart 위에 얹기 위한 좌표
 label_years <- c("1432", "1592")
 y_coord <- colMeans(field[label_years, ])
-y_text  <- cumsum(c(0, head(rev(y_coord), -1))) + rev(y_coord) / 2
+y_text <- cumsum(c(0, head(rev(y_coord), -1))) + rev(y_coord) / 2
 
 mean_text <- rev(paste0(Province, ": ",
                         format(mean_field, big.mark = ","),
@@ -114,13 +114,13 @@ g <- ggplot() +
             na.rm = TRUE) +
   scale_fill_brewer(palette = "Spectral", name = "",
                     breaks = levels(field_long$Province)) +
-  scale_x_continuous(name   = "연도",
+  scale_x_continuous(name = "연도",
                      breaks = visible_years,
                      labels = visible_years) +
-  scale_y_continuous(name   = "토지 면적(결)",
+  scale_y_continuous(name = "토지 면적(결)",
                      breaks = y_breaks,
                      labels = format(y_breaks, big.mark = ",")) +
-  labs(title    = "조선 시대 도별 논밭통계",
+  labs(title = "조선 시대 도별 논밭통계",
        subtitle = "(도표 안의 수치는 기록된 값들의 평균)") +
   geom_text(data = text_df,
             mapping = aes(x = x, y = y, label = label),
@@ -134,14 +134,14 @@ g <- ggplot() +
   guides(fill = "none") +
   theme_bw(base_family = "nanum") +
   theme(
-    plot.title             = element_text(size = 20, hjust = 0.5,
-                                          face = "bold"),
-    plot.subtitle          = element_text(hjust = 1),
-    axis.text.x            = element_text(angle = 90, vjust = 0.5),
-    legend.position        = "inside",
+    plot.title = element_text(size = 20, hjust = 0.5,
+                              face = "bold"),
+    plot.subtitle = element_text(hjust = 1),
+    axis.text.x = element_text(angle = 90, vjust = 0.5),
+    legend.position = "inside",
     legend.position.inside = c(0.75, 0.9),
-    legend.box.background  = element_rect(fill = "white", colour = "black"),
-    legend.direction       = "horizontal"
+    legend.box.background = element_rect(fill = "white", colour = "black"),
+    legend.direction = "horizontal"
   )
 g
 
