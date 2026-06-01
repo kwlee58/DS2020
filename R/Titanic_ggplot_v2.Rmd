@@ -1,0 +1,534 @@
+---
+title: "Women and Children First!"
+subtitle: "타이타닉 데이터로 본 신사도의 진실 — 개선판 (v2)"
+author: "coop711"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
+    toc_float: true
+    code_folding: show
+    df_print: paged
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE, message = FALSE, warning = FALSE,
+  fig.align = "center", dpi = 150,
+  fig.width = 9, fig.height = 5,
+  fig.path = "../pics/", out.width = "100%"
+)
+
+# 한글 폰트 (있을 때만 활성화)
+if (requireNamespace("showtext", quietly = TRUE)) {
+  showtext::showtext_auto()
+  sysfonts::font_add_google("Noto Sans KR", "noto_kr")
+}
+```
+
+# 0. 질문
+
+> 타이타닉호의 침몰 과정에서 **"Women and Children First!"** —
+> 여성과 어린이를 먼저 구한다는 원칙은 정말 지켜졌는가?
+
+겉으로 보이는 수치(여성 74%, 어린이 51% 생존)와
+**객실 등급별로 들여다본 진실**이 어떻게 다른지, R 데이터로 확인한다.
+
+---
+
+# 1. 데이터
+
+## 1.1 패키지
+
+**개선 포인트**
+
+* 외부 `.RData` 파일과 사용자 정의 `.R` 스크립트(`barplot_gg.R`, `mosaic_gg.R`) **불필요**
+* R 베이스에 내장된 `datasets::Titanic`을 그대로 사용
+
+```{r packages}
+# install.packages(c("tidyverse", "scales", "patchwork", "here"))
+library(tidyverse)   # dplyr, tidyr, ggplot2, ...
+library(scales)      # 축 포매팅 (label_percent, label_comma)
+library(patchwork)   # 그림 결합
+library(here)        # 프로젝트 상대경로
+library(knitr)       # kable
+
+# 주: 'ggmosaic' 패키지가 일부 R 버전에서 설치되지 않는 문제가 있어,
+#     순수 ggplot2(geom_rect)만으로 모자이크 플롯을 직접 그리는 함수를
+#     4장에서 정의해 사용한다.
+```
+
+## 1.2 원자료 — 4차원 테이블
+
+`datasets::Titanic`은 4차원(Class × Sex × Age × Survived) 분할표(`table`)이다.
+정원 2,224명의 분포가 32개 셀에 들어 있다.
+
+```{r raw}
+Titanic                       # 4-way contingency table
+dim(Titanic)                  # 4 × 2 × 2 × 2
+sum(Titanic)                  # 2201 — 데이터에 기록된 인원
+```
+
+## 1.3 Tidy 변환 — 한 줄
+
+**개선 포인트**
+
+* 4차원 테이블을 `as_tibble()` **한 줄**로 tidy 형태로 변환
+* 사망/생존 색 매핑이 자연스러워지도록 `Survived` 순서 고정
+
+```{r tidy}
+titanic <- as_tibble(Titanic) |>            # Class, Sex, Age, Survived, n
+  mutate(
+    Class    = factor(Class, levels = c("1st", "2nd", "3rd", "Crew")),
+    Sex      = factor(Sex,   levels = c("Male", "Female")),
+    Age      = factor(Age,   levels = c("Child", "Adult")),
+    Survived = factor(Survived, levels = c("No", "Yes"),
+                      labels = c("사망", "생존"))
+  )
+titanic
+```
+
+## 1.4 요약 통계
+
+```{r summary}
+# 전체 생존율
+titanic |>
+  group_by(Survived) |>
+  summarise(n = sum(n)) |>
+  mutate(rate = n / sum(n)) |>
+  kable(digits = 3, caption = "전체 생존/사망")
+
+# 그룹별 생존율 한 표에 — Class × Sex × Age
+titanic |>
+  group_by(Class, Sex, Age) |>
+  summarise(
+    total = sum(n),
+    survived = sum(n[Survived == "생존"]),
+    .groups = "drop"
+  ) |>
+  mutate(rate = survived / total) |>
+  arrange(Class, Sex, Age) |>
+  kable(digits = 3, caption = "객실 등급 × 성별 × 연령 그룹별 생존율")
+```
+
+---
+
+# 2. 시각화 — 공통 테마·색상·헬퍼
+
+**개선 포인트**
+
+* 반복되는 `theme()` / 색상 코드를 **한 번만 정의**해 재사용
+* `rainbow(2)` → 의미 있는 두 색(사망=주황, 생존=청록)
+* 원본 `barplot_gg.R`, `mosaic_gg.R`의 핵심 아이디어 — **막대/셀 안에 인원수 자동 표시 + 축 눈금에 누적 비율** — 을 tidyverse 모던 스타일로 재구현
+
+## 2.1 색상 · 테마
+
+```{r theme}
+# 사망/생존 — 색맹 친화 2색 팔레트
+surv_colors <- c("사망" = "#E76F51", "생존" = "#2A9D8F")
+
+theme_titanic <- function(base_size = 12) {
+  theme_minimal(base_size = base_size) +
+    theme(
+      panel.grid.major.x = element_blank(),
+      panel.grid.minor   = element_blank(),
+      plot.title    = element_text(face = "bold", size = rel(1.15)),
+      plot.subtitle = element_text(color = "grey30"),
+      plot.caption  = element_text(color = "grey50", hjust = 0),
+      legend.position = "right",
+      legend.title    = element_blank(),
+      strip.text = element_text(face = "bold")
+    )
+}
+```
+
+## 2.2 막대 가운데 좌표 헬퍼 `pos()` — 원본 그대로
+
+```{r pos-helper}
+# 누적 합 - 자기 자신 / 2  →  각 세그먼트의 중점 좌표
+pos <- function(x) cumsum(x) - x / 2
+```
+
+## 2.3 누적 막대 헬퍼 — `gg_barplot_stack()`
+
+원본 `barplot_gg_stack()`을 모던 스타일로 재작성. 각 세그먼트 중앙에 인원수 표시,
+y축 눈금은 세그먼트 끝 좌표(누적)에 자동 배치(가까운 눈금은 자동 병합).
+
+> **구현 메모** — geom_text의 좌표는 `position_stack(vjust = 0.5, reverse = TRUE)`로
+> ggplot 내부에서 계산한다. 수동으로 `pos()`를 계산해 `y = ypos`로 주면
+> stack의 reverse 방향과 어긋나 라벨이 엉뚱한 세그먼트에 떨어질 수 있다.
+> y축 눈금 위치 계산에는 `pos()`의 핵심 아이디어인 누적합(`cumsum`)을 그대로 활용한다.
+
+```{r gg-barplot-stack}
+gg_barplot_stack <- function(df, x_col, fill_col, n_col,
+                             x_label = NULL, y_label = "인원(명)") {
+  d <- df |>
+    group_by(.data[[x_col]]) |>
+    mutate(ycum = cumsum(.data[[n_col]])) |>   # 축 눈금용
+    ungroup()
+
+  # 축 눈금 — 세그먼트 끝 좌표(누적)에서 가까운 것끼리 자동 병합
+  yb_all <- sort(unique(d$ycum))
+  delta  <- max(yb_all) / 25
+  keep   <- c(TRUE, diff(yb_all) > delta)
+  y_breaks <- c(0, yb_all[keep])
+
+  ggplot(d, aes(x = .data[[x_col]], y = .data[[n_col]],
+                fill = .data[[fill_col]])) +
+    geom_col(position = position_stack(reverse = TRUE),
+             colour = "white", linewidth = 0.3) +
+    geom_text(aes(label = ifelse(.data[[n_col]] == 0, "",
+                                 format(.data[[n_col]], big.mark = ","))),
+              position = position_stack(vjust = 0.5, reverse = TRUE),
+              colour = "white", fontface = "bold", size = 4) +
+    scale_y_continuous(breaks = y_breaks,
+                       labels = format(y_breaks, big.mark = ",")) +
+    labs(x = x_label %||% x_col, y = y_label)
+}
+```
+
+## 2.4 100% 누적 막대 헬퍼 — `gg_barplot_fill()`
+
+원본 `barplot_gg_fill()`의 핵심: **세그먼트 안에는 인원수**(원본 디자인), **축 눈금에는 누적 %** 를 표시.
+라벨 좌표는 마찬가지로 `position_fill(vjust = 0.5, reverse = TRUE)`로 계산한다.
+
+```{r gg-barplot-fill}
+gg_barplot_fill <- function(df, x_col, fill_col, n_col,
+                            x_label = NULL, y_label = "비율(%)") {
+  d <- df |>
+    group_by(.data[[x_col]]) |>
+    mutate(prop = .data[[n_col]] / sum(.data[[n_col]]),
+           ycum = cumsum(prop)) |>
+    ungroup()
+
+  yb_all <- sort(unique(d$ycum))
+  keep   <- c(TRUE, diff(yb_all) > 0.04)
+  y_breaks <- c(0, yb_all[keep])
+
+  ggplot(d, aes(x = .data[[x_col]], y = .data[[n_col]],
+                fill = .data[[fill_col]])) +
+    geom_col(position = position_fill(reverse = TRUE),
+             colour = "white", linewidth = 0.3) +
+    geom_text(aes(label = ifelse(.data[[n_col]] == 0, "",
+                                 format(.data[[n_col]], big.mark = ","))),
+              position = position_fill(vjust = 0.5, reverse = TRUE),
+              colour = "white", fontface = "bold", size = 4) +
+    scale_y_continuous(breaks = y_breaks,
+                       labels = scales::percent(y_breaks, accuracy = 0.1)) +
+    labs(x = x_label %||% x_col, y = y_label)
+}
+```
+
+# 3. 기본 분석 — 그룹별 생존/사망
+
+각 분석은 두 그림을 나란히 보여준다 — 왼쪽은 **인원수 누적 막대**(`gg_barplot_stack`),
+오른쪽은 **100% 누적 막대**(`gg_barplot_fill`). 두 함수 모두 막대 안에 인원수를 자동으로 표시한다.
+
+## 3.1 객실 등급별
+
+```{r plot-class, fig.width = 11, fig.height = 4.5}
+class_df <- titanic |>
+  group_by(Class, Survived) |>
+  summarise(n = sum(n), .groups = "drop")
+
+p_class_n   <- gg_barplot_stack(class_df, "Class", "Survived", "n",
+                                x_label = "객실 등급") +
+  scale_fill_manual(values = surv_colors) +
+  ggtitle("객실 등급별 인원") + theme_titanic()
+
+p_class_pct <- gg_barplot_fill(class_df, "Class", "Survived", "n",
+                                x_label = "객실 등급") +
+  scale_fill_manual(values = surv_colors) +
+  ggtitle("객실 등급별 생존율") + theme_titanic()
+
+p_class <- p_class_n + p_class_pct +
+  plot_annotation(title = "객실 등급별 생존/사망 — 1등석과 3등석의 차이")
+p_class
+ggsave(here("pics", "Titanic_v2_class.png"), p_class, width = 11, height = 4.5, dpi = 200)
+```
+
+**관전 포인트**: 1등석 생존율 ≈ 62.5% / 2등석 41.4% / 3등석 25.2% / 승무원 24.0%.
+오른쪽 그림의 각 세그먼트 안에 정확한 **인원수**가 흰 글자로 박혀 있고, y축에는 누적 % 눈금이 떠 있다.
+
+## 3.2 남녀별 (전체)
+
+```{r plot-sex, fig.width = 11, fig.height = 4.5}
+sex_df <- titanic |>
+  group_by(Sex, Survived) |>
+  summarise(n = sum(n), .groups = "drop")
+
+p_sex_n   <- gg_barplot_stack(sex_df, "Sex", "Survived", "n", x_label = "성별") +
+  scale_fill_manual(values = surv_colors) +
+  ggtitle("남녀별 인원") + theme_titanic()
+p_sex_pct <- gg_barplot_fill(sex_df, "Sex", "Survived", "n", x_label = "성별") +
+  scale_fill_manual(values = surv_colors) +
+  ggtitle("남녀별 생존율") + theme_titanic()
+
+p_sex <- p_sex_n + p_sex_pct +
+  plot_annotation(title = "남녀별 생존/사망")
+p_sex
+ggsave(here("pics", "Titanic_v2_sex.png"), p_sex, width = 11, height = 4.5, dpi = 200)
+```
+
+## 3.3 어른/어린이
+
+```{r plot-age, fig.width = 11, fig.height = 4.5}
+age_df <- titanic |>
+  group_by(Age, Survived) |>
+  summarise(n = sum(n), .groups = "drop")
+
+p_age_n   <- gg_barplot_stack(age_df, "Age", "Survived", "n", x_label = "연령") +
+  scale_fill_manual(values = surv_colors) +
+  ggtitle("어린이/어른 인원") + theme_titanic()
+p_age_pct <- gg_barplot_fill(age_df, "Age", "Survived", "n", x_label = "연령") +
+  scale_fill_manual(values = surv_colors) +
+  ggtitle("어린이/어른 생존율") + theme_titanic()
+
+p_age <- p_age_n + p_age_pct +
+  plot_annotation(title = "어린이/어른 생존/사망")
+p_age
+ggsave(here("pics", "Titanic_v2_age.png"), p_age, width = 11, height = 4.5, dpi = 200)
+```
+
+---
+
+# 4. 모자이크 플롯 — 규모와 비율을 한눈에
+
+모자이크 플롯에서 **막대 너비**는 그룹 크기(인원), **막대 높이**는 그룹 내 생존 비율을 나타낸다.
+원본 v1 코드는 사용자 정의 `mosaic_gg.R`을 썼고 v2는 `ggmosaic` 패키지를 권했지만,
+`ggmosaic`이 일부 R 버전에서 설치되지 않는 문제가 있어 **순수 ggplot2의 `geom_rect()`만으로**
+모자이크를 그리는 헬퍼 함수를 정의한다 — 외부 의존성 0개, 모든 R 버전에서 작동.
+
+## 4.1 헬퍼 함수 — `gg_mosaic()`
+
+원본 `mosaic_gg()`의 디자인을 그대로 따른다.
+
+* **셀 안**: 인원수 자동 표시 (`0`인 셀은 생략)
+* **그룹 이름**: 모자이크 위쪽에 (`y = 1.04`)
+* **x축 눈금**: 그룹 경계의 **누적 비율(%)** — 원본의 `cumsum(tbl_p_m)`와 동일
+* **y축 눈금**: 셀 경계의 **누적 비율(%)** — 가까운 눈금은 자동 병합(원본 로직과 동일)
+* 표시 내용은 옵션으로 변경 가능 (`labels = "n" / "pct" / "both"`)
+
+```{r mosaic-helper}
+gg_mosaic <- function(df, x_col, fill_col, n_col,
+                      x_label = NULL, y_label = "비율(%)",
+                      labels  = c("n", "pct", "both", "none"),
+                      label_color = "white",
+                      label_size  = 4,
+                      group_label = TRUE) {
+  labels <- match.arg(labels)
+
+  # 1) 가로 폭(그룹 크기) — 원본의 tapply(..., sum) %>% pos()
+  marg <- df |>
+    group_by(.data[[x_col]]) |>
+    summarise(total = sum(.data[[n_col]]), .groups = "drop") |>
+    mutate(
+      width = total / sum(total),
+      xmax  = cumsum(width),
+      xmin  = lag(xmax, default = 0),
+      xmid  = pos(width)             # cumsum - x/2  → 셀 가로 중심
+    )
+
+  # 2) 셀별 좌표 — 원본의 tapply(height, ..., pos)
+  rects <- df |>
+    arrange(.data[[x_col]], desc(.data[[fill_col]])) |>  # 원본 reverse=TRUE
+    group_by(.data[[x_col]]) |>
+    mutate(
+      prop = .data[[n_col]] / sum(.data[[n_col]]),
+      ymax = cumsum(prop),
+      ymin = lag(ymax, default = 0),
+      ymid = pos(prop)               # 세그먼트 세로 중심
+    ) |>
+    ungroup() |>
+    left_join(marg |> select(all_of(x_col), xmid, width), by = x_col) |>
+    mutate(
+      xmin = xmid - width / 2,
+      xmax = xmid + width / 2,
+      lbl_n   = format(.data[[n_col]], big.mark = ","),
+      lbl_pct = scales::percent(prop, accuracy = 0.1),
+      lbl     = dplyr::case_when(
+        .data[[n_col]] == 0 ~ "",                       # 빈 셀은 라벨 생략
+        labels == "n"    ~ lbl_n,
+        labels == "pct"  ~ lbl_pct,
+        labels == "both" ~ paste0(lbl_n, "\n(", lbl_pct, ")"),
+        TRUE             ~ ""
+      )
+    )
+
+  # 3) 축 눈금 — 원본의 누적 비율 + 가까운 눈금 자동 병합
+  x_breaks <- c(0, marg$xmax)
+  y_all    <- sort(unique(c(rects$ymin, rects$ymax)))
+  keep     <- c(TRUE, diff(y_all) > 0.04)   # 가까운 것끼리 자동 병합
+  y_breaks <- y_all[keep]
+
+  p <- ggplot(rects) +
+    geom_rect(aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax,
+                  fill = .data[[fill_col]]),
+              colour = "white", linewidth = 0.6) +
+    geom_text(aes(x = xmid, y = ymid, label = lbl),
+              colour = label_color, fontface = "bold",
+              size = label_size, lineheight = 0.95)
+
+  # 4) 모자이크 위쪽에 그룹 이름 (원본 y = 1.05 위치)
+  if (group_label) {
+    p <- p + geom_text(
+      data = marg, inherit.aes = FALSE,
+      aes(x = xmid, y = 1.05, label = .data[[x_col]]),
+      fontface = "bold", size = label_size
+    )
+  }
+
+  p +
+    scale_x_continuous(breaks = x_breaks,
+                       labels = scales::percent(x_breaks, accuracy = 0.1),
+                       expand = c(0, 0)) +
+    scale_y_continuous(breaks = y_breaks,
+                       labels = scales::percent(y_breaks, accuracy = 0.1),
+                       expand = c(0, 0),
+                       limits = c(0, 1.10)) +
+    labs(x = x_label %||% paste0(x_col, " 누적(%)"), y = y_label)
+}
+```
+
+### 사용 예 — 셀 표시 내용 바꾸기
+
+```{r mosaic-helper-demo, eval = FALSE}
+gg_mosaic(class_full, "Class", "Survived", "n")                    # 인원수 (기본)
+gg_mosaic(class_full, "Class", "Survived", "n", labels = "pct")    # 비율(%)만
+gg_mosaic(class_full, "Class", "Survived", "n", labels = "both")   # 둘 다
+gg_mosaic(class_full, "Class", "Survived", "n", labels = "none")   # 라벨 끄기
+```
+
+## 4.2 객실 등급 × 생존
+
+```{r mosaic-class, fig.width = 8, fig.height = 5}
+class_full <- titanic |>
+  group_by(Class, Survived) |>
+  summarise(n = sum(n), .groups = "drop")
+
+m_class <- gg_mosaic(class_full, "Class", "Survived", "n", x_label = "객실 등급") +
+  scale_fill_manual(values = surv_colors) +
+  labs(title = "모자이크 플롯 — 객실 등급별 생존/사망",
+       subtitle = "막대 너비 = 등급별 인원 / 높이 = 생존 비율",
+       caption = "1·2등석 폭은 좁지만 청록(생존) 비율이 높고, 3등석·승무원은 폭은 넓지만 사망 비율이 높다") +
+  theme_titanic()
+m_class
+ggsave(here("pics", "Titanic_v2_mosaic_class.png"), m_class, width = 8, height = 5, dpi = 200)
+```
+
+## 4.3 성별 × 생존 (전체)
+
+```{r mosaic-sex, fig.width = 8, fig.height = 5}
+sex_full <- titanic |>
+  group_by(Sex, Survived) |>
+  summarise(n = sum(n), .groups = "drop")
+
+m_sex <- gg_mosaic(sex_full, "Sex", "Survived", "n", x_label = "성별") +
+  scale_fill_manual(values = surv_colors) +
+  labs(title = "모자이크 플롯 — 남녀별 생존/사망",
+       subtitle = "여성이 압도적으로 더 많이 살아남았다 — 정말?") +
+  theme_titanic()
+m_sex
+ggsave(here("pics", "Titanic_v2_mosaic_sex.png"), m_sex, width = 8, height = 5, dpi = 200)
+```
+
+---
+
+# 5. 진실은 부분 안에 있다 — 등급 × 성별
+
+겉보기 결론: **여성 74%, 남성 20%** 생존 → "Women First!" 지켜진 듯.
+그러나 **객실 등급별로** 쪼개면 이야기가 달라진다.
+
+## 5.1 등급별 여성 생존율
+
+```{r female-by-class, fig.width = 10, fig.height = 4.5}
+female_df <- titanic |>
+  filter(Sex == "Female") |>
+  group_by(Class, Survived) |>
+  summarise(n = sum(n), .groups = "drop")
+
+p_female <- gg_barplot_fill(female_df, "Class", "Survived", "n",
+                            x_label = "객실 등급") +
+  scale_fill_manual(values = surv_colors) +
+  labs(title = "객실 등급별 여성 생존율",
+       subtitle = "1·2등석 여성은 거의 100%인데 3등석 여성은 절반도 못 살아남았다",
+       caption = "셀 안의 숫자는 인원수") +
+  theme_titanic()
+p_female
+ggsave(here("pics", "Titanic_v2_female_class.png"), p_female, width = 10, height = 4.5, dpi = 200)
+```
+
+## 5.2 등급별 어린이 생존율
+
+```{r child-by-class, fig.width = 10, fig.height = 4.5}
+child_df <- titanic |>
+  filter(Age == "Child") |>
+  group_by(Class, Survived) |>
+  summarise(n = sum(n), .groups = "drop") |>
+  filter(Class != "Crew")    # 어린이 승무원은 0
+
+p_child <- gg_barplot_fill(child_df, "Class", "Survived", "n",
+                           x_label = "객실 등급") +
+  scale_fill_manual(values = surv_colors) +
+  labs(title = "객실 등급별 어린이 생존율",
+       subtitle = "1·2등석 어린이는 100% — 그러나 3등석 어린이는 34%",
+       caption = "셀 안의 숫자는 인원수 · 승무원에는 어린이 없음") +
+  theme_titanic()
+p_child
+ggsave(here("pics", "Titanic_v2_child_class.png"), p_child, width = 10, height = 4.5, dpi = 200)
+```
+
+## 5.3 한 그림으로 — Class × Sex × Age 풀 facet
+
+전체 패턴을 한 그림에 펴 보면, 신사도가 깨진 칸이 명확하게 드러난다.
+
+```{r full-facet, fig.width = 11, fig.height = 6}
+full_df <- titanic |>
+  group_by(Class, Sex, Age, Survived) |>
+  summarise(n = sum(n), .groups = "drop")
+
+p_full <- ggplot(full_df, aes(Class, n, fill = Survived)) +
+  geom_col(position = position_fill(reverse = TRUE),
+           colour = "white", linewidth = 0.4) +
+  geom_text(aes(label = ifelse(n == 0, "", format(n, big.mark = ","))),
+            position = position_fill(vjust = 0.5, reverse = TRUE),
+            colour = "white", fontface = "bold", size = 3.5) +
+  facet_grid(Age ~ Sex,
+             labeller = labeller(
+               Sex = c(Male = "남성", Female = "여성"),
+               Age = c(Child = "어린이", Adult = "성인"))) +
+  scale_fill_manual(values = surv_colors) +
+  scale_y_continuous(labels = label_percent()) +
+  labs(title = "객실 등급 × 성별 × 연령 — 생존 비율",
+       subtitle = "1·2등석 여성·어린이는 거의 100% / 3등석은 그렇지 않다",
+       x = "객실 등급", y = "비율(%)",
+       caption = "셀 안의 숫자는 인원수") +
+  theme_titanic()
+p_full
+ggsave(here("pics", "Titanic_v2_full_facet.png"), p_full, width = 11, height = 6, dpi = 200)
+```
+
+---
+
+# 6. 결론과 실습 과제
+
+## 6.1 결론
+
+* **표면적**으로는 여성·어린이 우선 원칙이 지켜진 듯 보인다 (여성 74%, 어린이 51% > 남성 20%).
+* **객실 등급별**로 쪼개면 — 1·2등석에서는 신사도가 거의 완벽했지만, **3등석 여성 46% · 어린이 34%**로 무너졌다.
+* 즉 "Women and Children First"는 **객실 등급에 따라 차등 적용**된 원칙이었다.
+* 이는 **Simpson's Paradox**의 좋은 사례이며, 데이터를 **부분으로 쪼개 보는** 습관의 중요성을 보여준다.
+
+## 6.2 실습 과제
+
+1. `gg_mosaic()` 헬퍼를 확장해 `Class × Sex × Survived` 세 변수를 한 그림에 표시해 보라.
+   힌트: x_col에 `paste(Class, Sex)`로 결합 열을 만들어 넘기는 방식.
+2. 승무원(`Crew`)을 제외하고 같은 분석을 재실행하면 결론이 어떻게 달라지는지 비교하라.
+3. 위 그림들을 흑백 인쇄용으로 바꿔 보라(색 대신 패턴/투명도). 어떤 표현이 가장 명확한가?
+4. `Titanic` 데이터를 Kaggle의 개인 단위 Titanic 데이터(891명)와 비교하라.
+   집계 데이터(2,201명)와 어떻게 차이가 나는가?
+
+```{r session-info, echo = FALSE}
+sessionInfo()
+```
