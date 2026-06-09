@@ -529,6 +529,14 @@ ggsave(here("pics", "Titanic_v2_full_facet.png"), p_full, width = 11, height = 6
 4. `Titanic` 데이터를 Kaggle의 개인 단위 Titanic 데이터(891명)와 비교하라.
    집계 데이터(2,201명)와 어떻게 차이가 나는가?
 
-```{r session-info, echo = FALSE}
+```{r session-info, echo = FALSE, eval = FALSE}
 sessionInfo()
 ```
+
+## Comments
+
+1. 객실 등급이 타이타닉 생존율을 어떻게 갈랐나요?
+
+2. 심슨의 역설이 타이타닉 데이터에서 어떻게 나타나나요?
+
+3. 타이타닉 사고 이후 해상 안전 규제는 어떻게 변했나요?
