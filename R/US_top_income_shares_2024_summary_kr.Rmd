@@ -21,7 +21,7 @@ ls()
 
 <!--작업을 마친 자료파일은 `US_top_income_shares_24`이며, 이 자료의 구조와 앞의 몇 열의 값은 다음과 같다.-->
 
-```{r, data structure, echo = FALSE, results = 'hide'}
+```{r, data structure, echo = FALSE, message = FALSE, results = 'hide'}
 library(knitr)
 library(showtext)
 library(ggplot2)
